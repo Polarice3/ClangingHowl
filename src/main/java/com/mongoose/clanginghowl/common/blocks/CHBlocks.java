@@ -3,12 +3,15 @@ package com.mongoose.clanginghowl.common.blocks;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.ExEnergyClusterItem;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -58,7 +61,7 @@ public class CHBlocks {
     public static final RegistryObject<Block> EXTRATERRESTRIAL_COLUMN = register("extraterrestrial_column", () -> pillar(smoothExStoneProperties()));
 
     public static final RegistryObject<Block> EXTRATERRESTRIAL_PEBBLE = register("extraterrestrial_pebble", ExPebbleBlock::new);
-    public static final RegistryObject<Block> INCANDESCENT_EXTRATERRESTRIAL_STONE = register("incandescent_extraterrestrial_stone", () -> new MagmaBlock(exStoneProperties().lightLevel(l -> 3)));
+    public static final RegistryObject<Block> INCANDESCENT_EXTRATERRESTRIAL_STONE = register("incandescent_extraterrestrial_stone", () -> new MagmaBlock(exStoneProperties().lightLevel(l -> 3).hasPostProcess(CHBlocks::always).emissiveRendering(CHBlocks::always)));
 
     //Ores
     public static final RegistryObject<Block> METEORITE_STEEL_ORE = register("meteorite_steel_ore", () -> new DropExperienceBlock(exStoneProperties(), UniformInt.of(3, 7)), true, LootTableType.EMPTY);
@@ -97,6 +100,18 @@ public class CHBlocks {
                     .noOcclusion(),
                     CHBlockSetType.EX_STEEL));
 
+    //Calcite
+    public static final RegistryObject<Block> CALCITE_TILES = register("calcite_tiles", () -> new Block(BlockBehaviour.Properties.copy(Blocks.CALCITE)));
+    public static final RegistryObject<Block> CALCITE_TILE_STAIRS = registerStairs("calcite_tile_stairs",
+            CALCITE_TILES);
+    public static final RegistryObject<Block> CALCITE_TILE_SLAB = registerSlabs("calcite_tile_slab",
+            CALCITE_TILES);
+
+    public static final RegistryObject<Block> CRACKED_CALCITE_TILES = register("cracked_calcite_tiles", () -> new Block(BlockBehaviour.Properties.copy(Blocks.CALCITE)));
+
+    //Tech
+    public static final RegistryObject<Block> CRYSTAL_FORMER = register("crystal_former", CrystalFormerBlock::new);
+
     private static RotatedPillarBlock pillar(BlockBehaviour.Properties properties) {
         return new RotatedPillarBlock(properties);
     }
@@ -129,6 +144,10 @@ public class CHBlocks {
                     () -> new BlockItem(block.get(), new Item.Properties()));
         }
         return block;
+    }
+
+    private static boolean always(BlockState p_50775_, BlockGetter p_50776_, BlockPos p_50777_) {
+        return true;
     }
 
     public static RegistryObject<BlockItem> SMALL_EX_ENERGY_CLUSTER;

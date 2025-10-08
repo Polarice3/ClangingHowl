@@ -75,6 +75,7 @@ public class ExHammerItem extends SwordItem {
                 itemstack.hurtAndBreak(1, player, (p_150686_) -> {
                     p_150686_.broadcastBreakEvent(p_40529_.getHand());
                 });
+                player.swing(p_40529_.getHand());
             }
 
             return InteractionResult.sidedSuccess(level.isClientSide);

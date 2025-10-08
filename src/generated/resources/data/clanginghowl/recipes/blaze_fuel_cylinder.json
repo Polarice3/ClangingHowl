@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "F": {
+      "item": "clanginghowl:blaze_fuel"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    }
+  },
+  "pattern": [
+    " C ",
+    "PFP",
+    "PPP"
+  ],
+  "result": {
+    "item": "clanginghowl:blaze_fuel_cylinder"
+  },
+  "show_notification": false
+}

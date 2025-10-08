@@ -13,8 +13,8 @@ public class CrystalLusterParticle extends TextureSheetParticle {
         this.spriteSet = spriteSet;
         this.setSize(0.2f, 0.2f);
         this.quadSize *= 1.5f;
-        this.lifetime = 19;
-        this.gravity = -0.1f;
+        this.lifetime = 12; //Equation: (Total Frames * Interval) - 2
+        this.gravity = -0.01F;
         this.hasPhysics = false;
         this.xd = vx * 0.0F;
         this.yd = vy * 0.0F;

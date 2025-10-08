@@ -8,19 +8,20 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.HitResult;
@@ -28,7 +29,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class ExEnergyClusterBlock extends Block {
+public class ExEnergyClusterBlock extends Block implements SimpleWaterloggedBlock {
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
     private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{
             Block.box(4.0D, 0.0D, 4.0D, 12.0D, 7.0D, 12.0D),
@@ -46,7 +48,7 @@ public class ExEnergyClusterBlock extends Block {
                 .pushReaction(PushReaction.DESTROY)
                 .emissiveRendering((i, d, k) -> true)
                 .lightLevel((p_187409_) -> (p_187409_.getValue(AGE) * 2) + 1));
-        this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
+        this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0).setValue(WATERLOGGED, Boolean.FALSE));
     }
 
     public RenderShape getRenderShape(BlockState state) {
@@ -114,6 +116,9 @@ public class ExEnergyClusterBlock extends Block {
         if (!p_51157_.canSurvive(p_51160_, p_51161_)) {
             p_51160_.scheduleTick(p_51161_, this, 1);
         }
+        if (p_51157_.getValue(WATERLOGGED)) {
+            p_51160_.scheduleTick(p_51161_, Fluids.WATER, Fluids.WATER.getTickDelay(p_51160_));
+        }
 
         return super.updateShape(p_51157_, p_51158_, p_51159_, p_51160_, p_51161_, p_51162_);
     }
@@ -143,6 +148,19 @@ public class ExEnergyClusterBlock extends Block {
 
     }
 
+    public void growCrystal(BlockState state, Level level, BlockPos blockPos) {
+        int i = this.getAge(state);
+        if (i <= this.getMaxAge()) {
+            if (i == this.getMaxAge()) {
+                if (level.getBlockState(blockPos.above()).canBeReplaced(new DirectionalPlaceContext(level, blockPos.above(), Direction.DOWN, ItemStack.EMPTY, Direction.UP))) {
+                    HugeExEnergyClusterBlock.placeAt(level, CHBlocks.HUGE_EXTRATERRESTRIAL_ENERGY_CLUSTER.get().defaultBlockState(), blockPos, 3);
+                }
+            } else {
+                level.setBlock(blockPos, this.getStateForAge(i + 1), 2);
+            }
+        }
+    }
+
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
         if (state.getValue(AGE) == 1) {
@@ -153,8 +171,18 @@ public class ExEnergyClusterBlock extends Block {
         return super.getCloneItemStack(state, target, level, pos, player);
     }
 
+    public BlockState getStateForPlacement(BlockPlaceContext p_153711_) {
+        FluidState fluidstate = p_153711_.getLevel().getFluidState(p_153711_.getClickedPos());
+        boolean flag = fluidstate.getType() == Fluids.WATER;
+        return this.defaultBlockState().setValue(WATERLOGGED, flag);
+    }
+
+    public FluidState getFluidState(BlockState p_153759_) {
+        return p_153759_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_153759_);
+    }
+
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_52286_) {
-        p_52286_.add(AGE);
+        p_52286_.add(AGE, WATERLOGGED);
     }
 
     @Override

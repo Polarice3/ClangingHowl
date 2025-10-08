@@ -12,7 +12,7 @@ public class BreakdownSmokeParticle extends TextureSheetParticle {
         this.spriteSet = spriteSet;
         this.scale(3.0F);
         this.setSize(0.25F, 0.25F);
-        this.lifetime = 14;
+        this.lifetime = 18;
         this.gravity = 3.0E-6F;
         this.xd = 0.0F;
         this.yd = 0.1F;

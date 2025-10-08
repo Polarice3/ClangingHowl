@@ -1,0 +1,87 @@
+{
+    "parent": "block/block",
+    "loader": "forge:composite",
+    "textures": {
+        "particle": "clanginghowl:block/incandescent_extraterrestrial_stone"
+    },
+    "item_render_order": [
+        "block",
+        "emission"
+    ],
+    "children": {
+        "block": {
+            "parent": "minecraft:block/cube_all",
+            "textures": {
+                "all": "clanginghowl:block/incandescent_extraterrestrial_stone"
+            }
+        },
+        "emission": {
+            "parent": "block/block",
+            "textures": {
+                "all": "clanginghowl:block/incandescent_extraterrestrial_stone_emissive"
+            },
+            "render_type": "minecraft:cutout",
+            "elements": [
+                {   "from": [ 0, 0, 0 ],
+                    "to": [ 16, 16, 16 ],
+                    "faces": {
+                        "down":  {
+                            "uv": [ 0, 0, 16, 16 ],
+                            "texture": "#all",
+                            "cullface": "down",
+                            "forge_data": {
+                                "block_light": 15,
+                                "sky_light": 15
+                            }
+                        },
+                        "up":    {
+                            "uv": [ 0, 0, 16, 16 ],
+                            "texture": "#all",
+                            "cullface": "up",
+                            "forge_data": {
+                                "block_light": 15,
+                                "sky_light": 15
+                            },
+                            "tintindex": 0 },
+                        "north": {
+                            "uv": [ 0, 0, 16, 16 ],
+                            "texture": "#all",
+                            "cullface": "north",
+                            "forge_data": {
+                                "block_light": 15,
+                                "sky_light": 15
+                            }
+                        },
+                        "south": {
+                            "uv": [ 0, 0, 16, 16 ],
+                            "texture": "#all",
+                            "cullface": "south",
+                            "forge_data": {
+                                "block_light": 15,
+                                "sky_light": 15
+                            }
+                        },
+                        "west":  {
+                            "uv": [ 0, 0, 16, 16 ],
+                            "texture": "#all",
+                            "cullface": "west",
+                            "forge_data": {
+                                "block_light": 15,
+                                "sky_light": 15
+                            }
+                        },
+                        "east":  {
+                            "uv": [ 0, 0, 16, 16 ],
+                            "texture": "#all",
+                            "cullface": "east",
+                            "forge_data": {
+                                "block_light": 15,
+                                "sky_light": 15
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

@@ -12,8 +12,8 @@ public class RepairParticle extends TextureSheetParticle {
         super(world, x, y, z);
         this.spriteSet = spriteSet;
         this.setSize(0.2f, 0.2f);
-        this.quadSize *= 1.5f;
-        this.lifetime = world.getRandom().nextIntBetweenInclusive(25, 30);
+        this.quadSize *= 2.0f;
+        this.lifetime = world.getRandom().nextIntBetweenInclusive(10, 15);
         this.gravity = -0.1f;
         this.hasPhysics = false;
         this.xd = vx * 0.0F;

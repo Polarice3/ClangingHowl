@@ -46,12 +46,14 @@ public class CHItemTagsProvider extends IntrinsicHolderTagsProvider<Item> {
                 .add(CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_STAIRS.get().asItem())
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_STAIRS.get().asItem())
                 .add(CHBlocks.CARVED_STEEL_PLATE_STAIRS.get().asItem())
+                .add(CHBlocks.CALCITE_TILE_STAIRS.get().asItem())
                 .replace(false);
         this.tag(ItemTags.SLABS)
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_SLAB.get().asItem())
                 .add(CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_SLAB.get().asItem())
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_SLAB.get().asItem())
                 .add(CHBlocks.CARVED_STEEL_PLATE_SLAB.get().asItem())
+                .add(CHBlocks.CALCITE_TILE_SLAB.get().asItem())
                 .replace(false);
         this.tag(ItemTags.WALLS)
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_WALL.get().asItem())
@@ -63,6 +65,9 @@ public class CHItemTagsProvider extends IntrinsicHolderTagsProvider<Item> {
                 .replace(false);
         this.tag(Tags.Items.NUGGETS)
                 .add(CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get())
+                .replace(false);
+        this.tag(Tags.Items.TOOLS)
+                .add(CHItems.INDUSTRIAL_ADJUSTABLE_WRENCH.get())
                 .replace(false);
     }
 }

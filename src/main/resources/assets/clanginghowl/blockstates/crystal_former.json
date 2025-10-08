@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "enabled=false": {
+      "model": "clanginghowl:block/crystal_former_inactive"
+    },
+    "enabled=true": {
+      "model": "clanginghowl:block/crystal_former"
+    }
+  }
+}

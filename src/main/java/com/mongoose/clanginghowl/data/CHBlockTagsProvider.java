@@ -69,6 +69,12 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 .add(CHBlocks.CARVED_STEEL_PLATE_SLAB.get())
                 .add(CHBlocks.DAMAGED_CARVED_STEEL_PLATE_BLOCK.get())
                 .replace(false);
+        this.tag(CHTags.Blocks.CALCITE)
+                .add(CHBlocks.CALCITE_TILES.get())
+                .add(CHBlocks.CALCITE_TILE_STAIRS.get())
+                .add(CHBlocks.CALCITE_TILE_SLAB.get())
+                .add(CHBlocks.CRACKED_CALCITE_TILES.get())
+                .replace(false);
         this.tag(CHTags.Blocks.ENERGY_CLUSTER)
                 .add(CHBlocks.EXTRATERRESTRIAL_ENERGY_CLUSTER.get())
                 .add(CHBlocks.HUGE_EXTRATERRESTRIAL_ENERGY_CLUSTER.get())
@@ -76,9 +82,11 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addTag(CHTags.Blocks.EX_STONE_BLOCKS)
                 .addTag(CHTags.Blocks.EX_STEEL_BLOCKS)
+                .addTag(CHTags.Blocks.CALCITE)
                 .addTag(CHTags.Blocks.ENERGY_CLUSTER)
                 .add(CHBlocks.METEORITE_STEEL_ORE.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get())
+                .add(CHBlocks.CRYSTAL_FORMER.get())
                 .replace(false);
         this.tag(BlockTags.NEEDS_STONE_TOOL)
                 .add(CHBlocks.METEORITE_STEEL_ORE.get())
@@ -95,12 +103,14 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 .add(CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_STAIRS.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_STAIRS.get())
                 .add(CHBlocks.CARVED_STEEL_PLATE_STAIRS.get())
+                .add(CHBlocks.CALCITE_TILE_STAIRS.get())
                 .replace(false);
         this.tag(BlockTags.SLABS)
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_SLAB.get())
                 .add(CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_SLAB.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_SLAB.get())
                 .add(CHBlocks.CARVED_STEEL_PLATE_SLAB.get())
+                .add(CHBlocks.CALCITE_TILE_SLAB.get())
                 .replace(false);
         this.tag(BlockTags.WALLS)
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_WALL.get())

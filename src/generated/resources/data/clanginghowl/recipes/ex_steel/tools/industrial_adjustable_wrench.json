@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "clanginghowl:energy_battery"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    },
+    "R": {
+      "item": "clanginghowl:steel_rod"
+    }
+  },
+  "pattern": [
+    "PC",
+    "PB",
+    " R"
+  ],
+  "result": {
+    "item": "clanginghowl:industrial_adjustable_wrench"
+  },
+  "show_notification": false
+}

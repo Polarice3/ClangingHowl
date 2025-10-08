@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blue_ice"
+    },
+    "C": {
+      "item": "clanginghowl:extraterrestrial_energy_crystal"
+    }
+  },
+  "pattern": [
+    "CB",
+    "BB"
+  ],
+  "result": {
+    "count": 4,
+    "item": "clanginghowl:cryogenic_fuel"
+  },
+  "show_notification": false
+}

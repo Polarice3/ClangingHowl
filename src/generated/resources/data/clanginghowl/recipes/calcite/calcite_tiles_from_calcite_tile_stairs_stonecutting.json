@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "clanginghowl:calcite_tiles"
+  },
+  "result": "clanginghowl:calcite_tile_stairs"
+}

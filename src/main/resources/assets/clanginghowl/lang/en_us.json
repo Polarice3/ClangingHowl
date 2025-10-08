@@ -10,6 +10,9 @@
   "item.clanginghowl.energy_battery": "Energy Battery",
   "item.clanginghowl.energy_intensive_battery": "Energy-Intensive Battery",
   "item.clanginghowl.battery_panel": "Battery Panel",
+  "item.clanginghowl.cryogenic_fuel": "Cryogenic Fuel",
+  "item.clanginghowl.blaze_fuel": "Blaze Fuel",
+  "item.clanginghowl.blaze_fuel_cylinder": "Blaze Fuel Cylinder",
 
   "item.clanginghowl.extraterrestrial_sword": "Extraterrestrial Sword",
   "item.clanginghowl.extraterrestrial_shovel": "Extraterrestrial Shovel",
@@ -44,7 +47,7 @@
   "block.clanginghowl.extraterrestrial_column": "Extraterrestrial Column",
 
   "block.clanginghowl.extraterrestrial_pebble": "Extraterrestrial Pebble",
-  "block.clanginghowl.incandescent_extraterrestrial_stone": "Incandescent Extraterrestrial Column",
+  "block.clanginghowl.incandescent_extraterrestrial_stone": "Incandescent Extraterrestrial Stone",
 
   "block.clanginghowl.meteorite_steel_ore": "Meteorite Steel Ore",
   "block.clanginghowl.extraterrestrial_steel_ore": "Extraterrestrial Steel Ore",
@@ -68,6 +71,14 @@
 
   "block.clanginghowl.steel_door": "Steel Door",
   "block.clanginghowl.steel_trapdoor": "Steel Trapdoor",
+
+  "block.clanginghowl.calcite_tiles": "Calcite Tiles",
+  "block.clanginghowl.calcite_tile_stairs": "Calcite Tile Stairs",
+  "block.clanginghowl.calcite_tile_slab": "Calcite Tile Slab",
+
+  "block.clanginghowl.cracked_calcite_tiles": "Cracked Calcite Tiles",
+
+  "block.clanginghowl.crystal_former": "Crystal Former",
 
   "effect.clanginghowl.cosmic_irradiation": "Cosmic Irradiation",
   "effect.clanginghowl.cosmic_irradiation.description": "Decreases max health by 15%% and attack damage by 10%%; higher levels decreases further."

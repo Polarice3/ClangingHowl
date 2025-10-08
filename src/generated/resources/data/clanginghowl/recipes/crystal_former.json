@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "E": {
+      "item": "clanginghowl:extraterrestrial_energy_crystal"
+    },
+    "F": {
+      "item": "clanginghowl:cryogenic_fuel"
+    },
+    "G": {
+      "item": "clanginghowl:extraterrestrial_steel_grate"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    }
+  },
+  "pattern": [
+    "EEE",
+    "PGP",
+    "CFC"
+  ],
+  "result": {
+    "item": "clanginghowl:crystal_former"
+  },
+  "show_notification": false
+}

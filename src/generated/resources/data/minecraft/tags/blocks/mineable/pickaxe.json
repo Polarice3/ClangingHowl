@@ -2,8 +2,10 @@
   "values": [
     "#clanginghowl:ex_stone_blocks",
     "#clanginghowl:ex_steel_blocks",
+    "#clanginghowl:calcite",
     "#clanginghowl:energy_cluster",
     "clanginghowl:meteorite_steel_ore",
-    "clanginghowl:extraterrestrial_steel_ore"
+    "clanginghowl:extraterrestrial_steel_ore",
+    "clanginghowl:crystal_former"
   ]
 }

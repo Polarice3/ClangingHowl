@@ -2,13 +2,16 @@ package com.mongoose.clanginghowl.common.events;
 
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
+import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.CHTiers;
 import com.mongoose.clanginghowl.utils.CHDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -28,6 +31,16 @@ public class CHEvents {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void FurnaceBurnItems(FurnaceFuelBurnTimeEvent event){
+        if (!event.getItemStack().isEmpty()){
+            ItemStack itemStack = event.getItemStack();
+            if (itemStack.is(CHItems.BLAZE_FUEL.get())) {
+                event.setBurnTime(3200);
             }
         }
     }

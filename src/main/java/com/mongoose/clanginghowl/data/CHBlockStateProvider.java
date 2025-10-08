@@ -20,13 +20,14 @@ public class CHBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get());
         simpleBlockWithItem(CHBlocks.EXTRATERRESTRIAL_STONE_BRICKS.get());
         simpleBlockWithItem(CHBlocks.CARVED_EXTRATERRESTRIAL_STONE_BRICKS.get());
-        simpleBlockWithItem(CHBlocks.INCANDESCENT_EXTRATERRESTRIAL_STONE.get());
         simpleBlockWithItem(CHBlocks.RAW_EXTRATERRESTRIAL_STEEL_BLOCK.get());
         simpleBlockWithItem(CHBlocks.EXTRATERRESTRIAL_STEEL_BLOCK.get());
         simpleBlockWithItem(CHBlocks.STEEL_PLATE_BLOCK.get());
         simpleBlockWithItem(CHBlocks.DAMAGED_STEEL_PLATE_BLOCK.get());
         simpleBlockWithItem(CHBlocks.METEORITE_STEEL_ORE.get());
         simpleBlockWithItem(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get());
+        simpleBlockWithItem(CHBlocks.CALCITE_TILES.get());
+        simpleBlockWithItem(CHBlocks.CRACKED_CALCITE_TILES.get());
 
         doorBlockWithRenderType((DoorBlock) CHBlocks.STEEL_DOOR.get(), ClangingHowl.location("block/steel_door_bottom"), ClangingHowl.location("block/steel_door_top"), "translucent");
 
@@ -39,11 +40,13 @@ public class CHBlockStateProvider extends BlockStateProvider {
         slabBlockWithItem((SlabBlock) CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_SLAB.get(), ClangingHowl.location("block/smooth_extraterrestrial_stone"));
         slabBlockWithItem((SlabBlock) CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_SLAB.get(), ClangingHowl.location("block/extraterrestrial_stone_bricks"));
         slabBlockWithItem((SlabBlock) CHBlocks.CARVED_STEEL_PLATE_SLAB.get(), ClangingHowl.location("block/carved_steel_plate_block"));
+        slabBlockWithItem((SlabBlock) CHBlocks.CALCITE_TILE_SLAB.get(), ClangingHowl.location("block/calcite_tiles"));
 
         stairsBlockWithItem((StairBlock) CHBlocks.EXTRATERRESTRIAL_STONE_STAIRS.get(), ClangingHowl.location("block/extraterrestrial_stone"));
         stairsBlockWithItem((StairBlock) CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_STAIRS.get(), ClangingHowl.location("block/smooth_extraterrestrial_stone"));
         stairsBlockWithItem((StairBlock) CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_STAIRS.get(), ClangingHowl.location("block/extraterrestrial_stone_bricks"));
         stairsBlockWithItem((StairBlock) CHBlocks.CARVED_STEEL_PLATE_STAIRS.get(), ClangingHowl.location("block/carved_steel_plate_block"));
+        stairsBlockWithItem((StairBlock) CHBlocks.CALCITE_TILE_STAIRS.get(), ClangingHowl.location("block/calcite_tiles"));
 
         wallBlockWithItem((WallBlock) CHBlocks.EXTRATERRESTRIAL_STONE_WALL.get(), ClangingHowl.location("block/extraterrestrial_stone"));
         wallBlockWithItem((WallBlock) CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_WALL.get(), ClangingHowl.location("block/smooth_extraterrestrial_stone"));

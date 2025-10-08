@@ -32,6 +32,12 @@ public class CHItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BATTERY_PANEL = ITEMS.register("battery_panel",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> CRYOGENIC_FUEL = ITEMS.register("cryogenic_fuel",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> BLAZE_FUEL = ITEMS.register("blaze_fuel",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> BLAZE_FUEL_CYLINDER = ITEMS.register("blaze_fuel_cylinder",
+            () -> new Item(new Item.Properties()));
 
     //Tools
     public static final RegistryObject<Item> EXTRATERRESTRIAL_SWORD = ITEMS.register("extraterrestrial_sword", () -> new SwordItem(CHTiers.EXTRATERRESTRIAL, 3, -2.4F, new Item.Properties()));
@@ -40,4 +46,6 @@ public class CHItems {
     public static final RegistryObject<Item> EXTRATERRESTRIAL_AXE = ITEMS.register("extraterrestrial_axe", () -> new AxeItem(CHTiers.EXTRATERRESTRIAL, 5.0F, -3.0F, new Item.Properties()));
     public static final RegistryObject<Item> EXTRATERRESTRIAL_HOE = ITEMS.register("extraterrestrial_hoe", () -> new HoeItem(CHTiers.EXTRATERRESTRIAL, -3, 0.0F, new Item.Properties()));
     public static final RegistryObject<Item> EXTRATERRESTRIAL_HAMMER = ITEMS.register("extraterrestrial_hammer", ExHammerItem::new);
+
+    public static final RegistryObject<Item>  INDUSTRIAL_ADJUSTABLE_WRENCH = ITEMS.register("industrial_adjustable_wrench", WrenchItem::new);
 }

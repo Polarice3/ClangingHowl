@@ -13,16 +13,15 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -31,7 +30,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class HugeExEnergyClusterBlock extends Block {
+public class HugeExEnergyClusterBlock extends Block implements SimpleWaterloggedBlock {
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 
     public HugeExEnergyClusterBlock() {
@@ -44,7 +44,7 @@ public class HugeExEnergyClusterBlock extends Block {
                 .pushReaction(PushReaction.DESTROY)
                 .emissiveRendering((i, d, k) -> true)
                 .lightLevel((p_187409_) -> 10));
-        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER));
+        this.registerDefaultState(this.stateDefinition.any().setValue(HALF, DoubleBlockHalf.LOWER).setValue(WATERLOGGED, Boolean.FALSE));
     }
 
     public RenderShape getRenderShape(BlockState state) {
@@ -69,6 +69,9 @@ public class HugeExEnergyClusterBlock extends Block {
 
     public BlockState updateShape(BlockState p_52894_, Direction p_52895_, BlockState p_52896_, LevelAccessor p_52897_, BlockPos p_52898_, BlockPos p_52899_) {
         DoubleBlockHalf doubleblockhalf = p_52894_.getValue(HALF);
+        if (p_52894_.getValue(WATERLOGGED)) {
+            p_52897_.scheduleTick(p_52898_, Fluids.WATER, Fluids.WATER.getTickDelay(p_52897_));
+        }
         if (p_52895_.getAxis() != Direction.Axis.Y || doubleblockhalf == DoubleBlockHalf.LOWER != (p_52895_ == Direction.UP) || p_52896_.is(this) && p_52896_.getValue(HALF) != doubleblockhalf) {
             return doubleblockhalf == DoubleBlockHalf.LOWER && p_52895_ == Direction.DOWN && !p_52894_.canSurvive(p_52897_, p_52898_) ? Blocks.AIR.defaultBlockState() : super.updateShape(p_52894_, p_52895_, p_52896_, p_52897_, p_52898_, p_52899_);
         } else {
@@ -80,7 +83,9 @@ public class HugeExEnergyClusterBlock extends Block {
     public BlockState getStateForPlacement(BlockPlaceContext p_52863_) {
         BlockPos blockpos = p_52863_.getClickedPos();
         Level level = p_52863_.getLevel();
-        return blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(p_52863_) ? super.getStateForPlacement(p_52863_) : null;
+        FluidState fluidstate = level.getFluidState(p_52863_.getClickedPos());
+        boolean flag = fluidstate.getType() == Fluids.WATER;
+        return blockpos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(blockpos.above()).canBeReplaced(p_52863_) ? this.defaultBlockState().setValue(WATERLOGGED, flag) : null;
     }
 
     public void setPlacedBy(Level p_52872_, BlockPos p_52873_, BlockState p_52874_, LivingEntity p_52875_, ItemStack p_52876_) {
@@ -144,8 +149,12 @@ public class HugeExEnergyClusterBlock extends Block {
 
     }
 
+    public FluidState getFluidState(BlockState p_153759_) {
+        return p_153759_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_153759_);
+    }
+
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_52901_) {
-        p_52901_.add(HALF);
+        p_52901_.add(HALF, WATERLOGGED);
     }
 
     @Override

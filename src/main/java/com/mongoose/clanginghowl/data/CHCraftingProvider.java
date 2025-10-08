@@ -6,9 +6,11 @@ import com.mongoose.clanginghowl.common.items.CHItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
@@ -57,6 +59,18 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get()))
                 .showNotification(false)
                 .save(consumer, loc("ex_steel/steel_trapdoor"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, CHBlocks.CRYSTAL_FORMER.get())
+                .pattern("EEE")
+                .pattern("PGP")
+                .pattern("CFC")
+                .define('E', CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get())
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .define('G', CHBlocks.EXTRATERRESTRIAL_STEEL_GRATE.get())
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('F', CHItems.CRYOGENIC_FUEL.get())
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get()))
+                .showNotification(false)
+                .save(consumer, loc("crystal_former"));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, CHItems.EXTRATERRESTRIAL_SWORD.get())
                 .pattern("#")
@@ -117,6 +131,17 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get()))
                 .showNotification(false)
                 .save(consumer, loc("ex_steel/tools/extraterrestrial_hammer"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, CHItems.INDUSTRIAL_ADJUSTABLE_WRENCH.get())
+                .pattern("PC")
+                .pattern("PB")
+                .pattern(" R")
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('B', CHItems.ENERGY_BATTERY.get())
+                .define('R', CHBlocks.STEEL_ROD.get())
+                .unlockedBy("has_item", has(CHItems.ENERGY_BATTERY.get()))
+                .showNotification(false)
+                .save(consumer, loc("ex_steel/tools/industrial_adjustable_wrench"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.ENERGY_BATTERY.get())
                 .pattern("SCS")
                 .pattern("SES")
@@ -148,8 +173,35 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.ENERGY_BATTERY.get()))
                 .showNotification(false)
                 .save(consumer, loc("battery_panel"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.CRYOGENIC_FUEL.get(), 4)
+                .pattern("CB")
+                .pattern("BB")
+                .define('C', CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get())
+                .define('B', Items.BLUE_ICE)
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get()))
+                .showNotification(false)
+                .save(consumer, loc("cryogenic_fuel"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.BLAZE_FUEL.get(), 4)
+                .pattern("CB")
+                .pattern("BB")
+                .define('C', CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get())
+                .define('B', Items.BLAZE_POWDER)
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get()))
+                .showNotification(false)
+                .save(consumer, loc("blaze_fuel"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.BLAZE_FUEL_CYLINDER.get())
+                .pattern(" C ")
+                .pattern("PFP")
+                .pattern("PPP")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('F', CHItems.BLAZE_FUEL.get())
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get()))
+                .showNotification(false)
+                .save(consumer, loc("blaze_fuel_cylinder"));
 
         smelting(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE.get(), CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get());
+        smelting(consumer, "calcite/cracked_calcite_tiles", CHBlocks.CALCITE_TILES.get(), CHBlocks.CRACKED_CALCITE_TILES.get());
 
         blasting(consumer, "ex_steel/extraterrestrial_steel_ingot_blasting", CHItems.EXTRATERRESTRIAL_STEEL.get(), CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get(), 400);
         blasting(consumer, "ex_steel/extraterrestrial_steel_nugget_blasting", CHItems.PIECE_OF_EXTRATERRESTRIAL_STEEL.get(), CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get(), 50);
@@ -176,11 +228,13 @@ public class CHCraftingProvider extends RecipeProvider {
         slabBlock(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE, CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_SLAB);
         slabBlock(consumer, "ex_stone/extraterrestrial_stone_bricks", CHBlocks.EXTRATERRESTRIAL_STONE_BRICKS, CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_SLAB);
         slabBlock(consumer, "ex_steel/carved_steel_plate", CHBlocks.CARVED_STEEL_PLATE_BLOCK, CHBlocks.CARVED_STEEL_PLATE_SLAB);
+        slabBlock(consumer, "calcite/calcite_tiles", CHBlocks.CALCITE_TILES, CHBlocks.CALCITE_TILE_SLAB);
 
         stairsBlock(consumer, "ex_stone/extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE, CHBlocks.EXTRATERRESTRIAL_STONE_STAIRS);
         stairsBlock(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE, CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_STAIRS);
         stairsBlock(consumer, "ex_stone/extraterrestrial_stone_bricks", CHBlocks.EXTRATERRESTRIAL_STONE_BRICKS, CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_STAIRS);
         stairsBlock(consumer, "ex_steel/carved_steel_plate", CHBlocks.CARVED_STEEL_PLATE_BLOCK, CHBlocks.CARVED_STEEL_PLATE_STAIRS);
+        stairsBlock(consumer, "calcite/calcite_tiles", CHBlocks.CALCITE_TILES, CHBlocks.CALCITE_TILE_STAIRS);
 
         wallBlock(consumer, "ex_stone/extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE, CHBlocks.EXTRATERRESTRIAL_STONE_WALL);
         wallBlock(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE, CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_WALL);
@@ -210,6 +264,10 @@ public class CHCraftingProvider extends RecipeProvider {
         stoneCutting(consumer, "ex_stone", CHBlocks.EXTRATERRESTRIAL_STONE_BRICKS, CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_WALL);
 
         stoneCutting(consumer, "ex_steel", CHBlocks.STEEL_PLATE_BLOCK, CHBlocks.EXTRATERRESTRIAL_STEEL_GRATE, 4);
+
+        stoneCutting(consumer, "calcite", () -> Blocks.CALCITE, CHBlocks.CALCITE_TILES);
+        stoneCutting(consumer, "calcite", CHBlocks.CALCITE_TILES, CHBlocks.CALCITE_TILE_SLAB, 2);
+        stoneCutting(consumer, "calcite", CHBlocks.CALCITE_TILES, CHBlocks.CALCITE_TILE_STAIRS);
 
         hammerTime(consumer, "ex_steel/extraterrestrial_steel_plate", CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get(), CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get(), 4);
     }

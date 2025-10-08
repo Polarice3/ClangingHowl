@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_powder"
+    },
+    "C": {
+      "item": "clanginghowl:extraterrestrial_energy_crystal"
+    }
+  },
+  "pattern": [
+    "CB",
+    "BB"
+  ],
+  "result": {
+    "count": 4,
+    "item": "clanginghowl:blaze_fuel"
+  },
+  "show_notification": false
+}

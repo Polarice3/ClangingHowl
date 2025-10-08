@@ -1,4 +1,5 @@
-// 1.20.1	2025-10-08T13:58:21.3395026	Tags for minecraft:block mod id clanginghowl
+// 1.20.1	2025-10-08T15:25:04.4910659	Tags for minecraft:block mod id clanginghowl
+ddb0f8e177f992af0442b486d5d8c67f5b229d20 data/clanginghowl/tags/blocks/calcite.json
 0fb1efccdf19a613dc45730e342b43afae7ab038 data/clanginghowl/tags/blocks/carved_steel.json
 458b1583af29c8d9f7f1c9439d3d0735c0928417 data/clanginghowl/tags/blocks/energy_cluster.json
 4cc773ace64a479063f338c759df86de0bb6f963 data/clanginghowl/tags/blocks/ex_steel_blocks.json
@@ -9,9 +10,9 @@ e3ad7ce28d45eeaa0bc1be4566005950a50f7531 data/clanginghowl/tags/blocks/ex_stone_
 d5991b33d987b32add879f482649dcfc834ad2f9 data/forge/tags/blocks/ores.json
 8f8ccee7d3b61668f2a77dd117dc4a6e32441ea8 data/forge/tags/blocks/stone.json
 857712344c9ceaa0a42a36f23102f8bf950926f1 data/minecraft/tags/blocks/doors.json
-b908d45d90f344b4e5b41207710067a16d219f7a data/minecraft/tags/blocks/mineable/pickaxe.json
+550731cef512225dbcfb474743aa9a79b06faf78 data/minecraft/tags/blocks/mineable/pickaxe.json
 d5991b33d987b32add879f482649dcfc834ad2f9 data/minecraft/tags/blocks/needs_stone_tool.json
-20f1c0045e9ad522fc6529bcfb54f6f967be19bc data/minecraft/tags/blocks/slabs.json
-1d0c91be266b7d15f0cd72d92e0dac61b6839800 data/minecraft/tags/blocks/stairs.json
+93762b08d4006c99dfedadc1c8286798c4e0b25a data/minecraft/tags/blocks/slabs.json
+2d6d007c326ccc70e0a25821bc410e8a7db7b8fd data/minecraft/tags/blocks/stairs.json
 c8b4e7c3fc4b1ec40e75112d8a674fd44d601156 data/minecraft/tags/blocks/trapdoors.json
 14c0ed571131e24558fc7e59a5ff22b8cd98aeb7 data/minecraft/tags/blocks/walls.json

@@ -14,6 +14,7 @@ public class CHTags {
         public static final TagKey<Block> EX_STONE_BRICKS = tag("ex_stone_bricks");
         public static final TagKey<Block> EX_STEEL_BLOCKS = tag("ex_steel_blocks");
         public static final TagKey<Block> CARVED_STEEL = tag("carved_steel");
+        public static final TagKey<Block> CALCITE = tag("calcite");
         public static final TagKey<Block> ENERGY_CLUSTER = tag("energy_cluster");
 
         private static TagKey<Block> tag(String name) {

@@ -3,6 +3,8 @@ package com.mongoose.clanginghowl;
 import com.mojang.logging.LogUtils;
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.common.blocks.CHBlocks;
+import com.mongoose.clanginghowl.common.blocks.entities.CHBlockEntities;
+import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.init.CHCreativeTab;
 import com.mongoose.clanginghowl.init.ClientSideInit;
@@ -28,12 +30,14 @@ public class ClangingHowl {
     public ClangingHowl() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        CHBlockEntities.BLOCK_ENTITY.register(modEventBus);
         CHParticleTypes.PARTICLE_TYPES.register(modEventBus);
         CHCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
         CHItems.init();
         CHBlocks.init();
+        CHEffects.init();
         SIDED_INIT.init();
     }
 }

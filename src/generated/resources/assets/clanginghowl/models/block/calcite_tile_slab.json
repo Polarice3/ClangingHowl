@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "clanginghowl:block/calcite_tiles",
+    "side": "clanginghowl:block/calcite_tiles",
+    "top": "clanginghowl:block/calcite_tiles"
+  }
+}
