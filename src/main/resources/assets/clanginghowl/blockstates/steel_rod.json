@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "clanginghowl:block/steel_rod",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "clanginghowl:block/steel_rod",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "clanginghowl:block/steel_rod",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "clanginghowl:block/steel_rod",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "clanginghowl:block/steel_rod"
+    },
+    "facing=west": {
+      "model": "clanginghowl:block/steel_rod",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

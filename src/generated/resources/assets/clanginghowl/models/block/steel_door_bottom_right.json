@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/door_bottom_right",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "bottom": "clanginghowl:block/steel_door_bottom",
+    "top": "clanginghowl:block/steel_door_top"
+  }
+}

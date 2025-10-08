@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="clanginghowl"
+version="${file.jarVersion}"
+displayName="Clanging Howl"
+logoFile="logo.png"
+credits="Made for ModJam 2025"
+authors="Mongoose_artist, Polarice3"
+description="Adds a lot of hostile mobs, with their own characteristics that can complicate your survival"
+
+[[dependencies.clanginghowl]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1]"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.clanginghowl]]
+modId="jei"
+mandatory=false
+versionRange="[0,)"
+ordering="NONE"
+side="BOTH"

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "clanginghowl:block/extraterrestrial_stone",
+    "side": "clanginghowl:block/extraterrestrial_stone",
+    "top": "clanginghowl:block/extraterrestrial_stone"
+  }
+}

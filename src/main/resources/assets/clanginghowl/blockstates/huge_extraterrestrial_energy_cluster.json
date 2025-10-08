@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "clanginghowl:block/huge_extraterrestrial_energy_cluster_bottom"
+    },
+    "half=upper": {
+      "model": "clanginghowl:block/huge_extraterrestrial_energy_cluster_top"
+    }
+  }
+}

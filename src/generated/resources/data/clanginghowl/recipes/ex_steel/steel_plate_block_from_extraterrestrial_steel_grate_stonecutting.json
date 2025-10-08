@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 4,
+  "ingredient": {
+    "item": "clanginghowl:steel_plate_block"
+  },
+  "result": "clanginghowl:extraterrestrial_steel_grate"
+}

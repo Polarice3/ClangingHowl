@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "clanginghowl:item/piece_of_extraterrestrial_steel"
+  }
+}

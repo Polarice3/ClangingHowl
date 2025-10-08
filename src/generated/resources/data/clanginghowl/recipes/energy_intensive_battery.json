@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "clanginghowl:energy_battery"
+    },
+    "E": {
+      "item": "clanginghowl:extraterrestrial_energy_crystal"
+    },
+    "S": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    }
+  },
+  "pattern": [
+    "SCS",
+    "SES",
+    "SCS"
+  ],
+  "result": {
+    "item": "clanginghowl:energy_intensive_battery"
+  },
+  "show_notification": false
+}

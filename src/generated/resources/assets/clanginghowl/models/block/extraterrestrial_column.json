@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "clanginghowl:block/extraterrestrial_column_top",
+    "side": "clanginghowl:block/extraterrestrial_column"
+  }
+}

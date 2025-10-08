@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "clanginghowl:block/carved_steel_plate_block",
+    "side": "clanginghowl:block/carved_steel_plate_block",
+    "top": "clanginghowl:block/carved_steel_plate_block"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "clanginghowl:block/carved_steel_plate_block_bottom",
+    "east": "clanginghowl:block/carved_steel_plate_block",
+    "north": "clanginghowl:block/carved_steel_plate_block",
+    "particle": "clanginghowl:block/carved_steel_plate_block",
+    "south": "clanginghowl:block/carved_steel_plate_block",
+    "up": "clanginghowl:block/carved_steel_plate_block_top",
+    "west": "clanginghowl:block/carved_steel_plate_block"
+  }
+}

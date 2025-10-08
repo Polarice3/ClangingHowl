@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 50,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "clanginghowl:piece_of_extraterrestrial_steel"
+  },
+  "result": "clanginghowl:extraterrestrial_steel_nugget"
+}

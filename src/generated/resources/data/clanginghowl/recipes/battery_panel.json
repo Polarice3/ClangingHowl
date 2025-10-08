@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "clanginghowl:energy_battery"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "S": {
+      "item": "clanginghowl:steel_rod"
+    }
+  },
+  "pattern": [
+    "SRR",
+    "BPC"
+  ],
+  "result": {
+    "item": "clanginghowl:battery_panel"
+  },
+  "show_notification": false
+}

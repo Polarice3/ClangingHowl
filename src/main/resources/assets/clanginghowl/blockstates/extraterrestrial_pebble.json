@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "clanginghowl:block/extraterrestrial_pebble",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "clanginghowl:block/extraterrestrial_pebble",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "clanginghowl:block/extraterrestrial_pebble"
+    },
+    "facing=west": {
+      "model": "clanginghowl:block/extraterrestrial_pebble",
+      "y": 90
+    }
+  }
+}

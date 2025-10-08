@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "clanginghowl:block/meteorite_steel_ore"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "clanginghowl:block/extraterrestrial_steel_grate"
+  },
+  "render_type": "cutout"
+}

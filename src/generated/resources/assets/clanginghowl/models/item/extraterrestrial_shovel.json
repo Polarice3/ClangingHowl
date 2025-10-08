@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "clanginghowl:item/extraterrestrial_shovel"
+  }
+}

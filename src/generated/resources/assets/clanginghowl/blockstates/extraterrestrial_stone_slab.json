@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "clanginghowl:block/extraterrestrial_stone_slab"
+    },
+    "type=double": {
+      "model": "clanginghowl:block/extraterrestrial_stone"
+    },
+    "type=top": {
+      "model": "clanginghowl:block/extraterrestrial_stone_slab_top"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "clanginghowl:block/damaged_carved_steel_plate_block",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "clanginghowl:block/damaged_carved_steel_plate_block"
+    },
+    "axis=z": {
+      "model": "clanginghowl:block/damaged_carved_steel_plate_block",
+      "x": 90
+    }
+  }
+}

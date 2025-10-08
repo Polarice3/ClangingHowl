@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "clanginghowl:raw_extraterrestrial_steel_block"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "clanginghowl:blocks/raw_extraterrestrial_steel_block"
+}

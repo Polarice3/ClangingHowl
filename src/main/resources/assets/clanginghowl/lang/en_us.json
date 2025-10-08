@@ -1,0 +1,74 @@
+{
+  "itemGroup.clanginghowl": "Clanging Howl",
+
+  "item.clanginghowl.extraterrestrial_steel": "Extraterrestrial Steel",
+  "item.clanginghowl.piece_of_extraterrestrial_steel": "Piece of Extraterrestrial Steel",
+  "item.clanginghowl.extraterrestrial_steel_ingot": "Extraterrestrial Steel Ingot",
+  "item.clanginghowl.extraterrestrial_steel_nugget": "Extraterrestrial Steel Nugget",
+  "item.clanginghowl.extraterrestrial_steel_plate": "Extraterrestrial Steel Plate",
+  "item.clanginghowl.extraterrestrial_energy_crystal": "Extraterrestrial Energy Crystal",
+  "item.clanginghowl.energy_battery": "Energy Battery",
+  "item.clanginghowl.energy_intensive_battery": "Energy-Intensive Battery",
+  "item.clanginghowl.battery_panel": "Battery Panel",
+
+  "item.clanginghowl.extraterrestrial_sword": "Extraterrestrial Sword",
+  "item.clanginghowl.extraterrestrial_shovel": "Extraterrestrial Shovel",
+  "item.clanginghowl.extraterrestrial_pickaxe": "Extraterrestrial Pickaxe",
+  "item.clanginghowl.extraterrestrial_axe": "Extraterrestrial Axe",
+  "item.clanginghowl.extraterrestrial_hoe": "Extraterrestrial Hoe",
+  "item.clanginghowl.extraterrestrial_hammer": "Extraterrestrial Hammer",
+
+  "item.clanginghowl.industrial_adjustable_wrench": "Industrial Adjustable Wrench",
+
+  "item.clanginghowl.small_extraterrestrial_energy_cluster": "Small Extraterrestrial Energy Cluster",
+  "item.clanginghowl.medium_extraterrestrial_energy_cluster": "Medium Extraterrestrial Energy Cluster",
+  "item.clanginghowl.large_extraterrestrial_energy_cluster": "Large Extraterrestrial Energy Cluster",
+
+  "block.clanginghowl.extraterrestrial_stone": "Extraterrestrial Stone",
+  "block.clanginghowl.extraterrestrial_stone_stairs": "Extraterrestrial Stone Stairs",
+  "block.clanginghowl.extraterrestrial_stone_slab": "Extraterrestrial Stone Slab",
+  "block.clanginghowl.extraterrestrial_stone_wall": "Extraterrestrial Stone Wall",
+
+  "block.clanginghowl.smooth_extraterrestrial_stone": "Smooth Extraterrestrial Stone",
+  "block.clanginghowl.smooth_extraterrestrial_stone_stairs": "Smooth Extraterrestrial Stone Stairs",
+  "block.clanginghowl.smooth_extraterrestrial_stone_slab": "Smooth Extraterrestrial Stone Slab",
+  "block.clanginghowl.smooth_extraterrestrial_stone_wall": "Smooth Extraterrestrial Stone Wall",
+
+  "block.clanginghowl.extraterrestrial_stone_bricks": "Extraterrestrial Stone Bricks",
+  "block.clanginghowl.extraterrestrial_stone_brick_stairs": "Extraterrestrial Stone Brick Stairs",
+  "block.clanginghowl.extraterrestrial_stone_brick_slab": "Extraterrestrial Stone Brick Slab",
+  "block.clanginghowl.extraterrestrial_stone_brick_wall": "Extraterrestrial Stone Brick Wall",
+
+  "block.clanginghowl.carved_extraterrestrial_stone_bricks": "Carved Extraterrestrial Stone Bricks",
+
+  "block.clanginghowl.extraterrestrial_column": "Extraterrestrial Column",
+
+  "block.clanginghowl.extraterrestrial_pebble": "Extraterrestrial Pebble",
+  "block.clanginghowl.incandescent_extraterrestrial_stone": "Incandescent Extraterrestrial Column",
+
+  "block.clanginghowl.meteorite_steel_ore": "Meteorite Steel Ore",
+  "block.clanginghowl.extraterrestrial_steel_ore": "Extraterrestrial Steel Ore",
+
+  "block.clanginghowl.extraterrestrial_energy_cluster": "Extraterrestrial Energy Cluster",
+  "block.clanginghowl.huge_extraterrestrial_energy_cluster": "Huge Extraterrestrial Energy Cluster",
+
+  "block.clanginghowl.raw_extraterrestrial_steel_block": "Block of Raw Extraterrestrial Steel",
+  "block.clanginghowl.extraterrestrial_steel_block": "Block of Extraterrestrial Steel",
+
+  "block.clanginghowl.steel_plate_block": "Steel Plate Block",
+  "block.clanginghowl.damaged_steel_plate_block": "Damaged Steel Plate Block",
+
+  "block.clanginghowl.carved_steel_plate_block": "Carved Steel Plate Block",
+  "block.clanginghowl.carved_steel_plate_stairs": "Carved Steel Plate Stairs",
+  "block.clanginghowl.carved_steel_plate_slab": "Carved Steel Plate Slab",
+  "block.clanginghowl.damaged_carved_steel_plate_block": "Damaged Carved Steel Plate Block",
+  "block.clanginghowl.extraterrestrial_steel_grate": "Extraterrestrial Steel Grate",
+
+  "block.clanginghowl.steel_rod": "Steel Rod",
+
+  "block.clanginghowl.steel_door": "Steel Door",
+  "block.clanginghowl.steel_trapdoor": "Steel Trapdoor",
+
+  "effect.clanginghowl.cosmic_irradiation": "Cosmic Irradiation",
+  "effect.clanginghowl.cosmic_irradiation.description": "Decreases max health by 15%% and attack damage by 10%%; higher levels decreases further."
+}

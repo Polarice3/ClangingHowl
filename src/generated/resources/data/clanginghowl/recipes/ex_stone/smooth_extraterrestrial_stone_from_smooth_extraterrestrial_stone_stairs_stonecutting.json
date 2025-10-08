@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "clanginghowl:smooth_extraterrestrial_stone"
+  },
+  "result": "clanginghowl:smooth_extraterrestrial_stone_stairs"
+}

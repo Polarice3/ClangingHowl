@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "clanginghowl:block/smooth_extraterrestrial_stone",
+    "side": "clanginghowl:block/smooth_extraterrestrial_stone",
+    "top": "clanginghowl:block/smooth_extraterrestrial_stone"
+  }
+}

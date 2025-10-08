@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "clanginghowl:block/carved_extraterrestrial_stone_bricks"
+  }
+}

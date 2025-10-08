@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "clanginghowl:extraterrestrial_steel_ingot"
+    },
+    "R": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "#",
+    "#",
+    "R"
+  ],
+  "result": {
+    "item": "clanginghowl:extraterrestrial_sword"
+  },
+  "show_notification": false
+}

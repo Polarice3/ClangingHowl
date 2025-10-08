@@ -1,0 +1,65 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "clanginghowl:block/steel_rod",
+		"particle": "clanginghowl:block/steel_rod"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 16, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 0, 7]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#0"},
+				"east": {"uv": [2, 0, 4, 16], "texture": "#0"},
+				"south": {"uv": [4, 0, 6, 16], "texture": "#0"},
+				"west": {"uv": [6, 0, 8, 16], "texture": "#0"},
+				"up": {"uv": [10, 2, 8, 0], "texture": "#0"},
+				"down": {"uv": [10, 2, 8, 4], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [-0.5, -0.5, 1.5],
+			"scale": [0.58203, 0.58203, 0.58203]
+		},
+		"thirdperson_lefthand": {
+			"translation": [-0.5, -0.5, 1.5],
+			"scale": [0.58203, 0.58203, 0.58203]
+		},
+		"firstperson_righthand": {
+			"rotation": [4.93, 0.96, -9.78],
+			"translation": [3.5, 2.5, 0],
+			"scale": [0.55078, 0.55078, 0.55078]
+		},
+		"firstperson_lefthand": {
+			"rotation": [4.93, 0.96, -9.78],
+			"translation": [3.5, 2.5, 0],
+			"scale": [0.55078, 0.55078, 0.55078]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, -135, 0],
+			"scale": [0.95898, 0.95898, 0.95898]
+		},
+		"head": {
+			"translation": [0, 7.75, 0]
+		},
+		"fixed": {
+			"rotation": [0, 0, 45]
+		}
+	},
+	"groups": [
+		{
+			"name": "steelrod",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

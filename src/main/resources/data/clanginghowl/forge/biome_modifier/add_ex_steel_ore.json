@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#clanginghowl:has_ex_steel",
+  "features": "clanginghowl:ex_steel_ore",
+  "step": "underground_ores"
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "clanginghowl:block/huge_extraterrestrial_energy_cluster_top"
+  },
+  "render_type": "cutout"
+}

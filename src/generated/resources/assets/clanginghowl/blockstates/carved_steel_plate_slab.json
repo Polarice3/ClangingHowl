@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "clanginghowl:block/carved_steel_plate_slab"
+    },
+    "type=double": {
+      "model": "clanginghowl:block/carved_steel_plate_block"
+    },
+    "type=top": {
+      "model": "clanginghowl:block/carved_steel_plate_slab_top"
+    }
+  }
+}

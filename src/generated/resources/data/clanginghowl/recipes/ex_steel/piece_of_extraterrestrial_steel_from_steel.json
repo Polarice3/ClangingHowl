@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "clanginghowl:extraterrestrial_steel"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "clanginghowl:piece_of_extraterrestrial_steel"
+  }
+}

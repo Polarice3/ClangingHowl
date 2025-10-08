@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "clanginghowl:block/small_extraterrestrial_energy_cluster"
+    },
+    "age=1": {
+      "model": "clanginghowl:block/medium_extraterrestrial_energy_cluster"
+    },
+    "age=2": {
+      "model": "clanginghowl:block/large_extraterrestrial_energy_cluster"
+    },
+    "age=3": {
+      "model": "clanginghowl:block/huge_extraterrestrial_energy_cluster_bottom"
+    }
+  }
+}
