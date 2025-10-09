@@ -38,6 +38,8 @@ public class CHItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLAZE_FUEL_CYLINDER = ITEMS.register("blaze_fuel_cylinder",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DRILL_BIT = ITEMS.register("drill_bit",
+            () -> new Item(new Item.Properties()));
 
     //Tools
     public static final RegistryObject<Item> EXTRATERRESTRIAL_SWORD = ITEMS.register("extraterrestrial_sword", () -> new SwordItem(CHTiers.EXTRATERRESTRIAL, 3, -2.4F, new Item.Properties()));
@@ -48,4 +50,9 @@ public class CHItems {
     public static final RegistryObject<Item> EXTRATERRESTRIAL_HAMMER = ITEMS.register("extraterrestrial_hammer", ExHammerItem::new);
 
     public static final RegistryObject<Item>  INDUSTRIAL_ADJUSTABLE_WRENCH = ITEMS.register("industrial_adjustable_wrench", WrenchItem::new);
+    public static final RegistryObject<DrillItem>  ADVANCED_HAND_DRILL = ITEMS.register("advanced_hand_drill", DrillItem::new);
+
+    public static boolean shouldSkipCreativeModTab(Item item) {
+        return item == ADVANCED_HAND_DRILL.get();
+    }
 }

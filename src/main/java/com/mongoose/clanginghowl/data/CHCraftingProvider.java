@@ -199,6 +199,27 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get()))
                 .showNotification(false)
                 .save(consumer, loc("blaze_fuel_cylinder"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.DRILL_BIT.get())
+                .pattern(" PC")
+                .pattern("NPP")
+                .pattern("NN ")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('N', CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get())
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get()))
+                .showNotification(false)
+                .save(consumer, loc("drill_bit"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.ADVANCED_HAND_DRILL.get())
+                .pattern(" CP")
+                .pattern("CBP")
+                .pattern("D  ")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .define('B', CHItems.BATTERY_PANEL.get())
+                .define('D', CHItems.DRILL_BIT.get())
+                .unlockedBy("has_item", has(CHItems.DRILL_BIT.get()))
+                .showNotification(false)
+                .save(consumer, loc("advanced_hand_drill"));
 
         smelting(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE.get(), CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get());
         smelting(consumer, "calcite/cracked_calcite_tiles", CHBlocks.CALCITE_TILES.get(), CHBlocks.CRACKED_CALCITE_TILES.get());

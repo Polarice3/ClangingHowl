@@ -31,7 +31,7 @@ public class CrystalFormerBlockEntity extends BlockEntity {
                                 && entity.isAttackable()
                                 && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(entity)) {
                             int i = entity.getTicksFrozen();
-                            int j = 2;
+                            int j = 4;
                             entity.setTicksFrozen(Math.min(entity.getTicksRequiredToFreeze() + 5, i + j));
                         }
                     }

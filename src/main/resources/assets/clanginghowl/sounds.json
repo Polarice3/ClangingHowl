@@ -1,0 +1,10 @@
+{
+  "drilling": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/drilling"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.drilling"
+  }
+}

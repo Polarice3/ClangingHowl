@@ -1,0 +1,22 @@
+{
+  "loader": "forge:separate_transforms",
+  "gui_light": "front",
+  "base": {
+    "parent": "clanginghowl:item/advanced_hand_drill_model"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "item/handheld",
+      "textures": {
+        "layer0": "clanginghowl:item/advanced_hand_drill"
+      },
+      "gui_light": "front"
+    },
+    "ground": {
+      "parent": "item/handheld",
+      "textures": {
+        "layer0": "clanginghowl:item/advanced_hand_drill"
+      }
+    }
+  }
+}

@@ -19,6 +19,13 @@ ordering="AFTER"
 side="BOTH"
 
 [[dependencies.clanginghowl]]
+modId="geckolib"
+mandatory=true
+versionRange="[1.20.1-84-FORGE,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.clanginghowl]]
 modId="jei"
 mandatory=false
 versionRange="[0,)"

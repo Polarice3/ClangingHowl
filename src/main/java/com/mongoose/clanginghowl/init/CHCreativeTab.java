@@ -15,9 +15,13 @@ public class CHCreativeTab {
             .icon(() -> CHItems.EXTRATERRESTRIAL_STEEL.get().getDefaultInstance())
             .title(Component.translatable("itemGroup.clanginghowl"))
             .displayItems((parameters, output) -> {
+                output.accept(CHItems.ADVANCED_HAND_DRILL.get().getPowerlessDrill());
+                output.accept(CHItems.ADVANCED_HAND_DRILL.get().getPoweredDrill());
                 CHItems.ITEMS.getEntries().forEach(i -> {
                     if (i.isPresent()) {
-                        output.accept(i.get());
+                        if (!CHItems.shouldSkipCreativeModTab(i.get())) {
+                            output.accept(i.get());
+                        }
                     }
                 });
             }).build());
