@@ -8,20 +8,20 @@
     "C": {
       "tag": "forge:ingots/copper"
     },
-    "D": {
-      "item": "clanginghowl:drill_bit"
-    },
     "P": {
       "item": "clanginghowl:extraterrestrial_steel_ingot"
+    },
+    "T": {
+      "item": "clanginghowl:chainsaw_teeth"
     }
   },
   "pattern": [
-    " CP",
-    "CBP",
-    "D  "
+    " CB",
+    "TPC",
+    "TT "
   ],
   "result": {
-    "item": "clanginghowl:advanced_hand_drill"
+    "item": "clanginghowl:advanced_chainsaw"
   },
   "show_notification": false
 }

@@ -117,8 +117,12 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 .add(CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_WALL.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_WALL.get())
                 .replace(false);
+        this.tag(BlockTags.INFINIBURN_OVERWORLD)
+                .add(CHBlocks.INCANDESCENT_EXTRATERRESTRIAL_STONE.get())
+                .replace(false);
         this.tag(Tags.Blocks.STONE)
-                .add(CHBlocks.EXTRATERRESTRIAL_STONE.get());
+                .add(CHBlocks.EXTRATERRESTRIAL_STONE.get())
+                .replace(false);
         this.tag(Tags.Blocks.ORES)
                 .add(CHBlocks.METEORITE_STEEL_ORE.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get())

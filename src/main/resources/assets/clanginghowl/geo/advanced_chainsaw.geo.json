@@ -1,0 +1,121 @@
+{
+	"format_version": "1.21.20",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.advancedchainsaw",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "maim",
+					"pivot": [1.42857, 5.59286, 4.72143]
+				},
+				{
+					"name": "motor",
+					"parent": "maim",
+					"pivot": [1.42857, 5.59286, 4.72143],
+					"cubes": [
+						{"origin": [-2, 1, -2.75], "size": [5, 6, 8], "uv": [28, 22]},
+						{"origin": [1, 4, 0.25], "size": [2, 3, 5], "inflate": 0.1, "uv": [0, 56]},
+						{"origin": [-2, 1, -2.85], "size": [2, 3, 5], "inflate": 0.1, "uv": [28, 36]},
+						{"origin": [-1, 1, -15.75], "size": [1, 4, 13], "uv": [0, 22]},
+						{"origin": [0.5, 1, -4.75], "size": [0, 4, 2], "uv": [32, 44]},
+						{"origin": [3, 2, -1.75], "size": [4, 2, 2], "uv": [42, 36]},
+						{"origin": [5, 4, -1.75], "size": [2, 5, 2], "uv": [42, 40]},
+						{"origin": [-1, 6.6, -1.75], "size": [2, 2, 2], "inflate": -0.2, "uv": [24, 44]},
+						{"origin": [-1, 8, -1.75], "size": [6, 1, 2], "uv": [32, 15]},
+						{"origin": [3, 1, 1.25], "size": [3, 4, 4], "uv": [32, 7]},
+						{"origin": [-1, 5, 5.25], "size": [3, 2, 5], "uv": [32, 0]},
+						{"origin": [-1, 1, 8.25], "size": [3, 4, 2], "uv": [14, 39]},
+						{"origin": [-1, 1, 5.25], "size": [3, 1, 3], "uv": [32, 18]}
+					]
+				},
+				{
+					"name": "saw_tooth",
+					"parent": "motor",
+					"pivot": [-0.5, 5, -3.75],
+					"cubes": [
+						{"origin": [-0.5, 4, -4.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				},
+				{
+					"name": "saw_tooth2",
+					"parent": "motor",
+					"pivot": [-0.5, 5, -6.75],
+					"cubes": [
+						{"origin": [-0.5, 4, -7.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				},
+				{
+					"name": "saw_tooth3",
+					"parent": "motor",
+					"pivot": [-0.5, 5, -9.75],
+					"cubes": [
+						{"origin": [-0.5, 4, -10.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				},
+				{
+					"name": "saw_tooth4",
+					"parent": "motor",
+					"pivot": [-0.5, 5, -12.75],
+					"cubes": [
+						{"origin": [-0.5, 4, -13.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				},
+				{
+					"name": "saw_tooth5",
+					"parent": "motor",
+					"pivot": [-0.5, 5, -15.75],
+					"cubes": [
+						{"origin": [-0.5, 4, -16.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				},
+				{
+					"name": "saw_tooth6",
+					"parent": "motor",
+					"pivot": [-0.5, 2, -15.75],
+					"cubes": [
+						{"origin": [-0.5, 1, -16.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				},
+				{
+					"name": "saw_tooth7",
+					"parent": "motor",
+					"pivot": [-0.5, 1, -13.75],
+					"cubes": [
+						{"origin": [-0.5, 0, -14.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				},
+				{
+					"name": "saw_tooth8",
+					"parent": "motor",
+					"pivot": [-0.5, 1, -10.75],
+					"cubes": [
+						{"origin": [-0.5, 0, -11.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				},
+				{
+					"name": "saw_tooth9",
+					"parent": "motor",
+					"pivot": [-0.5, 1, -7.75],
+					"cubes": [
+						{"origin": [-0.5, 0, -8.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				},
+				{
+					"name": "saw_tooth10",
+					"parent": "motor",
+					"pivot": [-0.5, 1, -4.75],
+					"cubes": [
+						{"origin": [-0.5, 0, -5.75], "size": [0, 2, 2], "uv": [18, 8]}
+					]
+				}
+			]
+		}
+	]
+}

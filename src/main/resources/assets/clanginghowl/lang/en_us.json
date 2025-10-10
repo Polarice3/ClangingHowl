@@ -14,6 +14,7 @@
   "item.clanginghowl.blaze_fuel": "Blaze Fuel",
   "item.clanginghowl.blaze_fuel_cylinder": "Blaze Fuel Cylinder",
   "item.clanginghowl.drill_bit": "Drill Bit",
+  "item.clanginghowl.chainsaw_teeth": "Chainsaw Teeth",
 
   "item.clanginghowl.extraterrestrial_sword": "Extraterrestrial Sword",
   "item.clanginghowl.extraterrestrial_shovel": "Extraterrestrial Shovel",
@@ -24,6 +25,7 @@
 
   "item.clanginghowl.industrial_adjustable_wrench": "Industrial Adjustable Wrench",
   "item.clanginghowl.advanced_hand_drill": "Advanced Hand Drill",
+  "item.clanginghowl.advanced_chainsaw": "Advanced Chainsaw",
 
   "item.clanginghowl.small_extraterrestrial_energy_cluster": "Small Extraterrestrial Energy Cluster",
   "item.clanginghowl.medium_extraterrestrial_energy_cluster": "Medium Extraterrestrial Energy Cluster",
@@ -88,5 +90,8 @@
   "info.clanginghowl.energy.amount": "Energy: %s/%s",
   "info.clanginghowl.energy.empty": "The tool does not have enough energy",
 
-  "subtitle.clanginghowl.drilling": "Drilling"
+  "subtitle.clanginghowl.drilling": "Drilling",
+  "subtitle.clanginghowl.discharged": "Discharged",
+  "subtitle.clanginghowl.chainsaw_idle": "Chainsaw idle",
+  "subtitle.clanginghowl.chainsaw_cut": "Chainsaw cuts"
 }

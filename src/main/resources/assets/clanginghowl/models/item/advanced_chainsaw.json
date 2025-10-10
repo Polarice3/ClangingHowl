@@ -1,0 +1,22 @@
+{
+  "loader": "forge:separate_transforms",
+  "gui_light": "front",
+  "base": {
+    "parent": "clanginghowl:item/advanced_chainsaw_model"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "item/handheld",
+      "textures": {
+        "layer0": "clanginghowl:item/advanced_chainsaw"
+      },
+      "gui_light": "front"
+    },
+    "ground": {
+      "parent": "item/handheld",
+      "textures": {
+        "layer0": "clanginghowl:item/advanced_chainsaw"
+      }
+    }
+  }
+}

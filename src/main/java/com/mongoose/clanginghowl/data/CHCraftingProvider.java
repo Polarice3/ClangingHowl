@@ -205,8 +205,8 @@ public class CHCraftingProvider extends RecipeProvider {
                 .pattern("NN ")
                 .define('C', Tags.Items.INGOTS_COPPER)
                 .define('N', CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get())
-                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
-                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get()))
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get())
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get()))
                 .showNotification(false)
                 .save(consumer, loc("drill_bit"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.ADVANCED_HAND_DRILL.get())
@@ -214,12 +214,31 @@ public class CHCraftingProvider extends RecipeProvider {
                 .pattern("CBP")
                 .pattern("D  ")
                 .define('C', Tags.Items.INGOTS_COPPER)
-                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get())
                 .define('B', CHItems.BATTERY_PANEL.get())
                 .define('D', CHItems.DRILL_BIT.get())
                 .unlockedBy("has_item", has(CHItems.DRILL_BIT.get()))
                 .showNotification(false)
                 .save(consumer, loc("advanced_hand_drill"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.CHAINSAW_TEETH.get())
+                .pattern(" NN")
+                .pattern("N N")
+                .pattern("NN ")
+                .define('N', CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get())
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get()))
+                .showNotification(false)
+                .save(consumer, loc("chainsaw_teeth"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.ADVANCED_CHAINSAW.get())
+                .pattern(" CB")
+                .pattern("TPC")
+                .pattern("TT ")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('B', CHItems.BATTERY_PANEL.get())
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get())
+                .define('T', CHItems.CHAINSAW_TEETH.get())
+                .unlockedBy("has_item", has(CHItems.CHAINSAW_TEETH.get()))
+                .showNotification(false)
+                .save(consumer, loc("advanced_chainsaw"));
 
         smelting(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE.get(), CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get());
         smelting(consumer, "calcite/cracked_calcite_tiles", CHBlocks.CALCITE_TILES.get(), CHBlocks.CRACKED_CALCITE_TILES.get());

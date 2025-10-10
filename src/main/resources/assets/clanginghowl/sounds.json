@@ -6,5 +6,37 @@
       }
     ],
     "subtitle": "subtitle.clanginghowl.drilling"
+  },
+  "discharged": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/discharged"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.discharged"
+  },
+  "chainsaw_idle": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/chainsaw/idle"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.chainsaw_idle"
+  },
+  "chainsaw_cut": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/chainsaw/cut"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.chainsaw_cut"
+  },
+  "chainsaw_discharged": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/chainsaw/discharged"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.discharged"
   }
 }

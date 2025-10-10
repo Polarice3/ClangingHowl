@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "clanginghowl:extraterrestrial_steel_ingot"
+              "clanginghowl:chainsaw_teeth"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "clanginghowl:drill_bit"
+        "recipe": "clanginghowl:advanced_chainsaw"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "clanginghowl:drill_bit"
+      "clanginghowl:advanced_chainsaw"
     ]
   },
   "sends_telemetry_event": false

@@ -70,7 +70,7 @@ public class ExHammerItem extends SwordItem {
 
             level.setBlock(blockpos, result, 11);
             level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, result));
-            ParticleUtils.spawnParticlesOnBlockFaces(level, blockpos, CHParticleTypes.BREAKDOWN_SMOKE.get(), UniformInt.of(3, 5));
+            ParticleUtils.spawnParticlesOnBlockFaces(level, blockpos, CHParticleTypes.BREAKDOWN_SMOKE.get(), UniformInt.of(1, 3));
             if (player != null) {
                 itemstack.hurtAndBreak(1, player, (p_150686_) -> {
                     p_150686_.broadcastBreakEvent(p_40529_.getHand());

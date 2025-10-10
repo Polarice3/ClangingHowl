@@ -7,7 +7,7 @@ import com.mongoose.clanginghowl.common.capacities.ICHCap;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.CHTiers;
-import com.mongoose.clanginghowl.common.items.DrillItem;
+import com.mongoose.clanginghowl.common.items.EnergyItem;
 import com.mongoose.clanginghowl.utils.CHDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -64,8 +64,8 @@ public class CHEvents {
         Player player = event.player;
         Level world = player.level();
         if (event.phase == TickEvent.Phase.END) {
-            if (!player.isUsingItem() || !player.getUseItem().is(CHItems.ADVANCED_HAND_DRILL.get())) {
-                DrillItem.resetMiningProgress(world, player);
+            if (!player.isUsingItem() || !(player.getUseItem().getItem() instanceof EnergyItem)) {
+                EnergyItem.resetMiningProgress(world, player);
             }
         }
     }

@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
-import com.mongoose.clanginghowl.client.render.item.AdvancedHandDrillRenderer;
+import com.mongoose.clanginghowl.client.render.item.AdvancedChainsawRenderer;
 import com.mongoose.clanginghowl.common.capacities.CHCapHelper;
 import com.mongoose.clanginghowl.init.CHSounds;
 import com.mongoose.clanginghowl.utils.MathHelper;
@@ -14,12 +14,14 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -60,16 +62,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class DrillItem extends EnergyItem implements GeoItem {
-    private static final RawAnimation DRILLING = RawAnimation.begin().thenLoop("drilling");
+public class ChainsawItem extends EnergyItem implements GeoItem {
+    private static final RawAnimation SAWING = RawAnimation.begin().thenLoop("sawing");
     public AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     private final Multimap<Attribute, AttributeModifier> attributes;
 
-    public DrillItem() {
+    public ChainsawItem() {
         super(new Properties());
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 5.0D, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -(4.0F - 1.0F), AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 9.0D, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -(4.0F - 0.9F), AttributeModifier.Operation.ADDITION));
         this.attributes = builder.build();
     }
 
@@ -93,8 +95,8 @@ public class DrillItem extends EnergyItem implements GeoItem {
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         if (enchantment.category == EnchantmentCategory.VANISHABLE
-            || enchantment.category == EnchantmentCategory.DIGGER
-            || enchantment.category == EnchantmentCategory.WEAPON) {
+                || enchantment.category == EnchantmentCategory.DIGGER
+                || enchantment.category == EnchantmentCategory.WEAPON) {
             return true;
         }
         return super.canApplyAtEnchantingTable(stack, enchantment);
@@ -103,7 +105,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
     @Override
     public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int ticks) {
         super.onUseTick(level, livingEntity, itemStack, ticks);
-        triggerAnim(livingEntity, GeoItem.getId(itemStack), "controller", "drilling");
+        triggerAnim(livingEntity, GeoItem.getId(itemStack), "controller", "sawing");
         if (ticks % 20 == 0) {
             IEnergyItem.decreaseEnergy(itemStack, 3);
         }
@@ -114,7 +116,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
             level.addParticle(CHParticleTypes.BREAKDOWN_SMOKE.get(), livingEntity.getRandomX(0.5D), livingEntity.getRandomY(), livingEntity.getRandomZ(0.5D), d0, d1, d2);
         }
         if (IEnergyItem.isEmpty(itemStack)) {
-            level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), CHSounds.DISCHARGED.get(), livingEntity.getSoundSource(), 0.4F, 1.0F);
+            level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), CHSounds.CHAINSAW_DISCHARGED.get(), livingEntity.getSoundSource(), 0.4F, 1.0F);
             livingEntity.stopUsingItem();
         }
         if (level instanceof ServerLevel serverLevel) {
@@ -142,7 +144,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
                             if (entity instanceof Mob mob) {
                                 extraDamage = EnchantmentHelper.getDamageBonus(itemStack, mob.getMobType());
                             }
-                            if (entity.hurt(livingEntity.damageSources().mobAttack(livingEntity), 1.0F + extraDamage)) {
+                            if (entity.hurt(livingEntity.damageSources().mobAttack(livingEntity), 3.0F + extraDamage)) {
                                 int j = EnchantmentHelper.getFireAspect(livingEntity);
                                 if (j > 0 && !entity.isOnFire()) {
                                     entity.setSecondsOnFire(j * 4);
@@ -163,7 +165,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
                 float toolSpeed = this.getBreakSpeed(blockPos, livingEntity, EnchantmentHelper.getBlockEfficiency(livingEntity));
                 if (livingEntity instanceof Player player) {
                     if (this.canMineBlock(serverLevel, player, blockPos, blockState)) {
-                        if (!(blockState.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockState.is(BlockTags.MINEABLE_WITH_SHOVEL))) {
+                        if (!(blockState.is(BlockTags.MINEABLE_WITH_AXE) || blockState.is(BlockTags.MINEABLE_WITH_HOE))) {
                             toolSpeed = 1.0F;
                         }
                         float hardness = this.getDestroySpeed(blockState, toolSpeed, serverLevel, blockPos);
@@ -187,7 +189,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
                             progress = 1.0F;
                         }
                         if (progress >= 1.0F) {
-                            ItemStack tempTool = new ItemStack(Items.DIAMOND_PICKAXE);
+                            ItemStack tempTool = new ItemStack(Items.DIAMOND_AXE);
                             int silk = itemStack.getEnchantmentLevel(Enchantments.SILK_TOUCH);
                             int fortune = itemStack.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
 
@@ -235,7 +237,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
 
     public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
         super.onStopUsing(stack, entity, count);
-        stopTriggeredAnim(entity, GeoItem.getId(stack), "controller", "drilling");
+        stopTriggeredAnim(entity, GeoItem.getId(stack), "controller", "sawing");
     }
 
     @Override
@@ -243,7 +245,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
         controllerRegistrar.add(new AnimationController<>(this, "controller", 0, state -> {
             state.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
-        }).triggerableAnim("drilling", DRILLING));
+        }).triggerableAnim("sawing", SAWING));
     }
 
     @Override
@@ -257,32 +259,45 @@ public class DrillItem extends EnergyItem implements GeoItem {
     }
 
     @Override
-    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        super.initializeClient(consumer);
-        consumer.accept(new DrillClient());
+    public InteractionResultHolder<ItemStack> use(Level p_40672_, Player p_40673_, InteractionHand p_40674_) {
+        ItemStack itemstack = p_40673_.getItemInHand(p_40674_);
+        if (!IEnergyItem.isEmpty(itemstack)) {
+            p_40673_.startUsingItem(p_40674_);
+            return InteractionResultHolder.consume(itemstack);
+        } else {
+            p_40672_.playSound(null, p_40673_.getX(), p_40673_.getY(), p_40673_.getZ(), CHSounds.CHAINSAW_DISCHARGED.get(), p_40673_.getSoundSource(), 0.4F, 1.0F);
+            p_40673_.displayClientMessage(Component.translatable("info.clanginghowl.energy.empty"), true);
+        }
+        return InteractionResultHolder.pass(itemstack);
     }
 
-    public static class DrillClient implements IClientItemExtensions{
-        private AdvancedHandDrillRenderer renderer;
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        super.initializeClient(consumer);
+        consumer.accept(new ChainsawClient());
+    }
 
-        private static final HumanoidModel.ArmPose DRILL = HumanoidModel.ArmPose.create("GOETY_SPELL", false, (model, entity, arm) -> {
+    public static class ChainsawClient implements IClientItemExtensions{
+        private AdvancedChainsawRenderer renderer;
+
+        private static final HumanoidModel.ArmPose CHAINSAW = HumanoidModel.ArmPose.create("GOETY_SPELL", false, (model, entity, arm) -> {
             float f5 = entity.walkAnimation.position(Minecraft.getInstance().getPartialTick());
             if (arm == HumanoidArm.RIGHT) {
-                model.rightArm.xRot -= MathHelper.modelDegrees(45);
-                model.rightArm.zRot = Mth.cos(f5 * 0.6662F) * 0.25F;
-                model.leftArm.xRot -= MathHelper.modelDegrees(45);
+                model.rightArm.xRot -= MathHelper.modelDegrees(55);
+                model.leftArm.xRot -= MathHelper.modelDegrees(50);
+                model.leftArm.zRot = MathHelper.modelDegrees(30);
             } else {
-                model.leftArm.xRot -= MathHelper.modelDegrees(45);
-                model.leftArm.zRot = -Mth.cos(f5 * 0.6662F) * 0.25F;
-                model.rightArm.xRot -= MathHelper.modelDegrees(45);
+                model.leftArm.xRot -= MathHelper.modelDegrees(55);
+                model.rightArm.xRot -= MathHelper.modelDegrees(50);
+                model.rightArm.zRot = MathHelper.modelDegrees(30);
             }
         });
 
         @Override
         public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-            if (!itemStack.isEmpty() && itemStack.getItem() instanceof DrillItem) {
+            if (!itemStack.isEmpty() && itemStack.getItem() instanceof ChainsawItem) {
                 if (entityLiving.getUsedItemHand() == hand && entityLiving.getUseItemRemainingTicks() > 0) {
-                    return DRILL;
+                    return CHAINSAW;
                 }
             }
             return HumanoidModel.ArmPose.EMPTY;
@@ -291,7 +306,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
         @Override
         public BlockEntityWithoutLevelRenderer getCustomRenderer() {
             if (this.renderer == null) {
-                this.renderer = new AdvancedHandDrillRenderer();
+                this.renderer = new AdvancedChainsawRenderer();
             }
             return this.renderer;
         }

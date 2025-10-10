@@ -16,7 +16,7 @@ public class ItemLoopSound extends AbstractTickableSoundInstance {
         this.z = (float)entity.getZ();
         this.looping = true;
         this.delay = 0;
-        this.volume = 1.0F;
+        this.volume = 0.4F;
     }
 
     public void tick() {
