@@ -1,6 +1,6 @@
-package com.mongoose.clanginghowl.common.items;
+package com.mongoose.clanginghowl.common.items.energy;
 
-import com.mongoose.clanginghowl.common.capacities.CHCapHelper;
+import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
 import com.mongoose.clanginghowl.init.CHSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -30,6 +30,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.core.animation.Animation;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.List;
 
@@ -200,6 +204,11 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
         return event;
     }
 
+    public PlayState predicate(AnimationState<?> animationState) {
+        animationState.getController().setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+        return PlayState.CONTINUE;
+    }
+
     public InteractionResultHolder<ItemStack> use(Level p_40672_, Player p_40673_, InteractionHand p_40674_) {
         ItemStack itemstack = p_40673_.getItemInHand(p_40674_);
         if (!IEnergyItem.isEmpty(itemstack)) {
@@ -210,6 +219,11 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
             p_40673_.displayClientMessage(Component.translatable("info.clanginghowl.energy.empty"), true);
         }
         return InteractionResultHolder.pass(itemstack);
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && slotChanged;
     }
 
     @Override

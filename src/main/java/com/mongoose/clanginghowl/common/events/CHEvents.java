@@ -1,13 +1,13 @@
 package com.mongoose.clanginghowl.common.events;
 
 import com.mongoose.clanginghowl.ClangingHowl;
-import com.mongoose.clanginghowl.common.capacities.CHCapHelper;
-import com.mongoose.clanginghowl.common.capacities.CHCapProvider;
-import com.mongoose.clanginghowl.common.capacities.ICHCap;
+import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
+import com.mongoose.clanginghowl.common.capabilities.CHCapProvider;
+import com.mongoose.clanginghowl.common.capabilities.ICHCap;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.CHTiers;
-import com.mongoose.clanginghowl.common.items.EnergyItem;
+import com.mongoose.clanginghowl.common.items.energy.EnergyItem;
 import com.mongoose.clanginghowl.utils.CHDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;

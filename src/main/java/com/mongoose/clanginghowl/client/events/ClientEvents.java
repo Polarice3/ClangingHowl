@@ -4,18 +4,22 @@ import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.client.audio.ItemIdleSound;
 import com.mongoose.clanginghowl.client.audio.ItemLoopSound;
 import com.mongoose.clanginghowl.common.items.CHItems;
-import com.mongoose.clanginghowl.common.items.ChainsawItem;
-import com.mongoose.clanginghowl.common.items.IEnergyItem;
+import com.mongoose.clanginghowl.common.items.energy.ChainsawItem;
+import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
 import com.mongoose.clanginghowl.init.CHSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.Input;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -75,6 +79,20 @@ public class ClientEvents {
             }
             if (event.getItem().is(CHItems.ADVANCED_CHAINSAW.get())){
                 soundHandler.play(new ItemLoopSound(CHSounds.CHAINSAW_CUT.get(), event.getEntity()));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void updateInputEvent(MovementInputUpdateEvent event) {
+        Player player = event.getEntity();
+        Input input = event.getInput();
+        if (player instanceof LocalPlayer localPlayer) {
+            if (localPlayer.isUsingItem() && !localPlayer.isPassenger()) {
+                if (localPlayer.getUseItem().is(itemHolder -> itemHolder.get() instanceof IEnergyItem)) {
+                    input.leftImpulse *= 5.0F;
+                    input.forwardImpulse *= 5.0F;
+                }
             }
         }
     }

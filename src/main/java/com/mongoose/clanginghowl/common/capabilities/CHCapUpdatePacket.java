@@ -1,4 +1,4 @@
-package com.mongoose.clanginghowl.common.capacities;
+package com.mongoose.clanginghowl.common.capabilities;
 
 import com.mongoose.clanginghowl.ClangingHowl;
 import net.minecraft.nbt.CompoundTag;

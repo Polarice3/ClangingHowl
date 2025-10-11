@@ -2,6 +2,7 @@ package com.mongoose.clanginghowl;
 
 import com.mojang.logging.LogUtils;
 import com.mongoose.clanginghowl.client.ClientProxy;
+import com.mongoose.clanginghowl.client.inventory.menu.CHMenuTypes;
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.common.CommonProxy;
 import com.mongoose.clanginghowl.common.blocks.CHBlocks;
@@ -35,6 +36,7 @@ public class ClangingHowl {
 
         CHBlockEntities.BLOCK_ENTITY.register(modEventBus);
         CHParticleTypes.PARTICLE_TYPES.register(modEventBus);
+        CHMenuTypes.MENU_TYPE.register(modEventBus);
         CHCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
 

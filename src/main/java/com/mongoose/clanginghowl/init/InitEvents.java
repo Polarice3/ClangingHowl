@@ -1,8 +1,8 @@
 package com.mongoose.clanginghowl.init;
 
 import com.mongoose.clanginghowl.ClangingHowl;
-import com.mongoose.clanginghowl.common.capacities.CHCapProvider;
-import com.mongoose.clanginghowl.common.capacities.ICHCap;
+import com.mongoose.clanginghowl.common.capabilities.CHCapProvider;
+import com.mongoose.clanginghowl.common.capabilities.ICHCap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;

@@ -1,7 +1,7 @@
 package com.mongoose.clanginghowl.client.audio;
 
 import com.mongoose.clanginghowl.client.events.ClientEvents;
-import com.mongoose.clanginghowl.common.items.IEnergyItem;
+import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;

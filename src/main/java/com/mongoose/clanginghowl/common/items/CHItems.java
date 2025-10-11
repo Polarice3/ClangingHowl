@@ -1,6 +1,7 @@
 package com.mongoose.clanginghowl.common.items;
 
 import com.mongoose.clanginghowl.ClangingHowl;
+import com.mongoose.clanginghowl.common.items.energy.*;
 import net.minecraft.world.item.*;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -26,10 +27,6 @@ public class CHItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> EXTRATERRESTRIAL_ENERGY_CRYSTAL = ITEMS.register("extraterrestrial_energy_crystal",
             () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> ENERGY_BATTERY = ITEMS.register("energy_battery",
-            () -> new Item(new Item.Properties()));
-    public static final RegistryObject<Item> ENERGY_INTENSIVE_BATTERY = ITEMS.register("energy_intensive_battery",
-            () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BATTERY_PANEL = ITEMS.register("battery_panel",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CRYOGENIC_FUEL = ITEMS.register("cryogenic_fuel",
@@ -42,6 +39,16 @@ public class CHItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CHAINSAW_TEETH = ITEMS.register("chainsaw_teeth",
             () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> REDSTONE_WIRE = ITEMS.register("redstone_wire",
+            () -> new Item(new Item.Properties()));
+    public static final RegistryObject<Item> DIAMOND_DIODE = ITEMS.register("diamond_diode",
+            () -> new Item(new Item.Properties()));
+
+    //Batteries
+    public static final RegistryObject<EnergyItem> ENERGY_BATTERY = ITEMS.register("energy_battery",
+            () -> new BatteryItem(2000));
+    public static final RegistryObject<EnergyItem> ENERGY_INTENSIVE_BATTERY = ITEMS.register("energy_intensive_battery",
+            () -> new BatteryItem(7000));
 
     //Tools
     public static final RegistryObject<Item> EXTRATERRESTRIAL_SWORD = ITEMS.register("extraterrestrial_sword", () -> new SwordItem(CHTiers.EXTRATERRESTRIAL, 3, -2.4F, new Item.Properties()));
@@ -55,7 +62,9 @@ public class CHItems {
     public static final RegistryObject<DrillItem>  ADVANCED_HAND_DRILL = ITEMS.register("advanced_hand_drill", DrillItem::new);
     public static final RegistryObject<ChainsawItem>  ADVANCED_CHAINSAW = ITEMS.register("advanced_chainsaw", ChainsawItem::new);
 
+    public static final RegistryObject<Item>  PORTABLE_CHARGER = ITEMS.register("portable_charger", PortableChargerItem::new);
+
     public static boolean shouldSkipCreativeModTab(Item item) {
-        return item == ADVANCED_HAND_DRILL.get() || item == ADVANCED_CHAINSAW.get();
+        return item instanceof EnergyItem;
     }
 }

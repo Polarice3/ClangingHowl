@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "B": {
-      "item": "clanginghowl:energy_battery"
+      "item": "clanginghowl:energy_intensive_battery"
     },
     "C": {
       "tag": "forge:ingots/copper"
@@ -19,11 +19,12 @@
     }
   },
   "pattern": [
-    "DRR",
-    "BPC"
+    "RCR",
+    "BDB",
+    "PPP"
   ],
   "result": {
-    "item": "clanginghowl:battery_panel"
+    "item": "clanginghowl:portable_charger"
   },
   "show_notification": false
 }

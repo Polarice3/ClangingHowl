@@ -1,7 +1,7 @@
 package com.mongoose.clanginghowl.client.render.model;
 
 import com.mongoose.clanginghowl.ClangingHowl;
-import com.mongoose.clanginghowl.common.items.ChainsawItem;
+import com.mongoose.clanginghowl.common.items.energy.ChainsawItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 

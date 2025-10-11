@@ -15,6 +15,8 @@
   "item.clanginghowl.blaze_fuel_cylinder": "Blaze Fuel Cylinder",
   "item.clanginghowl.drill_bit": "Drill Bit",
   "item.clanginghowl.chainsaw_teeth": "Chainsaw Teeth",
+  "item.clanginghowl.redstone_wire": "Redstone Wire",
+  "item.clanginghowl.diamond_diode": "Diamond Diode",
 
   "item.clanginghowl.extraterrestrial_sword": "Extraterrestrial Sword",
   "item.clanginghowl.extraterrestrial_shovel": "Extraterrestrial Shovel",
@@ -26,6 +28,8 @@
   "item.clanginghowl.industrial_adjustable_wrench": "Industrial Adjustable Wrench",
   "item.clanginghowl.advanced_hand_drill": "Advanced Hand Drill",
   "item.clanginghowl.advanced_chainsaw": "Advanced Chainsaw",
+
+  "item.clanginghowl.portable_charger": "Portable Charger",
 
   "item.clanginghowl.small_extraterrestrial_energy_cluster": "Small Extraterrestrial Energy Cluster",
   "item.clanginghowl.medium_extraterrestrial_energy_cluster": "Medium Extraterrestrial Energy Cluster",

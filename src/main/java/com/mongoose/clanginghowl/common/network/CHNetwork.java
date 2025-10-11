@@ -1,7 +1,7 @@
 package com.mongoose.clanginghowl.common.network;
 
 import com.mongoose.clanginghowl.ClangingHowl;
-import com.mongoose.clanginghowl.common.capacities.CHCapUpdatePacket;
+import com.mongoose.clanginghowl.common.capabilities.CHCapUpdatePacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

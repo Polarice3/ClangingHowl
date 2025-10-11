@@ -1,4 +1,4 @@
-package com.mongoose.clanginghowl.common.capacities;
+package com.mongoose.clanginghowl.common.capabilities;
 
 import com.mongoose.clanginghowl.common.network.CHNetwork;
 import net.minecraft.core.BlockPos;

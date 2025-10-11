@@ -1,4 +1,4 @@
-package com.mongoose.clanginghowl.common.items;
+package com.mongoose.clanginghowl.common.items.energy;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -31,17 +31,17 @@ public interface IEnergyItem {
         if (itemStack.getTag() == null){
             return false;
         }
-        int Soulcount = itemStack.getTag().getInt(ENERGY_AMOUNT);
-        int MaxSouls = itemStack.getTag().getInt(MAX_ENERGY_AMOUNT);
-        return Soulcount == MaxSouls;
+        int energy = itemStack.getTag().getInt(ENERGY_AMOUNT);
+        int maxEnergy = itemStack.getTag().getInt(MAX_ENERGY_AMOUNT);
+        return energy == maxEnergy;
     }
 
     static boolean isEmpty(ItemStack itemStack) {
         if (itemStack.getTag() == null){
             return true;
         }
-        int Soulcount = itemStack.getTag().getInt(ENERGY_AMOUNT);
-        return Soulcount == 0;
+        int energy = itemStack.getTag().getInt(ENERGY_AMOUNT);
+        return energy == 0;
     }
 
     static int currentEnergy(ItemStack itemStack){
@@ -93,6 +93,13 @@ public interface IEnergyItem {
         if (!isEmpty(itemStack)) {
             int finalCount = Math.max(currentEnergy - energy, 0);
             itemStack.getOrCreateTag().putInt(ENERGY_AMOUNT, finalCount);
+        }
+    }
+
+    static void chargeEnergy(ItemStack charging, ItemStack battery) {
+        if (!isEmpty(battery)) {
+            powerItem(charging, 1);
+            decreaseEnergy(battery, 1);
         }
     }
 }

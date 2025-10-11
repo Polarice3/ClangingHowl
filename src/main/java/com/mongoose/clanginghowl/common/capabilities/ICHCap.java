@@ -1,4 +1,4 @@
-package com.mongoose.clanginghowl.common.capacities;
+package com.mongoose.clanginghowl.common.capabilities;
 
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.Nullable;

@@ -1,0 +1,20 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "clanginghowl:item/portable_charger"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "active": 0.00000
+      },
+      "model": "clanginghowl:item/portable_charger_inactive"
+    },
+    {
+      "predicate": {
+        "active": 1.00000
+      },
+      "model": "clanginghowl:item/portable_charger_active"
+    }
+  ]
+}

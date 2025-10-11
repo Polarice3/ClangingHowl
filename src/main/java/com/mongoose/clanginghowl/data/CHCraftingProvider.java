@@ -163,10 +163,10 @@ public class CHCraftingProvider extends RecipeProvider {
                 .showNotification(false)
                 .save(consumer, loc("energy_intensive_battery"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.BATTERY_PANEL.get())
-                .pattern("SRR")
+                .pattern("DRR")
                 .pattern("BPC")
-                .define('S', CHBlocks.STEEL_ROD.get())
-                .define('R', Tags.Items.DUSTS_REDSTONE)
+                .define('D', CHItems.DIAMOND_DIODE.get())
+                .define('R', CHItems.REDSTONE_WIRE.get())
                 .define('B', CHItems.ENERGY_BATTERY.get())
                 .define('C', Tags.Items.INGOTS_COPPER)
                 .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
@@ -209,7 +209,7 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get()))
                 .showNotification(false)
                 .save(consumer, loc("drill_bit"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.ADVANCED_HAND_DRILL.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, CHItems.ADVANCED_HAND_DRILL.get())
                 .pattern(" CP")
                 .pattern("CBP")
                 .pattern("D  ")
@@ -228,7 +228,7 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get()))
                 .showNotification(false)
                 .save(consumer, loc("chainsaw_teeth"));
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.ADVANCED_CHAINSAW.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, CHItems.ADVANCED_CHAINSAW.get())
                 .pattern(" CB")
                 .pattern("TPC")
                 .pattern("TT ")
@@ -239,6 +239,37 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.CHAINSAW_TEETH.get()))
                 .showNotification(false)
                 .save(consumer, loc("advanced_chainsaw"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.REDSTONE_WIRE.get(), 3)
+                .pattern(" RC")
+                .pattern("RCR")
+                .pattern("CR ")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('R', Tags.Items.DUSTS_REDSTONE)
+                .unlockedBy("has_item", has(Items.REDSTONE))
+                .showNotification(false)
+                .save(consumer, loc("redstone_wire"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.DIAMOND_DIODE.get(), 2)
+                .pattern("D")
+                .pattern("C")
+                .pattern("N")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('D', Tags.Items.GEMS_DIAMOND)
+                .define('N', CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get())
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_NUGGET.get()))
+                .showNotification(false)
+                .save(consumer, loc("diamond_diode"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.PORTABLE_CHARGER.get())
+                .pattern("RCR")
+                .pattern("BDB")
+                .pattern("PPP")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('R', CHItems.REDSTONE_WIRE.get())
+                .define('D', CHItems.DIAMOND_DIODE.get())
+                .define('B', CHItems.ENERGY_INTENSIVE_BATTERY.get())
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get()))
+                .showNotification(false)
+                .save(consumer, loc("portable_charger"));
 
         smelting(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE.get(), CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get());
         smelting(consumer, "calcite/cracked_calcite_tiles", CHBlocks.CALCITE_TILES.get(), CHBlocks.CRACKED_CALCITE_TILES.get());
