@@ -2,11 +2,17 @@ package com.mongoose.clanginghowl.common.items;
 
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.common.items.energy.*;
+import com.mongoose.clanginghowl.utils.ItemHelper;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class CHItems {
     public static DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, ClangingHowl.MOD_ID);
@@ -28,13 +34,13 @@ public class CHItems {
     public static final RegistryObject<Item> EXTRATERRESTRIAL_ENERGY_CRYSTAL = ITEMS.register("extraterrestrial_energy_crystal",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BATTERY_PANEL = ITEMS.register("battery_panel",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> CRYOGENIC_FUEL = ITEMS.register("cryogenic_fuel",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLAZE_FUEL = ITEMS.register("blaze_fuel",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> BLAZE_FUEL_CYLINDER = ITEMS.register("blaze_fuel_cylinder",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> DRILL_BIT = ITEMS.register("drill_bit",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> CHAINSAW_TEETH = ITEMS.register("chainsaw_teeth",
@@ -42,25 +48,76 @@ public class CHItems {
     public static final RegistryObject<Item> REDSTONE_WIRE = ITEMS.register("redstone_wire",
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> DIAMOND_DIODE = ITEMS.register("diamond_diode",
-            () -> new Item(new Item.Properties()));
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
 
     //Batteries
     public static final RegistryObject<EnergyItem> ENERGY_BATTERY = ITEMS.register("energy_battery",
-            () -> new BatteryItem(2000));
+            () -> new BatteryItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON), 2000));
     public static final RegistryObject<EnergyItem> ENERGY_INTENSIVE_BATTERY = ITEMS.register("energy_intensive_battery",
-            () -> new BatteryItem(7000));
+            () -> new BatteryItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE), 7000));
 
     //Tools
-    public static final RegistryObject<Item> EXTRATERRESTRIAL_SWORD = ITEMS.register("extraterrestrial_sword", () -> new SwordItem(CHTiers.EXTRATERRESTRIAL, 3, -2.4F, new Item.Properties()));
-    public static final RegistryObject<Item> EXTRATERRESTRIAL_SHOVEL = ITEMS.register("extraterrestrial_shovel", () -> new ShovelItem(CHTiers.EXTRATERRESTRIAL, 1.5F, -3.0F, new Item.Properties()));
-    public static final RegistryObject<Item> EXTRATERRESTRIAL_PICKAXE = ITEMS.register("extraterrestrial_pickaxe", () -> new PickaxeItem(CHTiers.EXTRATERRESTRIAL, 1, -2.8F, new Item.Properties()));
-    public static final RegistryObject<Item> EXTRATERRESTRIAL_AXE = ITEMS.register("extraterrestrial_axe", () -> new AxeItem(CHTiers.EXTRATERRESTRIAL, 5.0F, -3.0F, new Item.Properties()));
-    public static final RegistryObject<Item> EXTRATERRESTRIAL_HOE = ITEMS.register("extraterrestrial_hoe", () -> new HoeItem(CHTiers.EXTRATERRESTRIAL, -3, 0.0F, new Item.Properties()));
+    public static final RegistryObject<Item> EXTRATERRESTRIAL_SWORD = ITEMS.register("extraterrestrial_sword", () -> new SwordItem(CHTiers.EXTRATERRESTRIAL, 3, -2.4F, new Item.Properties()){
+        @Override
+        public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+            super.appendHoverText(stack, worldIn, tooltip, flagIn);
+            ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
+        }
+
+        public void addInformationAfterShift(List<Component> tooltip) {
+            tooltip.add(Component.translatable("info.clanginghowl.item.extraterrestrial"));
+        }
+    });
+    public static final RegistryObject<Item> EXTRATERRESTRIAL_SHOVEL = ITEMS.register("extraterrestrial_shovel", () -> new ShovelItem(CHTiers.EXTRATERRESTRIAL, 1.5F, -3.0F, new Item.Properties()){
+        @Override
+        public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+            super.appendHoverText(stack, worldIn, tooltip, flagIn);
+            ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
+        }
+
+        public void addInformationAfterShift(List<Component> tooltip) {
+            tooltip.add(Component.translatable("info.clanginghowl.item.extraterrestrial"));
+        }
+    });
+    public static final RegistryObject<Item> EXTRATERRESTRIAL_PICKAXE = ITEMS.register("extraterrestrial_pickaxe", () -> new PickaxeItem(CHTiers.EXTRATERRESTRIAL, 1, -2.8F, new Item.Properties()){
+        @Override
+        public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+            super.appendHoverText(stack, worldIn, tooltip, flagIn);
+            ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
+        }
+
+        public void addInformationAfterShift(List<Component> tooltip) {
+            tooltip.add(Component.translatable("info.clanginghowl.item.extraterrestrial"));
+        }
+    });
+    public static final RegistryObject<Item> EXTRATERRESTRIAL_AXE = ITEMS.register("extraterrestrial_axe", () -> new AxeItem(CHTiers.EXTRATERRESTRIAL, 5.0F, -3.0F, new Item.Properties()){
+        @Override
+        public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+            super.appendHoverText(stack, worldIn, tooltip, flagIn);
+            ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
+        }
+
+        public void addInformationAfterShift(List<Component> tooltip) {
+            tooltip.add(Component.translatable("info.clanginghowl.item.extraterrestrial"));
+        }
+    });
+    public static final RegistryObject<Item> EXTRATERRESTRIAL_HOE = ITEMS.register("extraterrestrial_hoe", () -> new HoeItem(CHTiers.EXTRATERRESTRIAL, -3, 0.0F, new Item.Properties()){
+        @Override
+        public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+            super.appendHoverText(stack, worldIn, tooltip, flagIn);
+            ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
+        }
+
+        public void addInformationAfterShift(List<Component> tooltip) {
+            tooltip.add(Component.translatable("info.clanginghowl.item.extraterrestrial"));
+        }
+    });
     public static final RegistryObject<Item> EXTRATERRESTRIAL_HAMMER = ITEMS.register("extraterrestrial_hammer", ExHammerItem::new);
 
     public static final RegistryObject<Item>  INDUSTRIAL_ADJUSTABLE_WRENCH = ITEMS.register("industrial_adjustable_wrench", WrenchItem::new);
     public static final RegistryObject<DrillItem>  ADVANCED_HAND_DRILL = ITEMS.register("advanced_hand_drill", DrillItem::new);
     public static final RegistryObject<ChainsawItem>  ADVANCED_CHAINSAW = ITEMS.register("advanced_chainsaw", ChainsawItem::new);
+    public static final RegistryObject<ChainswordItem>  ADVANCED_CHAINSWORD = ITEMS.register("advanced_chainsword", ChainswordItem::new);
 
     public static final RegistryObject<Item>  PORTABLE_CHARGER = ITEMS.register("portable_charger", PortableChargerItem::new);
 

@@ -2,6 +2,7 @@ package com.mongoose.clanginghowl.common.items.energy;
 
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
 import com.mongoose.clanginghowl.init.CHSounds;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
@@ -226,13 +227,16 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
         return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && slotChanged;
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void addEnergyText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         if (stack.getTag() != null) {
+            tooltip.add(Component.empty());
             int energy = stack.getTag().getInt(ENERGY_AMOUNT);
             int maxEnergy = stack.getTag().getInt(MAX_ENERGY_AMOUNT);
-            tooltip.add(Component.translatable("info.clanginghowl.energy.amount", energy, maxEnergy));
+            if (stack.getItem() instanceof BatteryItem) {
+                tooltip.add(Component.translatable("info.clanginghowl.battery.amount").append(Component.literal(" ")).append(Component.translatable("info.clanginghowl.battery.number", energy, maxEnergy).withStyle(ChatFormatting.GRAY)));
+            } else {
+                tooltip.add(Component.translatable("info.clanginghowl.energy.amount").append(Component.literal(" ")).append(Component.translatable("info.clanginghowl.energy.number", energy, maxEnergy).withStyle(ChatFormatting.GRAY)));
+            }
         }
     }
 }

@@ -1,0 +1,17 @@
+{
+  "parent": "clanginghowl:item/advanced_chainsword_discharged",
+  "overrides": [
+    {
+      "predicate": {
+        "active": 0.00000
+      },
+      "model": "clanginghowl:item/advanced_chainsword_discharged"
+    },
+    {
+      "predicate": {
+        "active": 1.00000
+      },
+      "model": "clanginghowl:item/advanced_chainsword_active"
+    }
+  ]
+}

@@ -14,6 +14,10 @@ public class ItemIdleSound extends AbstractTickableSoundInstance {
     protected final Item item;
 
     public ItemIdleSound(SoundEvent soundEvent, LivingEntity entity, Item item) {
+        this(soundEvent, entity, item, 0.4F, 1.0F);
+    }
+
+    public ItemIdleSound(SoundEvent soundEvent, LivingEntity entity, Item item, float volume, float pitch) {
         super(soundEvent, entity.getSoundSource(), SoundInstance.createUnseededRandom());
         this.entity = entity;
         this.item = item;
@@ -22,7 +26,8 @@ public class ItemIdleSound extends AbstractTickableSoundInstance {
         this.z = (float)entity.getZ();
         this.looping = true;
         this.delay = 0;
-        this.volume = 0.4F;
+        this.volume = volume;
+        this.pitch = pitch;
     }
 
     public boolean canPlaySound() {

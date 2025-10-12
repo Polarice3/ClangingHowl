@@ -33,7 +33,7 @@ public interface IEnergyItem {
         }
         int energy = itemStack.getTag().getInt(ENERGY_AMOUNT);
         int maxEnergy = itemStack.getTag().getInt(MAX_ENERGY_AMOUNT);
-        return energy == maxEnergy;
+        return energy >= maxEnergy;
     }
 
     static boolean isEmpty(ItemStack itemStack) {
@@ -41,7 +41,7 @@ public interface IEnergyItem {
             return true;
         }
         int energy = itemStack.getTag().getInt(ENERGY_AMOUNT);
-        return energy == 0;
+        return energy <= 0;
     }
 
     static int currentEnergy(ItemStack itemStack){
@@ -100,6 +100,9 @@ public interface IEnergyItem {
         if (!isEmpty(battery)) {
             powerItem(charging, 1);
             decreaseEnergy(battery, 1);
+            if (isEmpty(battery)) {
+                battery.shrink(1);
+            }
         }
     }
 }

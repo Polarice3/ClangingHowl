@@ -31,6 +31,20 @@
     ],
     "subtitle": "subtitle.clanginghowl.chainsaw_cut"
   },
+  "chainsaw_blow": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/chainsaw/blow"
+      },
+      {
+        "name": "clanginghowl:item/chainsaw/blow2"
+      },
+      {
+        "name": "clanginghowl:item/chainsaw/blow3"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.chainsaw_cut"
+  },
   "chainsaw_discharged": {
     "sounds": [
       {

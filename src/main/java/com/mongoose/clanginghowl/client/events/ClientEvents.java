@@ -5,6 +5,7 @@ import com.mongoose.clanginghowl.client.audio.ItemIdleSound;
 import com.mongoose.clanginghowl.client.audio.ItemLoopSound;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.energy.ChainsawItem;
+import com.mongoose.clanginghowl.common.items.energy.ChainswordItem;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
 import com.mongoose.clanginghowl.init.CHSounds;
 import net.minecraft.client.Minecraft;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,24 +30,14 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientEvents {
 
     @SubscribeEvent
-    public static void onEntityJoinWorld(EntityJoinLevelEvent event) {
-        Entity entity = event.getEntity();
-        if (event.getLevel() instanceof ClientLevel){
-            Minecraft minecraft = Minecraft.getInstance();
-            SoundManager soundHandler = minecraft.getSoundManager();
-            if (entity instanceof LivingEntity livingEntity) {
-                soundHandler.play(new ItemIdleSound(CHSounds.CHAINSAW_IDLE.get(), livingEntity, CHItems.ADVANCED_CHAINSAW.get()));
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void onEntityHoldItem(LivingEvent.LivingTickEvent event) {
         Entity entity = event.getEntity();
         if (entity.level() instanceof ClientLevel) {
             if (entity instanceof LivingEntity livingEntity) {
                 if (livingEntity.isHolding(itemStack -> itemStack.getItem() instanceof ChainsawItem && !IEnergyItem.isEmpty(itemStack))) {
-                    playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), livingEntity, CHItems.ADVANCED_CHAINSAW.get());
+                    playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), livingEntity, CHItems.ADVANCED_CHAINSAW.get(), 0.4F, 1.0F);
+                } else if (livingEntity.isHolding(itemStack -> itemStack.getItem() instanceof ChainswordItem && !IEnergyItem.isEmpty(itemStack))) {
+                    playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), livingEntity, CHItems.ADVANCED_CHAINSWORD.get(), 0.3F, 1.0F);
                 }
             }
         }
@@ -55,11 +45,11 @@ public class ClientEvents {
 
     public static AbstractTickableSoundInstance ITEM_TICK;
 
-    public static void playItemIdleLoop(SoundEvent soundEvent, LivingEntity livingEntity, Item item){
+    public static void playItemIdleLoop(SoundEvent soundEvent, LivingEntity livingEntity, Item item, float volume, float pitch){
         Minecraft minecraft = Minecraft.getInstance();
         if (soundEvent != null && livingEntity.isAlive()) {
             if (ITEM_TICK == null) {
-                ITEM_TICK = new ItemIdleSound(soundEvent, livingEntity, item);
+                ITEM_TICK = new ItemIdleSound(soundEvent, livingEntity, item, volume, pitch);
             }
         } else {
             ITEM_TICK = null;

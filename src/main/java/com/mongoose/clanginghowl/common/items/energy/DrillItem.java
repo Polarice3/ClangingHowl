@@ -8,11 +8,13 @@ import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.client.render.item.AdvancedHandDrillRenderer;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
 import com.mongoose.clanginghowl.init.CHSounds;
+import com.mongoose.clanginghowl.utils.ItemHelper;
 import com.mongoose.clanginghowl.utils.MathHelper;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -24,10 +26,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -53,6 +52,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.RenderUtils;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -103,7 +103,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
         triggerAnim(livingEntity, GeoItem.getId(itemStack), "controller", "drilling");
         if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
             if (ticks % 20 == 0) {
-                IEnergyItem.decreaseEnergy(itemStack, 3);
+                IEnergyItem.decreaseEnergy(itemStack, 4);
             }
         }
         if (ticks % 15 == 0) {
@@ -259,6 +259,18 @@ public class DrillItem extends EnergyItem implements GeoItem {
     }
 
     @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
+        this.addEnergyText(stack, worldIn, tooltip, flagIn);
+    }
+
+    public void addInformationAfterShift(List<Component> tooltip) {
+        tooltip.add(Component.translatable("info.clanginghowl.item.drill.0"));
+        tooltip.add(Component.translatable("info.clanginghowl.item.drill.1"));
+    }
+
+    @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         super.initializeClient(consumer);
         consumer.accept(new DrillClient());
@@ -269,12 +281,28 @@ public class DrillItem extends EnergyItem implements GeoItem {
 
         private static final HumanoidModel.ArmPose DRILL = HumanoidModel.ArmPose.create("CH_DRILL", false, (model, entity, arm) -> {
             if (arm == HumanoidArm.RIGHT) {
-                model.rightArm.xRot -= MathHelper.modelDegrees(55);
-                model.leftArm.xRot -= MathHelper.modelDegrees(50);
+                model.rightArm.xRot = -MathHelper.modelDegrees(55);
+                model.leftArm.xRot = -MathHelper.modelDegrees(50);
                 model.leftArm.zRot = MathHelper.modelDegrees(30);
             } else {
-                model.leftArm.xRot -= MathHelper.modelDegrees(55);
-                model.rightArm.xRot -= MathHelper.modelDegrees(50);
+                model.leftArm.xRot = -MathHelper.modelDegrees(55);
+                model.rightArm.xRot = -MathHelper.modelDegrees(50);
+                model.rightArm.zRot = MathHelper.modelDegrees(30);
+            }
+        });
+
+        private static final HumanoidModel.ArmPose IDLE_DRILL = HumanoidModel.ArmPose.create("CH_IDLE_DRILL", false, (model, entity, arm) -> {
+            if (arm == HumanoidArm.RIGHT) {
+                model.rightArm.xRot = -MathHelper.modelDegrees(45);
+                model.rightArm.yRot = 0.0F;
+                model.rightArm.zRot = 0.0F;
+                model.leftArm.xRot = -MathHelper.modelDegrees(45);
+                model.leftArm.zRot = MathHelper.modelDegrees(30);
+            } else {
+                model.leftArm.xRot = -MathHelper.modelDegrees(45);
+                model.leftArm.yRot = 0.0F;
+                model.leftArm.zRot = 0.0F;
+                model.rightArm.xRot = -MathHelper.modelDegrees(45);
                 model.rightArm.zRot = MathHelper.modelDegrees(30);
             }
         });
@@ -285,6 +313,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
                 if (entityLiving.getUsedItemHand() == hand && entityLiving.getUseItemRemainingTicks() > 0) {
                     return DRILL;
                 }
+                return IDLE_DRILL;
             }
             return HumanoidModel.ArmPose.EMPTY;
         }

@@ -8,6 +8,7 @@ import com.mongoose.clanginghowl.common.blocks.CrystalFormerBlock;
 import com.mongoose.clanginghowl.utils.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -25,12 +26,16 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class WrenchItem extends Item {
     private final Multimap<Attribute, AttributeModifier> wrenchAttributes;
@@ -110,6 +115,17 @@ public class WrenchItem extends Item {
 
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, ItemStack itemStack) {
         return equipmentSlot == EquipmentSlot.MAINHAND ? this.wrenchAttributes : super.getAttributeModifiers(equipmentSlot, itemStack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
+    }
+
+    public void addInformationAfterShift(List<Component> tooltip) {
+        tooltip.add(Component.translatable("info.clanginghowl.item.wrench.0"));
+        tooltip.add(Component.translatable("info.clanginghowl.item.wrench.1"));
     }
 
 }

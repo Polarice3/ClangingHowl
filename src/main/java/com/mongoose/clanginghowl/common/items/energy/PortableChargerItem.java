@@ -6,6 +6,7 @@ import com.mongoose.clanginghowl.common.items.capabilities.PortableChargerCapabi
 import com.mongoose.clanginghowl.common.items.handler.PortableChargerHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -32,6 +35,7 @@ public class PortableChargerItem extends Item {
     public PortableChargerItem() {
         super(new Properties()
                 .setNoRepair()
+                .rarity(Rarity.RARE)
                 .stacksTo(1));
     }
 
@@ -44,28 +48,27 @@ public class PortableChargerItem extends Item {
             PortableChargerHandler handler = PortableChargerHandler.get(stack);
             ItemStack battery = ItemStack.EMPTY;
             for (ItemStack itemStack : handler.getContents()) {
-                if (itemStack.getItem() instanceof BatteryItem && !IEnergyItem.isEmpty(itemStack)) {
-                    battery = itemStack;
-                    break;
+                if (itemStack.getItem() instanceof BatteryItem) {
+                    if (!IEnergyItem.isEmpty(itemStack)) {
+                        battery = itemStack;
+                        break;
+                    } else {
+                        itemStack.shrink(1);
+                    }
                 }
             }
             if (!battery.isEmpty()) {
                 if (!worldIn.isClientSide) {
                     Inventory inventory = player.getInventory();
                     List<NonNullList<ItemStack>> compartments = ImmutableList.of(inventory.items, inventory.armor, inventory.offhand);
-                    ItemStack toCharge = ItemStack.EMPTY;
                     for (List<ItemStack> list : compartments) {
                         for (ItemStack itemStack : list) {
                             if (!itemStack.isEmpty()) {
                                 if (itemStack.getItem() instanceof IEnergyItem && !(itemStack.getItem() instanceof BatteryItem) && !IEnergyItem.isFull(itemStack)) {
-                                    toCharge = itemStack;
-                                    break;
+                                    IEnergyItem.chargeEnergy(itemStack, battery);
                                 }
                             }
                         }
-                    }
-                    if (!toCharge.isEmpty()) {
-                        IEnergyItem.chargeEnergy(toCharge, battery);
                     }
                 }
                 if (stack.getTag() != null) {
@@ -133,5 +136,12 @@ public class PortableChargerItem extends Item {
     @Nullable
     public ICapabilityProvider initCapabilities(@Nonnull ItemStack stack, @Nullable CompoundTag nbt) {
         return new PortableChargerCapability(stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @javax.annotation.Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        tooltip.add(Component.translatable("info.clanginghowl.item.charger.0"));
+        tooltip.add(Component.translatable("info.clanginghowl.item.charger.1"));
     }
 }

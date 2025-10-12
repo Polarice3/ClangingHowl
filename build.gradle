@@ -116,6 +116,11 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:5493390")
 
     //Testing Only
+    runtimeOnly fg.deobf("curse.maven:yeetus-635427:4680832")
+    runtimeOnly fg.deobf("curse.maven:jeed-532286:4599236")
+    runtimeOnly fg.deobf("curse.maven:mob-battle-mod-268746:6596542")
+    runtimeOnly fg.deobf("curse.maven:retro-damage-indicators-1003431:5268035")
+    runtimeOnly fg.deobf("curse.maven:kiwi-303657:4688568")
 }
 
 tasks.named('jar', Jar).configure {

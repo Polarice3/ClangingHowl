@@ -1,6 +1,7 @@
 package com.mongoose.clanginghowl.common.blocks;
 
 import com.mongoose.clanginghowl.ClangingHowl;
+import com.mongoose.clanginghowl.common.items.CHBlockItem;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.ExEnergyClusterItem;
 import net.minecraft.core.BlockPos;
@@ -141,7 +142,7 @@ public class CHBlocks {
         BLOCK_LOOT.put(block.getId(), new BlockLootSetting(blockItemDefault, lootTableType));
         if (blockItemDefault) {
             CHItems.ITEMS.register(string,
-                    () -> new BlockItem(block.get(), new Item.Properties()));
+                    () -> new CHBlockItem(block.get(), new Item.Properties()));
         }
         return block;
     }

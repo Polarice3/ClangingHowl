@@ -6,6 +6,7 @@ import com.mongoose.clanginghowl.client.inventory.menu.CHMenuTypes;
 import com.mongoose.clanginghowl.client.render.block.CHBlockEntityRenderer;
 import com.mongoose.clanginghowl.common.blocks.entities.CHBlockEntities;
 import com.mongoose.clanginghowl.common.items.CHItems;
+import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
 import com.mongoose.clanginghowl.common.items.energy.PortableChargerItem;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -23,6 +24,8 @@ public class ClientInitEvents {
     public static void clientInit(FMLClientSetupEvent event){
         MenuScreens.register(CHMenuTypes.PORTABLE_CHARGER.get(), PortableChargerScreen::new);
         event.enqueueWork(() -> {
+            ItemProperties.register(CHItems.ADVANCED_CHAINSWORD.get(), new ResourceLocation("active")
+                    , (stack, world, living, seed) -> !IEnergyItem.isEmpty(stack) ? 1.0F : 0.0F);
             ItemProperties.register(CHItems.PORTABLE_CHARGER.get(), new ResourceLocation("active")
                     , (stack, world, living, seed) -> PortableChargerItem.hasBatteries(stack) ? 1.0F : 0.0F);
         });

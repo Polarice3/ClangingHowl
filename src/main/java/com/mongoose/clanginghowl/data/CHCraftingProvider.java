@@ -239,6 +239,18 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.CHAINSAW_TEETH.get()))
                 .showNotification(false)
                 .save(consumer, loc("advanced_chainsaw"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, CHItems.ADVANCED_CHAINSWORD.get())
+                .pattern("TI ")
+                .pattern("TIB")
+                .pattern("CS ")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('B', CHItems.BATTERY_PANEL.get())
+                .define('I', CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get())
+                .define('T', CHItems.CHAINSAW_TEETH.get())
+                .define('S', CHBlocks.STEEL_ROD.get())
+                .unlockedBy("has_item", has(CHItems.CHAINSAW_TEETH.get()))
+                .showNotification(false)
+                .save(consumer, loc("advanced_chainsword"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CHItems.REDSTONE_WIRE.get(), 3)
                 .pattern(" RC")
                 .pattern("RCR")

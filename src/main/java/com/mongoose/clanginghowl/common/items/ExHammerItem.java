@@ -2,8 +2,10 @@ package com.mongoose.clanginghowl.common.items;
 
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.common.blocks.CHBlocks;
+import com.mongoose.clanginghowl.utils.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -21,6 +24,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ExHammerItem extends SwordItem {
     public ExHammerItem() {
@@ -81,5 +86,16 @@ public class ExHammerItem extends SwordItem {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+        ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
+    }
+
+    public void addInformationAfterShift(List<Component> tooltip) {
+        tooltip.add(Component.translatable("info.clanginghowl.item.extraterrestrial"));
+        tooltip.add(Component.translatable("info.clanginghowl.item.hammer"));
     }
 }

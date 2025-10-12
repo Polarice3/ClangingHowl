@@ -63,7 +63,7 @@ public class ItemHelper {
 
     //Stolen from @Vazkii: https://github.com/VazkiiMods/Botania/blob/1.20.x/Xplat/src/main/java/vazkii/botania/client/gui/TooltipHandler.java
     public static Component getShiftInfoTooltip() {
-        return Component.translatable("info.royalvariations.item_info");
+        return Component.translatable("info.clanginghowl.item.tooltip");
     }
 
     public static void addOnShift(List<Component> tooltip, Runnable lambda) {

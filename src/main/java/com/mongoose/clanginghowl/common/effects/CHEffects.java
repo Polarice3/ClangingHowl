@@ -25,4 +25,9 @@ public class CHEffects {
                     .addAttributeModifier(Attributes.ATTACK_DAMAGE, CHUUIDUtil.uuidString("effect.clanginghowl.cosmic_irradiation.attack"),
                             -0.1D, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
+    public static final RegistryObject<MobEffect> SAWING_UP_HEALTH = EFFECTS.register("sawing_up_health",
+            () -> new CHBaseEffect(MobEffectCategory.HARMFUL, 0x831f33)
+                    .addAttributeModifier(Attributes.MAX_HEALTH, CHUUIDUtil.uuidString("effect.clanginghowl.sawing_up_health.health"),
+                            -0.05D, AttributeModifier.Operation.MULTIPLY_TOTAL));
+
 }

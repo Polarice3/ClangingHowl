@@ -7,8 +7,11 @@ import com.mongoose.clanginghowl.common.capabilities.ICHCap;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.CHTiers;
+import com.mongoose.clanginghowl.common.items.energy.ChainswordItem;
 import com.mongoose.clanginghowl.common.items.energy.EnergyItem;
+import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
 import com.mongoose.clanginghowl.utils.CHDamageSource;
+import com.mongoose.clanginghowl.utils.EffectsUtil;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,9 +20,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -56,6 +62,29 @@ public class CHEvents {
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCritical(CriticalHitEvent event) {
+        if (event.isVanillaCritical() || event.getResult() == Event.Result.ALLOW) {
+            if (event.getTarget() instanceof LivingEntity target) {
+                ItemStack itemStack = event.getEntity().getMainHandItem();
+                if (itemStack.getItem() instanceof ChainswordItem && !IEnergyItem.isEmpty(itemStack)) {
+                    if (!target.hasEffect(CHEffects.SAWING_UP_HEALTH.get())) {
+                        target.addEffect(new MobEffectInstance(CHEffects.SAWING_UP_HEALTH.get(), 500));
+                    } else {
+                        EffectsUtil.amplifyEffect(target, CHEffects.SAWING_UP_HEALTH.get(), 500);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onHeal(LivingHealEvent event) {
+        if (event.getEntity().hasEffect(CHEffects.SAWING_UP_HEALTH.get())) {
+            event.setCanceled(true);
         }
     }
 
