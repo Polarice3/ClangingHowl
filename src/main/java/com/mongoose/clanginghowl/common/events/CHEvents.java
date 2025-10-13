@@ -1,33 +1,48 @@
 package com.mongoose.clanginghowl.common.events;
 
+import com.google.common.collect.ImmutableList;
 import com.mongoose.clanginghowl.ClangingHowl;
+import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
+import com.mongoose.clanginghowl.client.particles.ElectricShockParticleOption;
+import com.mongoose.clanginghowl.client.particles.ElectricSplashParticleOption;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
 import com.mongoose.clanginghowl.common.capabilities.CHCapProvider;
 import com.mongoose.clanginghowl.common.capabilities.ICHCap;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
+import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.CHTiers;
+import com.mongoose.clanginghowl.common.items.energy.BatteryItem;
 import com.mongoose.clanginghowl.common.items.energy.ChainswordItem;
 import com.mongoose.clanginghowl.common.items.energy.EnergyItem;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
+import com.mongoose.clanginghowl.init.CHSounds;
 import com.mongoose.clanginghowl.utils.CHDamageSource;
 import com.mongoose.clanginghowl.utils.EffectsUtil;
+import com.mongoose.clanginghowl.utils.MobUtil;
+import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 @Mod.EventBusSubscriber(modid = ClangingHowl.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CHEvents {
@@ -49,6 +64,16 @@ public class CHEvents {
     }
 
     @SubscribeEvent
+    public static void TickEvent(LivingEvent.LivingTickEvent event) {
+        LivingEntity livingEntity = event.getEntity();
+        if (livingEntity.hasEffect(CHEffects.OVERDRIVE.get())) {
+            if (MobUtil.isMoving(livingEntity)) {
+                livingEntity.level().addParticle(CHParticleTypes.OVERDRIVE_FIRE.get(), livingEntity.getX(), livingEntity.getY() + 0.25F, livingEntity.getZ(), 0.0D, 0.0D, 0.0D);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void HurtEvent(LivingHurtEvent event){
         LivingEntity victim = event.getEntity();
         Entity directEntity = event.getSource().getDirectEntity();
@@ -58,6 +83,47 @@ public class CHEvents {
                     if (livingAttacker.getMainHandItem().getItem() instanceof TieredItem weapon) {
                         if (weapon.getTier() == CHTiers.EXTRATERRESTRIAL) {
                             victim.addEffect(new MobEffectInstance(CHEffects.COSMIC_IRRADIATION.get(), 400));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onDeath(LivingDeathEvent event) {
+        LivingEntity victim = event.getEntity();
+        Entity directEntity = event.getSource().getDirectEntity();
+        if (CHDamageSource.physicalAttacks(event.getSource())) {
+            if (directEntity instanceof LivingEntity livingAttacker) {
+                if (CHDamageSource.physicalAttacks(event.getSource())) {
+                    if (livingAttacker.getMainHandItem().getEnchantmentLevel(CHEnchantments.KILLER_CHARGE.get()) > 0) {
+                        for (LivingEntity livingEntity : livingAttacker.level().getEntitiesOfClass(LivingEntity.class, victim.getBoundingBox().inflate(4.0D))) {
+                            if (!MobUtil.areAllies(livingAttacker, livingEntity) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
+                                if (livingEntity.hurt(livingAttacker.damageSources().lightningBolt(), 7.0F)){
+                                    livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
+                                }
+                            }
+                        }
+                        livingAttacker.level().playSound(null, victim.getX(), victim.getY(), victim.getZ(), CHSounds.ELECTRIC_SHOCK.get(), livingAttacker.getSoundSource(), 1.0F, 1.0F);
+                        if (livingAttacker.level() instanceof ServerLevel serverLevel) {
+                            serverLevel.sendParticles(new ElectricShockParticleOption(2.0F, 0), victim.getX(), victim.getY() + 2.0D, victim.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                            serverLevel.sendParticles(new ElectricSplashParticleOption(4.0F, 0), victim.getX(), victim.getY() + 0.5D, victim.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                        }
+                        if (livingAttacker instanceof Player player) {
+                            if (!player.level().isClientSide) {
+                                Inventory inventory = player.getInventory();
+                                List<NonNullList<ItemStack>> compartments = ImmutableList.of(inventory.items, inventory.armor, inventory.offhand);
+                                for (List<ItemStack> list : compartments) {
+                                    for (ItemStack itemStack : list) {
+                                        if (!itemStack.isEmpty()) {
+                                            if (itemStack.getItem() instanceof IEnergyItem && !(itemStack.getItem() instanceof BatteryItem) && !IEnergyItem.isFull(itemStack)) {
+                                                IEnergyItem.powerItem(itemStack, 40);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -100,11 +166,38 @@ public class CHEvents {
     }
 
     @SubscribeEvent
+    public static void onLightningStrike(EntityStruckByLightningEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            for (int i = 0; i < player.getInventory().getContainerSize(); ++i) {
+                ItemStack itemStack = player.getInventory().getItem(i);
+                if (itemStack.getItem() instanceof IEnergyItem) {
+                    if (itemStack.getEnchantmentLevel(CHEnchantments.ECOLOGICAL_ENERGY.get()) > 0) {
+                        IEnergyItem.powerItem(itemStack, 400);
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void FurnaceBurnItems(FurnaceFuelBurnTimeEvent event){
         if (!event.getItemStack().isEmpty()){
             ItemStack itemStack = event.getItemStack();
             if (itemStack.is(CHItems.BLAZE_FUEL.get())) {
                 event.setBurnTime(3200);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void PotionApplyEvents(MobEffectEvent.Applicable event) {
+        LivingEntity livingEntity = event.getEntity();
+        MobEffectInstance instance = event.getEffectInstance();
+        if (instance.getEffect() == CHEffects.OVERDRIVE.get()) {
+            if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                if (livingEntity.isAlive() && !livingEntity.hasEffect(CHEffects.OVERDRIVE.get())) {
+                    serverLevel.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), CHSounds.CHAINSAW_OVERDRIVE.get(), livingEntity.getSoundSource(), 1.0F, 1.0F);
+                }
             }
         }
     }

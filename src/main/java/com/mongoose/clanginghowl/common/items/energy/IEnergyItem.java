@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.common.items.energy;
 
+import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
@@ -8,6 +9,15 @@ public interface IEnergyItem {
     String MAX_ENERGY_AMOUNT = "Max Energy";
 
     int getMaxEnergy();
+
+    default int getConsumption(ItemStack itemStack) {
+        return 4;
+    }
+
+    default void consumeEnergy(ItemStack itemStack) {
+        int amount = this.getConsumption(itemStack) - itemStack.getEnchantmentLevel(CHEnchantments.ENERGY_EFFICIENCY.get());
+        IEnergyItem.decreaseEnergy(itemStack, amount);
+    }
 
     default void setTagTick(ItemStack stack){
         if (stack.getTag() == null){

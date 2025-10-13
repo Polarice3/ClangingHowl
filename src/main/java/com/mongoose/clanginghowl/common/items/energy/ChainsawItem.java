@@ -7,6 +7,8 @@ import com.mojang.math.Axis;
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.client.render.item.AdvancedChainsawRenderer;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
+import com.mongoose.clanginghowl.common.effects.CHEffects;
+import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import com.mongoose.clanginghowl.init.CHSounds;
 import com.mongoose.clanginghowl.utils.ItemHelper;
 import com.mongoose.clanginghowl.utils.MathHelper;
@@ -22,6 +24,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -29,7 +32,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -76,6 +78,14 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
     }
 
     @Override
+    public int getConsumption(ItemStack itemStack) {
+        if (itemStack.getEnchantmentLevel(CHEnchantments.OVERDRIVE.get()) > 0) {
+            return super.getConsumption(itemStack) + 3;
+        }
+        return super.getConsumption(itemStack);
+    }
+
+    @Override
     public int getMaxEnergy() {
         return 3000;
     }
@@ -90,9 +100,9 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment.category == EnchantmentCategory.VANISHABLE
-                || enchantment.category == EnchantmentCategory.DIGGER
-                || enchantment.category == EnchantmentCategory.WEAPON) {
+        if (enchantment == Enchantments.BLOCK_EFFICIENCY
+            || enchantment == Enchantments.SHARPNESS
+            || enchantment == Enchantments.MOB_LOOTING) {
             return true;
         }
         return super.canApplyAtEnchantingTable(stack, enchantment);
@@ -111,8 +121,11 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
         triggerAnim(livingEntity, GeoItem.getId(itemStack), "controller", "sawing");
         if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
             if (ticks % 20 == 0) {
-                IEnergyItem.decreaseEnergy(itemStack, 4);
+                this.consumeEnergy(itemStack);
             }
+        }
+        if (itemStack.getEnchantmentLevel(CHEnchantments.OVERDRIVE.get()) > 0) {
+            livingEntity.addEffect(new MobEffectInstance(CHEffects.OVERDRIVE.get(), 5));
         }
         if (ticks % 15 == 0) {
             double d0 = level.random.nextGaussian() * 0.02D;
@@ -209,7 +222,7 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
                                 return;
                             }
 
-                            if (TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState)) {
+                            if (TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState) && !(blockState.is(BlockTags.MINEABLE_WITH_PICKAXE) && blockState.requiresCorrectToolForDrops())) {
                                 List<ItemStack> drops = Block.getDrops(blockState, serverLevel, blockPos, null, player, tempTool);
 
                                 int exp = blockState.getExpDrop(serverLevel, serverLevel.random, blockPos, fortune, silk);

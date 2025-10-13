@@ -7,7 +7,9 @@ import com.mojang.math.Axis;
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.client.render.item.AdvancedHandDrillRenderer;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
+import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import com.mongoose.clanginghowl.init.CHSounds;
+import com.mongoose.clanginghowl.utils.BlockUtil;
 import com.mongoose.clanginghowl.utils.ItemHelper;
 import com.mongoose.clanginghowl.utils.MathHelper;
 import net.minecraft.client.model.HumanoidModel;
@@ -28,7 +30,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -79,6 +80,14 @@ public class DrillItem extends EnergyItem implements GeoItem {
         return 3000;
     }
 
+    @Override
+    public int getConsumption(ItemStack itemStack) {
+        if (itemStack.getEnchantmentLevel(CHEnchantments.TUNNEL_DRILLER.get()) > 0) {
+            return super.getConsumption(itemStack) + 5;
+        }
+        return super.getConsumption(itemStack);
+    }
+
     public int getUseDuration(ItemStack p_40680_) {
         return 72000;
     }
@@ -89,9 +98,9 @@ public class DrillItem extends EnergyItem implements GeoItem {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment.category == EnchantmentCategory.VANISHABLE
-            || enchantment.category == EnchantmentCategory.DIGGER
-            || enchantment.category == EnchantmentCategory.WEAPON) {
+        if (enchantment == Enchantments.SILK_TOUCH
+            || enchantment == Enchantments.BLOCK_FORTUNE
+            || enchantment == Enchantments.BLOCK_EFFICIENCY) {
             return true;
         }
         return super.canApplyAtEnchantingTable(stack, enchantment);
@@ -103,7 +112,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
         triggerAnim(livingEntity, GeoItem.getId(itemStack), "controller", "drilling");
         if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
             if (ticks % 20 == 0) {
-                IEnergyItem.decreaseEnergy(itemStack, 4);
+                this.consumeEnergy(itemStack);
             }
         }
         if (ticks % 15 == 0) {
@@ -195,33 +204,14 @@ public class DrillItem extends EnergyItem implements GeoItem {
                             } else if (fortune > 0) {
                                 tempTool.enchant(Enchantments.BLOCK_FORTUNE, fortune);
                             }
-                            BlockEvent.BreakEvent breakEvent = this.fixForgeEventBreakBlock(blockState, player, serverLevel, blockPos, silk, fortune);
-                            MinecraftForge.EVENT_BUS.post(breakEvent);
-                            if (breakEvent.isCanceled()) {
-                                return;
+                            if (itemStack.getEnchantmentLevel(CHEnchantments.TUNNEL_DRILLER.get()) > 0) {
+                                for (BlockPos blockPos1 : BlockUtil.multiBlockBreak(player, blockPos, 1, 1, 1)) {
+                                    this.breakBlocks(serverLevel, blockState, blockPos1, player, soundtype, 0, 0, tempTool);
+                                }
+                            } else {
+                                this.breakBlocks(serverLevel, blockState, blockPos, player, soundtype, silk, fortune, tempTool);
                             }
 
-                            if (TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState)) {
-                                List<ItemStack> drops = Block.getDrops(blockState, serverLevel, blockPos, null, player, tempTool);
-
-                                int exp = blockState.getExpDrop(serverLevel, serverLevel.random, blockPos, fortune, silk);
-                                for (ItemStack drop : drops) {
-                                    if (drop != null) {
-                                        Block.popResource(serverLevel, blockPos, drop);
-                                    }
-                                }
-                                if (exp > 0) {
-                                    blockState.getBlock().popExperience(serverLevel, blockPos, exp);
-                                }
-                            }
-
-                            serverLevel.playSound(null, blockPos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-
-                            serverLevel.removeBlockEntity(blockPos);
-                            serverLevel.levelEvent(2001, blockPos, Block.getId(blockState));
-                            serverLevel.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-
-                            player.awardStat(Stats.BLOCK_MINED.get(blockState.getBlock()));
                             CHCapHelper.setMiningProgress(player, 0);
                             CHCapHelper.setMiningPos(player, null);
                             destroyBlockProgress(serverLevel, player.getId(), blockPos, -1);
@@ -236,6 +226,36 @@ public class DrillItem extends EnergyItem implements GeoItem {
                 }
             }
         }
+    }
+
+    public void breakBlocks(ServerLevel serverLevel, BlockState blockState, BlockPos blockPos, Player player, SoundType soundtype, int silk, int fortune, ItemStack tempTool) {
+        BlockEvent.BreakEvent breakEvent = this.fixForgeEventBreakBlock(blockState, player, serverLevel, blockPos, silk, fortune);
+        MinecraftForge.EVENT_BUS.post(breakEvent);
+        if (breakEvent.isCanceled()) {
+            return;
+        }
+
+        if (TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState)) {
+            List<ItemStack> drops = Block.getDrops(blockState, serverLevel, blockPos, null, player, tempTool);
+
+            int exp = blockState.getExpDrop(serverLevel, serverLevel.random, blockPos, fortune, silk);
+            for (ItemStack drop : drops) {
+                if (drop != null) {
+                    Block.popResource(serverLevel, blockPos, drop);
+                }
+            }
+            if (exp > 0) {
+                blockState.getBlock().popExperience(serverLevel, blockPos, exp);
+            }
+        }
+
+        serverLevel.playSound(null, blockPos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+
+        serverLevel.removeBlockEntity(blockPos);
+        serverLevel.levelEvent(2001, blockPos, Block.getId(blockState));
+        serverLevel.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+
+        player.awardStat(Stats.BLOCK_MINED.get(blockState.getBlock()));
     }
 
     public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {

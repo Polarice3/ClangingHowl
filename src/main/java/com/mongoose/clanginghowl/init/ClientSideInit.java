@@ -1,9 +1,6 @@
 package com.mongoose.clanginghowl.init;
 
-import com.mongoose.clanginghowl.client.particles.BreakdownSmokeParticle;
-import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
-import com.mongoose.clanginghowl.client.particles.CrystalLusterParticle;
-import com.mongoose.clanginghowl.client.particles.RepairParticle;
+import com.mongoose.clanginghowl.client.particles.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -20,5 +17,8 @@ public class ClientSideInit extends SidedInit {
         event.registerSpriteSet(CHParticleTypes.CRYSTAL_LUSTER.get(), CrystalLusterParticle.Provider::new);
         event.registerSpriteSet(CHParticleTypes.REPAIR.get(), RepairParticle.Provider::new);
         event.registerSpriteSet(CHParticleTypes.BREAKDOWN_SMOKE.get(), BreakdownSmokeParticle.Provider::new);
+        event.registerSpriteSet(CHParticleTypes.OVERDRIVE_FIRE.get(), OverdriveParticle.Provider::new);
+        event.registerSpriteSet(CHParticleTypes.HORIZONTAL_ELECTRICAL_SPLASH.get(), ElectricSplashParticle.Provider::new);
+        event.registerSpriteSet(CHParticleTypes.VERTICAL_ELECTRIC_SHOCK.get(), ElectricShockParticle.Provider::new);
     }
 }

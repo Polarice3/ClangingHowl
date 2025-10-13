@@ -52,5 +52,24 @@
       }
     ],
     "subtitle": "subtitle.clanginghowl.discharged"
+  },
+  "chainsaw_overdrive": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/chainsaw/overdrive_start1"
+      },
+      {
+        "name": "clanginghowl:item/chainsaw/overdrive_start2"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.chainsaw_overdrive"
+  },
+  "electric_shock": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/electric_shock"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.electric_shock"
   }
 }

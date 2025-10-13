@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -70,6 +71,15 @@ public class ClientEvents {
             if (event.getItem().is(CHItems.ADVANCED_CHAINSAW.get())){
                 soundHandler.play(new ItemLoopSound(CHSounds.CHAINSAW_CUT.get(), event.getEntity()));
             }
+        }
+    }
+
+    public static float PARTIAL_TICK = 0;
+
+    @SubscribeEvent
+    public static void renderTick(TickEvent.RenderTickEvent event){
+        if (event.phase == TickEvent.Phase.START){
+            PARTIAL_TICK = event.renderTickTime;
         }
     }
 

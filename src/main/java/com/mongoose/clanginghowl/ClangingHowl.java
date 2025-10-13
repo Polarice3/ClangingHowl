@@ -8,6 +8,7 @@ import com.mongoose.clanginghowl.common.CommonProxy;
 import com.mongoose.clanginghowl.common.blocks.CHBlocks;
 import com.mongoose.clanginghowl.common.blocks.entities.CHBlockEntities;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
+import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.network.CHNetwork;
 import com.mongoose.clanginghowl.init.*;
@@ -37,6 +38,7 @@ public class ClangingHowl {
         CHBlockEntities.BLOCK_ENTITY.register(modEventBus);
         CHParticleTypes.PARTICLE_TYPES.register(modEventBus);
         CHMenuTypes.MENU_TYPE.register(modEventBus);
+        CHEnchantments.ENCHANTMENTS.register(modEventBus);
         CHCreativeTab.CREATIVE_MODE_TABS.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
 

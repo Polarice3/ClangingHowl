@@ -93,6 +93,19 @@
   "effect.clanginghowl.cosmic_irradiation.description": "Decreases max health by 15%% and attack damage by 10%%; higher levels decreases further.",
   "effect.clanginghowl.sawing_up_health": "Sawing Up Health",
   "effect.clanginghowl.sawing_up_health.description": "Decreases max health by 5%%; higher levels decreases further.",
+  "effect.clanginghowl.overdrive": "Overdrive",
+  "effect.clanginghowl.overdrive.description": "Increases melee damage by 4 and movement speed by 40%%.",
+
+  "enchantment.clanginghowl.energy_efficiency": "Energy Efficiency",
+  "enchantment.clanginghowl.energy_efficiency.desc": "For each level, reduces energy consumption by one.",
+  "enchantment.clanginghowl.ecological_energy": "Ecological Energy",
+  "enchantment.clanginghowl.ecological_energy.desc": "Passively charges when the holder is exposed to direct sunlight. When the holder is struck by lightning, charges 400 energy",
+  "enchantment.clanginghowl.tunnel_driller": "Tunnel Driller",
+  "enchantment.clanginghowl.tunnel_driller.desc": "Dig in a 3x3 area unless sneaking. Increases energy consumption.",
+  "enchantment.clanginghowl.overdrive": "Overdrive",
+  "enchantment.clanginghowl.overdrive.desc": "Grants Overdrive effect when using item, increasing movement speed and damage. Increases energy consumption.",
+  "enchantment.clanginghowl.killer_charge": "Killer Charge",
+  "enchantment.clanginghowl.killer_charge.desc": "Cause an electrical surge after killing, damaging other entities and charges all advanced tools in inventory.",
 
   "info.clanginghowl.battery.amount": "§7Energy capacity:",
   "info.clanginghowl.battery.number": "%s/%s",
@@ -109,7 +122,8 @@
   "info.clanginghowl.item.chainsaw.0": "§7Holding the right mouse button allows you to quickly mine wooden and plant blocks.",
   "info.clanginghowl.item.chainsaw.1": "§7Each second of use consumes energy. The tool can be charged using a Portable Charger or a Stationary Charging Station.",
   "info.clanginghowl.item.chainsword.0": "§7Critical hits reduce the opponent's maximum health by §45§4%§7, repeated critical hits increase the effect, up to a maximum of §425§4%.",
-  "info.clanginghowl.item.chainsword.1": "§7Attacks consume energy. The tool can be charged using a Portable Charger or a Stationary Charging Station.",
+  "info.clanginghowl.item.chainsword.1": "§7Attacks deal more damage to §4techno-flesh §7creatures.",
+  "info.clanginghowl.item.chainsword.2": "§7Attacks consume energy. The tool can be charged using a Portable Charger or a Stationary Charging Station.",
   "info.clanginghowl.item.charger.0": "§7Passively transfers §eEnergy §7from the batteries in its storage to advanced tools in your inventory.",
   "info.clanginghowl.item.charger.1": "§8Right-click to access battery storage.",
   "info.clanginghowl.block.former.0": "§8Forms a small cold zone around itself while active.",
@@ -118,6 +132,8 @@
 
   "subtitle.clanginghowl.drilling": "Drilling",
   "subtitle.clanginghowl.discharged": "Discharged",
+  "subtitle.clanginghowl.electric_shock": "Electric Shock",
   "subtitle.clanginghowl.chainsaw_idle": "Chainsaw idle",
-  "subtitle.clanginghowl.chainsaw_cut": "Chainsaw cuts"
+  "subtitle.clanginghowl.chainsaw_cut": "Chainsaw cuts",
+  "subtitle.clanginghowl.chainsaw_overdrive": "Overdrive starts"
 }

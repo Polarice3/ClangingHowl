@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -50,7 +51,9 @@ public class ChainswordItem extends EnergyItem {
 
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
         if (!IEnergyItem.isEmpty(itemStack)) {
-            IEnergyItem.decreaseEnergy(itemStack, 4);
+            if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(attacker)) {
+                this.consumeEnergy(itemStack);
+            }
             attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), CHSounds.CHAINSAW_BLOW.get(), attacker.getSoundSource(), 1.0F, 1.0F);
         } else if (attacker instanceof Player player) {
             player.displayClientMessage(Component.translatable("info.clanginghowl.energy.empty"), true);
@@ -58,9 +61,11 @@ public class ChainswordItem extends EnergyItem {
         return true;
     }
 
-    public boolean mineBlock(ItemStack p_43282_, Level p_43283_, BlockState p_43284_, BlockPos p_43285_, LivingEntity p_43286_) {
-        if (p_43284_.getDestroySpeed(p_43283_, p_43285_) != 0.0F) {
-            IEnergyItem.decreaseEnergy(p_43282_, 4);
+    public boolean mineBlock(ItemStack itemStack, Level level, BlockState blockState, BlockPos blockPos, LivingEntity livingEntity) {
+        if (blockState.getDestroySpeed(level, blockPos) != 0.0F) {
+            if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
+                this.consumeEnergy(itemStack);
+            }
         }
 
         return true;
@@ -80,8 +85,7 @@ public class ChainswordItem extends EnergyItem {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment.category == EnchantmentCategory.VANISHABLE
-                || enchantment.category == EnchantmentCategory.WEAPON) {
+        if (enchantment.category == EnchantmentCategory.WEAPON) {
             return true;
         }
         return super.canApplyAtEnchantingTable(stack, enchantment);
@@ -121,5 +125,6 @@ public class ChainswordItem extends EnergyItem {
     public void addInformationAfterShift(List<Component> tooltip) {
         tooltip.add(Component.translatable("info.clanginghowl.item.chainsword.0"));
         tooltip.add(Component.translatable("info.clanginghowl.item.chainsword.1"));
+        tooltip.add(Component.translatable("info.clanginghowl.item.chainsword.2"));
     }
 }

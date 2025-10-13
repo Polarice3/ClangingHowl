@@ -1,7 +1,9 @@
 package com.mongoose.clanginghowl.common.items.energy;
 
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
+import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import com.mongoose.clanginghowl.init.CHSounds;
+import com.mongoose.clanginghowl.utils.MobUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -99,6 +101,13 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
     @Override
     public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         this.setTagTick(stack);
+        if (stack.getEnchantmentLevel(CHEnchantments.ECOLOGICAL_ENERGY.get()) > 0) {
+            if (MobUtil.isInSunlight(entityIn)) {
+                if (entityIn.tickCount % 20 == 0) {
+                    IEnergyItem.powerItem(stack, 2);
+                }
+            }
+        }
         super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
     }
 
@@ -220,6 +229,22 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
             p_40673_.displayClientMessage(Component.translatable("info.clanginghowl.energy.empty"), true);
         }
         return InteractionResultHolder.pass(itemstack);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        if (!(stack.getItem() instanceof BatteryItem)) {
+            return true;
+        }
+        return super.isEnchantable(stack);
+    }
+
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        if (!(stack.getItem() instanceof BatteryItem)) {
+            return 10;
+        }
+        return super.getEnchantmentValue(stack);
     }
 
     @Override

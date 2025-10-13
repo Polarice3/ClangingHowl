@@ -20,8 +20,10 @@ public class CHSounds {
     public static final RegistryObject<SoundEvent> CHAINSAW_CUT = create("chainsaw_cut");
     public static final RegistryObject<SoundEvent> CHAINSAW_BLOW = create("chainsaw_blow");
     public static final RegistryObject<SoundEvent> CHAINSAW_DISCHARGED = create("chainsaw_discharged");
+    public static final RegistryObject<SoundEvent> CHAINSAW_OVERDRIVE = create("chainsaw_overdrive");
 
     public static final RegistryObject<SoundEvent> DISCHARGED = create("discharged");
+    public static final RegistryObject<SoundEvent> ELECTRIC_SHOCK = create("electric_shock");
 
     static RegistryObject<SoundEvent> create(String name) {
         SoundEvent event = SoundEvent.createVariableRangeEvent(ClangingHowl.location(name));
