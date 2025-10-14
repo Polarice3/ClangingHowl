@@ -99,6 +99,8 @@
   "effect.clanginghowl.overdrive.description": "Increases melee damage by 4 and movement speed by 40%%.",
   "effect.clanginghowl.deep_burn": "Deep Burn",
   "effect.clanginghowl.deep_burn.description": "Increases incoming fire damage by 60%%.",
+  "effect.clanginghowl.internal_heat": "Internal Heat",
+  "effect.clanginghowl.internal_heat.description": "Emits non-destructive explosion that gives effect, and sets fire, to other entities.",
 
   "enchantment.clanginghowl.energy_efficiency": "Energy Efficiency",
   "enchantment.clanginghowl.energy_efficiency.desc": "For each level, reduces energy consumption by one.",
@@ -114,6 +116,8 @@
   "enchantment.clanginghowl.fuel_saving.desc": "For each level, reduces fuel consumption by one.",
   "enchantment.clanginghowl.napalm_stream": "Napalm Stream",
   "enchantment.clanginghowl.napalm_stream.desc": "For each level, increases flamethrower damage and fire duration. Increases fuel consumption.",
+  "enchantment.clanginghowl.chain_burn": "Chain Burn",
+  "enchantment.clanginghowl.chain_burn.desc": "Gives entities Internal Heat that will cause them to emit a blast upon death that gives effect to other nearby entities.",
   "enchantment.clanginghowl.fuel_burst": "Fuel Burst",
   "enchantment.clanginghowl.fuel_burst.desc": "Change the Flamethrower to only shoot a short burst that damages and pushes away entities. Increases fuel consumption.",
 

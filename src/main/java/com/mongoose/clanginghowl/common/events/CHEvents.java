@@ -5,6 +5,7 @@ import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.client.particles.ElectricShockParticleOption;
 import com.mongoose.clanginghowl.client.particles.ElectricSplashParticleOption;
+import com.mongoose.clanginghowl.client.particles.FieryExplosionParticleOption;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
 import com.mongoose.clanginghowl.common.capabilities.CHCapProvider;
 import com.mongoose.clanginghowl.common.capabilities.ICHCap;
@@ -26,6 +27,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -171,6 +173,20 @@ public class CHEvents {
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+        if (victim.hasEffect(CHEffects.INTERNAL_HEAT.get())) {
+            victim.level().playSound(null, victim.getX(), victim.getY(), victim.getZ(), SoundEvents.GENERIC_EXPLODE, victim.getSoundSource(), 1.0F, 1.0F);
+            if (victim.level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(new FieryExplosionParticleOption(3.0F, 0), victim.getX(), victim.getY() + 0.5D, victim.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+            }
+            for (LivingEntity livingEntity : victim.level().getEntitiesOfClass(LivingEntity.class, victim.getBoundingBox().inflate(3.0D))) {
+                if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
+                    if (livingEntity.hurt(victim.level().damageSources().inFire(), 5.0F)){
+                        livingEntity.addEffect(new MobEffectInstance(CHEffects.INTERNAL_HEAT.get(), 500));
+                        livingEntity.setRemainingFireTicks(100);
                     }
                 }
             }

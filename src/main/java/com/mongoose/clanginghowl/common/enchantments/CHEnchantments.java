@@ -38,6 +38,9 @@ public class CHEnchantments {
     public static final RegistryObject<Enchantment> NAPALM_STREAM = ENCHANTMENTS.register("napalm_stream",
             () -> new NapalmStreamEnchantment(Enchantment.Rarity.UNCOMMON, EquipmentSlot.MAINHAND));
 
+    public static final RegistryObject<Enchantment> CHAIN_BURN = ENCHANTMENTS.register("chain_burn",
+            () -> new FuelTreasureEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
+
     public static final RegistryObject<Enchantment> FUEL_BURST = ENCHANTMENTS.register("fuel_burst",
             () -> new FuelTreasureEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
 

@@ -20,4 +20,14 @@ public class FuelTreasureEnchantment extends Enchantment {
     public boolean isTreasureOnly() {
         return true;
     }
+
+    @Override
+    protected boolean checkCompatibility(Enchantment enchantment) {
+        if (this == CHEnchantments.CHAIN_BURN.get()) {
+            return enchantment != CHEnchantments.FUEL_BURST.get();
+        } else if (this == CHEnchantments.FUEL_BURST.get()) {
+            return enchantment != CHEnchantments.CHAIN_BURN.get();
+        }
+        return super.checkCompatibility(enchantment);
+    }
 }

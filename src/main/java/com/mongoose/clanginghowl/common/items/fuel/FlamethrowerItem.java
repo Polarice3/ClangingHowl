@@ -181,6 +181,11 @@ public class FlamethrowerItem extends Item implements IFuel{
                             int fireSeconds = 10;
                             fireSeconds += enchantment * 5;
                             target.setSecondsOnFire(fireSeconds);
+                            if (itemStack.getEnchantmentLevel(CHEnchantments.CHAIN_BURN.get()) > 0) {
+                                if (target instanceof LivingEntity livingEntity1) {
+                                    livingEntity1.addEffect(new MobEffectInstance(CHEffects.INTERNAL_HEAT.get(), 500));
+                                }
+                            }
                         }
                     }
                 }
@@ -255,7 +260,7 @@ public class FlamethrowerItem extends Item implements IFuel{
             if (this.isFuelBurst(itemStack)) {
                 int range = 6;
                 if (!level.isClientSide) {
-                    for (Entity target : getBreathTarget(player, range, EntitySelector.NO_CREATIVE_OR_SPECTATOR)) {
+                    for (Entity target : getBreathTarget(player, range, EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(entity -> !MobUtil.areAllies(entity, player)))) {
                         if (target != null) {
                             DamageSource damageSource = CHDamageSource.fireStream(player, player);
                             int enchantment = itemStack.getEnchantmentLevel(CHEnchantments.NAPALM_STREAM.get());

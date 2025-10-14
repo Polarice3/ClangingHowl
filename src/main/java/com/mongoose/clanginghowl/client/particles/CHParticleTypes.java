@@ -41,4 +41,12 @@ public class CHParticleTypes {
                     return ElectricShockParticleOption.CODEC;
                 }
             });
+
+    public static final RegistryObject<ParticleType<FieryExplosionParticleOption>> FIERY_EXPLOSION = PARTICLE_TYPES.register("fiery_explosion",
+            () -> new ParticleType<>(false, FieryExplosionParticleOption.DESERIALIZER) {
+                @Override
+                public Codec<FieryExplosionParticleOption> codec() {
+                    return FieryExplosionParticleOption.CODEC;
+                }
+            });
 }

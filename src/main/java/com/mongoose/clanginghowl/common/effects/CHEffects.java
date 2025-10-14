@@ -33,6 +33,9 @@ public class CHEffects {
     public static final RegistryObject<MobEffect> DEEP_BURN = EFFECTS.register("deep_burn",
             () -> new CHBaseEffect(MobEffectCategory.HARMFUL, 0));
 
+    public static final RegistryObject<MobEffect> INTERNAL_HEAT = EFFECTS.register("internal_heat",
+            () -> new CHBaseEffect(MobEffectCategory.HARMFUL, 0xe76900));
+
     public static final RegistryObject<MobEffect> OVERDRIVE = EFFECTS.register("overdrive",
             () -> new CHBaseEffect(MobEffectCategory.BENEFICIAL, 0)
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, CHUUIDUtil.uuidString("effect.clanginghowl.overdrive.movement"),
