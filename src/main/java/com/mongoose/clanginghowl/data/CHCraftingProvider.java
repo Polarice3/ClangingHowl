@@ -71,6 +71,18 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get()))
                 .showNotification(false)
                 .save(consumer, loc("crystal_former"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, CHBlocks.STATIONARY_CHARGING_STATION.get())
+                .pattern("LDL")
+                .pattern("CBC")
+                .pattern("PPP")
+                .define('D', CHItems.DIAMOND_DIODE.get())
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .define('L', Items.LIGHTNING_ROD)
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('B', CHItems.BATTERY_PANEL.get())
+                .unlockedBy("has_item", has(CHItems.BATTERY_PANEL.get()))
+                .showNotification(false)
+                .save(consumer, loc("stationary_charging_station"));
 
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, CHItems.EXTRATERRESTRIAL_SWORD.get())
                 .pattern("#")
@@ -214,7 +226,7 @@ public class CHCraftingProvider extends RecipeProvider {
                 .pattern("P  ")
                 .pattern("BPC")
                 .pattern(" FC")
-                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .define('P', CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get())
                 .define('C', Tags.Items.INGOTS_COPPER)
                 .define('B', CHItems.BLAZE_BURNER.get())
                 .define('F', CHItems.BLAZE_FUEL_CYLINDER.get())

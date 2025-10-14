@@ -13,4 +13,7 @@ public class CHBlockEntities {
     public static final RegistryObject<BlockEntityType<CrystalFormerBlockEntity>> CRYSTAL_FORMER = BLOCK_ENTITY.register("crystal_former",
             () -> BlockEntityType.Builder.of(CrystalFormerBlockEntity::new, CHBlocks.CRYSTAL_FORMER.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<ChargingStationBlockEntity>> STATIONARY_CHARGING_STATION = BLOCK_ENTITY.register("stationary_charging_station",
+            () -> BlockEntityType.Builder.of(ChargingStationBlockEntity::new, CHBlocks.STATIONARY_CHARGING_STATION.get()).build(null));
+
 }

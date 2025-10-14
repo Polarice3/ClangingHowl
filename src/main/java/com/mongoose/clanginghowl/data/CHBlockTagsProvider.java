@@ -87,6 +87,7 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 .add(CHBlocks.METEORITE_STEEL_ORE.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get())
                 .add(CHBlocks.CRYSTAL_FORMER.get())
+                .add(CHBlocks.STATIONARY_CHARGING_STATION.get())
                 .replace(false);
         this.tag(BlockTags.NEEDS_STONE_TOOL)
                 .add(CHBlocks.METEORITE_STEEL_ORE.get())

@@ -32,4 +32,11 @@ public class CHBlockUtil {
                 blockPos.offset(end));
     }
 
+    public static boolean areSamePos(BlockPos blockPos1, BlockPos blockPos2) {
+        if (blockPos1 == null || blockPos2 == null) {
+            return false;
+        }
+        return blockPos1.getX() == blockPos2.getX() && blockPos1.getY() == blockPos2.getY() && blockPos1.getZ() == blockPos2.getZ();
+    }
+
 }

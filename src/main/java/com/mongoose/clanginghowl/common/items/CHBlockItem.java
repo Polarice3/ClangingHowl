@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.common.items;
 
+import com.mongoose.clanginghowl.common.blocks.ChargingStationBlock;
 import com.mongoose.clanginghowl.common.blocks.CrystalFormerBlock;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -25,6 +26,9 @@ public class CHBlockItem extends BlockItem {
                 tooltip.add(Component.translatable("info.clanginghowl.block.former.0"));
                 tooltip.add(Component.translatable("info.clanginghowl.block.former.1"));
                 tooltip.add(Component.translatable("info.clanginghowl.block.former.2"));
+            }
+            if (base.getBlock() instanceof ChargingStationBlock){
+                tooltip.add(Component.translatable("info.clanginghowl.block.charger"));
             }
         }
     }

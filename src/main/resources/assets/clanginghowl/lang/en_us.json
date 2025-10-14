@@ -90,6 +90,7 @@
   "block.clanginghowl.cracked_calcite_tiles": "Cracked Calcite Tiles",
 
   "block.clanginghowl.crystal_former": "§eCrystal Former",
+  "block.clanginghowl.stationary_charging_station": "§bStationary Charging Station",
 
   "effect.clanginghowl.cosmic_irradiation": "Cosmic Irradiation",
   "effect.clanginghowl.cosmic_irradiation.description": "Decreases max health by 15%% and attack damage by 10%%; higher levels decreases further.",
@@ -147,6 +148,7 @@
   "info.clanginghowl.block.former.0": "§8Forms a small cold zone around itself while active.",
   "info.clanginghowl.block.former.1": "§8In an active state, §7Extraterrestrial Energy Crystals §8begin to gradually grow on it. The colder the biome, the larger the crystals can grow.",
   "info.clanginghowl.block.former.2": "§8The crystal former can be turned on and off by applying a redstone signal or using an Industrial Adjustable Wrench.",
+  "info.clanginghowl.block.charger": "§7Gradually charges the §eEnergy §7reserve of advanced tools placed on it.",
 
   "subtitle.clanginghowl.drilling": "Drilling",
   "subtitle.clanginghowl.discharged": "Discharged",

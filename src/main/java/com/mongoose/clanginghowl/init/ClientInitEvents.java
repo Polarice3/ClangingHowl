@@ -4,6 +4,7 @@ import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.client.gui.screen.inventory.PortableChargerScreen;
 import com.mongoose.clanginghowl.client.inventory.menu.CHMenuTypes;
 import com.mongoose.clanginghowl.client.render.block.CHBlockEntityRenderer;
+import com.mongoose.clanginghowl.client.render.block.ChargingStationRenderer;
 import com.mongoose.clanginghowl.common.blocks.entities.CHBlockEntities;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
@@ -34,5 +35,6 @@ public class ClientInitEvents {
     @SubscribeEvent
     public static void onRegisterRenders(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(CHBlockEntities.CRYSTAL_FORMER.get(), CHBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(CHBlockEntities.STATIONARY_CHARGING_STATION.get(), ChargingStationRenderer::new);
     }
 }

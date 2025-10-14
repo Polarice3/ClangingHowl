@@ -129,12 +129,8 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
 
     public float getDestroySpeed(BlockState blockState, float toolSpeed, BlockGetter blockGetter, BlockPos blockPos) {
         float f = blockState.getDestroySpeed(blockGetter, blockPos);
-        if (f <= 0.0F) {
-            return 0.0F;
-        } else {
-            int i = TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState) ? 30 : 100;
-            return toolSpeed / f / (float)i;
-        }
+        int i = TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState) ? 30 : 100;
+        return toolSpeed / f / (float)i;
     }
 
     public static void resetMiningProgress(Level level, Player player){

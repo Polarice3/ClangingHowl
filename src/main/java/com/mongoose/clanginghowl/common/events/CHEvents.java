@@ -84,8 +84,6 @@ public class CHEvents {
     @SubscribeEvent
     public static void AttackEvent(LivingAttackEvent event){
         LivingEntity victim = event.getEntity();
-        Entity source = event.getSource().getEntity();
-        Entity direct = event.getSource().getDirectEntity();
         if (event.getSource() instanceof NoKnockBackDamageSource damageSource){
             if (damageSource.getOwner() != null) {
                 if (damageSource.getOwner() instanceof LivingEntity && !damageSource.is(DamageTypeTags.NO_ANGER)) {
@@ -183,7 +181,10 @@ public class CHEvents {
                 serverLevel.sendParticles(new FieryExplosionParticleOption(3.0F, 0), victim.getX(), victim.getY() + 0.5D, victim.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
             }
             for (LivingEntity livingEntity : victim.level().getEntitiesOfClass(LivingEntity.class, victim.getBoundingBox().inflate(3.0D))) {
-                if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
+                if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)
+                        && !(livingEntity instanceof Player)
+                        && !(livingEntity instanceof OwnableEntity ownable
+                        && ownable.getOwner() instanceof Player)) {
                     if (livingEntity.hurt(victim.level().damageSources().inFire(), 5.0F)){
                         livingEntity.addEffect(new MobEffectInstance(CHEffects.INTERNAL_HEAT.get(), 500));
                         livingEntity.setRemainingFireTicks(100);

@@ -202,11 +202,13 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
                         int i = CHCapHelper.getMiningProgress(player);
                         float progress = hardness * (float)(i + 1);
                         int j = (int) (progress * 10);
-                        destroyBlockProgress(serverLevel, player.getId(), blockPos, j);
+                        if (hardness >= 0.0F) {
+                            destroyBlockProgress(serverLevel, player.getId(), blockPos, j);
+                        }
                         if (CHCapHelper.getMiningProgress(player) % 4 == 0) {
                             serverLevel.playSound(null, blockPos, soundtype.getHitSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
                         }
-                        if (hardness <= 0.0F) {
+                        if (hardness == 0.0F) {
                             progress = 1.0F;
                         }
                         if (progress >= 1.0F) {

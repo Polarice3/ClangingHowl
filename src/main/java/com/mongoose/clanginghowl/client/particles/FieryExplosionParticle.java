@@ -1,13 +1,10 @@
 package com.mongoose.clanginghowl.client.particles;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.particle.*;
 import net.minecraft.client.renderer.LightTexture;
 
-public class FieryExplosionParticle extends GroundCircleParticle {
+public class FieryExplosionParticle extends TextureSheetParticle {
    private int speed;
    private final SpriteSet spriteSet;
 

@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-08T15:25:04.4870758	Loot Tables
+// 1.20.1	2025-10-15T10:18:30.0816505	Loot Tables
 7cbbfdf3c5824c9049b9600b528727dbd51df951 data/clanginghowl/loot_tables/blocks/calcite_tiles.json
 50a4fe38cc45603dce89291541e9295c1bf44bac data/clanginghowl/loot_tables/blocks/calcite_tile_slab.json
 1544f15fccc1bb1b7776728204bb291e57a817dc data/clanginghowl/loot_tables/blocks/calcite_tile_stairs.json
@@ -32,6 +32,7 @@ b6bbd1cecca91ed77c46277b88076c69720fb03e data/clanginghowl/loot_tables/blocks/sm
 338a832f7695baac28c7e668e05379ed46793d42 data/clanginghowl/loot_tables/blocks/smooth_extraterrestrial_stone_slab.json
 403e8963dc6df59c69a8c97dce03c028f0ab76c6 data/clanginghowl/loot_tables/blocks/smooth_extraterrestrial_stone_stairs.json
 7792f5363505b4b7f6514ca433223b3a327c0d86 data/clanginghowl/loot_tables/blocks/smooth_extraterrestrial_stone_wall.json
+2d7f147b922c2f204cddb6e03b73b7bc1f17314e data/clanginghowl/loot_tables/blocks/stationary_charging_station.json
 57939f229882aebb6689aabfae5ad296fabb83ae data/clanginghowl/loot_tables/blocks/steel_door.json
 19fd38cb9dfbeaded5d1cc2d06039bcab34bf381 data/clanginghowl/loot_tables/blocks/steel_plate_block.json
 3349709edb2d0bb0fca01dd5fd8ca29487008af7 data/clanginghowl/loot_tables/blocks/steel_rod.json

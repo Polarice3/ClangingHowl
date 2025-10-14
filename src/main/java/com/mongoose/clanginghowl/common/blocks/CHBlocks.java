@@ -112,6 +112,7 @@ public class CHBlocks {
 
     //Tech
     public static final RegistryObject<Block> CRYSTAL_FORMER = register("crystal_former", CrystalFormerBlock::new);
+    public static final RegistryObject<Block> STATIONARY_CHARGING_STATION = register("stationary_charging_station", ChargingStationBlock::new);
 
     private static RotatedPillarBlock pillar(BlockBehaviour.Properties properties) {
         return new RotatedPillarBlock(properties);

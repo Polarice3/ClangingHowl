@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "clanginghowl:block/stationary_charging_station",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "clanginghowl:block/stationary_charging_station",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "clanginghowl:block/stationary_charging_station"
+    },
+    "facing=west": {
+      "model": "clanginghowl:block/stationary_charging_station",
+      "y": 90
+    }
+  }
+}

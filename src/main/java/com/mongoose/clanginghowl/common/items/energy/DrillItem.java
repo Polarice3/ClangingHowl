@@ -190,11 +190,13 @@ public class DrillItem extends EnergyItem implements GeoItem {
                         int i = CHCapHelper.getMiningProgress(player);
                         float progress = hardness * (float)(i + 1);
                         int j = (int) (progress * 10);
-                        destroyBlockProgress(serverLevel, player.getId(), blockPos, j);
+                        if (hardness >= 0.0F) {
+                            destroyBlockProgress(serverLevel, player.getId(), blockPos, j);
+                        }
                         if (CHCapHelper.getMiningProgress(player) % 4 == 0) {
                             serverLevel.playSound(null, blockPos, soundtype.getHitSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
                         }
-                        if (hardness <= 0.0F) {
+                        if (hardness == 0.0F) {
                             progress = 1.0F;
                         }
                         if (progress >= 1.0F) {
@@ -207,15 +209,16 @@ public class DrillItem extends EnergyItem implements GeoItem {
                             } else if (fortune > 0) {
                                 tempTool.enchant(Enchantments.BLOCK_FORTUNE, fortune);
                             }
+                            this.breakBlocks(serverLevel, blockState, blockPos, player, soundtype, silk, fortune, tempTool);
                             if (!player.isCrouching() && itemStack.getEnchantmentLevel(CHEnchantments.TUNNEL_DRILLER.get()) > 0) {
                                 for (BlockPos blockPos1 : CHBlockUtil.multiBlockBreak(player, blockPos, 1, 1, 1)) {
-                                    BlockState blockState1 = level.getBlockState(blockPos1);
-                                    if (blockState1.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockState1.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
-                                        this.breakBlocks(serverLevel, blockState, blockPos1, player, soundtype, 0, 0, tempTool);
+                                    if (!CHBlockUtil.areSamePos(blockPos, blockPos1)) {
+                                        BlockState blockState1 = level.getBlockState(blockPos1);
+                                        if (blockState1.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockState1.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
+                                            this.breakBlocks(serverLevel, blockState1, blockPos1, player, soundtype, 0, 0, tempTool);
+                                        }
                                     }
                                 }
-                            } else {
-                                this.breakBlocks(serverLevel, blockState, blockPos, player, soundtype, silk, fortune, tempTool);
                             }
 
                             CHCapHelper.setMiningProgress(player, 0);

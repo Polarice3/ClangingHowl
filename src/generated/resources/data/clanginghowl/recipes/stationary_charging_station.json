@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "item": "clanginghowl:battery_panel"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "D": {
+      "item": "clanginghowl:diamond_diode"
+    },
+    "L": {
+      "item": "minecraft:lightning_rod"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    }
+  },
+  "pattern": [
+    "LDL",
+    "CBC",
+    "PPP"
+  ],
+  "result": {
+    "item": "clanginghowl:stationary_charging_station"
+  },
+  "show_notification": false
+}

@@ -14,6 +14,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -171,7 +172,7 @@ public class FlamethrowerItem extends Item implements IFuel{
                     }
                 }
                 for (Entity target : getBreathTarget(livingEntity, range)) {
-                    if (target != null) {
+                    if (target != null && !target.isUnderWater()) {
                         DamageSource damageSource = CHDamageSource.fireStream(livingEntity, livingEntity);
                         int enchantment = itemStack.getEnchantmentLevel(CHEnchantments.NAPALM_STREAM.get());
                         if (target.hurt(damageSource, 1.5F + enchantment)){
@@ -191,7 +192,7 @@ public class FlamethrowerItem extends Item implements IFuel{
                 }
             }
         }
-        this.dragonBreathAttack(CHParticleTypes.FLAMETHROWER_FLAME.get(), livingEntity, 0.3F + ((double) range / 10));
+        this.dragonBreathAttack(CHParticleTypes.FLAMETHROWER_FLAME.get(), livingEntity, 0.1F + ((double) range / 10));
     }
 
     public List<Entity> getBreathTarget(LivingEntity livingEntity, double range) {
@@ -224,6 +225,10 @@ public class FlamethrowerItem extends Item implements IFuel{
             double angle = 0.5D;
             Vec3 randomVec = new Vec3(entityLiving.getRandom().nextDouble() * 2.0D * angle - angle, entityLiving.getRandom().nextDouble() * 2.0D * angle - angle, entityLiving.getRandom().nextDouble() * 2.0D * angle - angle).normalize();
             Vec3 result = (look.normalize().scale(3.0D).add(randomVec)).normalize().scale(velocity);
+            BlockPos blockPos = BlockPos.containing(px + dx, py + dy, pz + dz);
+            if (entityLiving.level().isWaterAt(blockPos)) {
+                particleOptions = ParticleTypes.BUBBLE;
+            }
             if (entityLiving.level() instanceof ServerLevel serverLevel){
                 serverLevel.sendParticles(particleOptions, px + dx, py + dy, pz + dz, 0, result.x, result.y, result.z, 1.0F);
             } else {
@@ -258,10 +263,11 @@ public class FlamethrowerItem extends Item implements IFuel{
         ItemStack itemStack = player.getItemInHand(hand);
         if (!this.noFuelInInventory(player, itemStack)) {
             if (this.isFuelBurst(itemStack)) {
+                this.consumeFuel(itemStack);
                 int range = 6;
                 if (!level.isClientSide) {
                     for (Entity target : getBreathTarget(player, range, EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(entity -> !MobUtil.areAllies(entity, player)))) {
-                        if (target != null) {
+                        if (target != null && !target.isUnderWater()) {
                             DamageSource damageSource = CHDamageSource.fireStream(player, player);
                             int enchantment = itemStack.getEnchantmentLevel(CHEnchantments.NAPALM_STREAM.get());
                             if (target instanceof LivingEntity livingEntity1) {
@@ -276,13 +282,13 @@ public class FlamethrowerItem extends Item implements IFuel{
                         }
                     }
                 }
-                this.dragonBreathAttack(CHParticleTypes.FLAMETHROWER_FLAME.get(), player, 0.3F + ((double) range / 10));
+                this.dragonBreathAttack(CHParticleTypes.FLAMETHROWER_BURST.get(), player, 30, 0.1F + ((double) range / 10));
                 player.getCooldowns().addCooldown(this, 35);
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), CHSounds.FLAMETHROWER_BURNS.get(), player.getSoundSource(), 0.4F, 1.0F);
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), CHSounds.FLAMETHROWER_ACTIVATION.get(), player.getSoundSource(), 1.0F, 1.0F);
             } else {
                 player.startUsingItem(hand);
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), CHSounds.FLAMETHROWER_ACTIVATION.get(), player.getSoundSource(), 0.4F, 1.0F);
             }
-            level.playSound(null, player.getX(), player.getY(), player.getZ(), CHSounds.FLAMETHROWER_ACTIVATION.get(), player.getSoundSource(), 0.4F, 1.0F);
             return InteractionResultHolder.consume(itemStack);
         } else {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), CHSounds.DISCHARGED.get(), player.getSoundSource(), 0.4F, 1.0F);
