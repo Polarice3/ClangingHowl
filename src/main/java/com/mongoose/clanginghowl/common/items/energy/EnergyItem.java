@@ -101,10 +101,12 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
     @Override
     public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         this.setTagTick(stack);
-        if (stack.getEnchantmentLevel(CHEnchantments.ECOLOGICAL_ENERGY.get()) > 0) {
-            if (MobUtil.isInSunlight(entityIn)) {
-                if (entityIn.tickCount % 20 == 0) {
-                    IEnergyItem.powerItem(stack, 2);
+        if (!worldIn.isClientSide) {
+            if (stack.getEnchantmentLevel(CHEnchantments.ECOLOGICAL_ENERGY.get()) > 0) {
+                if (MobUtil.isInSunlight(entityIn)) {
+                    if (entityIn.tickCount % 20 == 0) {
+                        IEnergyItem.powerItem(stack, 2);
+                    }
                 }
             }
         }

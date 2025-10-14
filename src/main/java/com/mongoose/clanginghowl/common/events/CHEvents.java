@@ -10,6 +10,7 @@ import com.mongoose.clanginghowl.common.capabilities.CHCapProvider;
 import com.mongoose.clanginghowl.common.capabilities.ICHCap;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
+import com.mongoose.clanginghowl.common.items.BlazeBurnerItem;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.CHTiers;
 import com.mongoose.clanginghowl.common.items.energy.BatteryItem;
@@ -20,13 +21,18 @@ import com.mongoose.clanginghowl.init.CHSounds;
 import com.mongoose.clanginghowl.utils.CHDamageSource;
 import com.mongoose.clanginghowl.utils.EffectsUtil;
 import com.mongoose.clanginghowl.utils.MobUtil;
+import com.mongoose.clanginghowl.utils.NoKnockBackDamageSource;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -74,16 +80,56 @@ public class CHEvents {
     }
 
     @SubscribeEvent
+    public static void AttackEvent(LivingAttackEvent event){
+        LivingEntity victim = event.getEntity();
+        Entity source = event.getSource().getEntity();
+        Entity direct = event.getSource().getDirectEntity();
+        if (event.getSource() instanceof NoKnockBackDamageSource damageSource){
+            if (damageSource.getOwner() != null) {
+                if (damageSource.getOwner() instanceof LivingEntity && !damageSource.is(DamageTypeTags.NO_ANGER)) {
+                    victim.setLastHurtByMob((LivingEntity) damageSource.getOwner());
+                }
+                if (damageSource.getOwner() instanceof Player player) {
+                    victim.lastHurtByPlayer = player;
+                    victim.lastHurtByPlayerTime = 100;
+                }
+                if (damageSource.getOwner() instanceof ServerPlayer) {
+                    CriteriaTriggers.PLAYER_HURT_ENTITY.trigger((ServerPlayer) damageSource.getOwner(), victim, event.getSource(), event.getAmount(), event.getAmount(), false);
+                }
+                if (damageSource.getOwner() instanceof OwnableEntity owned){
+                    if (owned.getOwner() instanceof Player player) {
+                        victim.lastHurtByPlayer = player;
+                        victim.lastHurtByPlayerTime = 100;
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void HurtEvent(LivingHurtEvent event){
         LivingEntity victim = event.getEntity();
         Entity directEntity = event.getSource().getDirectEntity();
         if (event.getAmount() > 0.0F) {
             if (directEntity instanceof LivingEntity livingAttacker) {
                 if (CHDamageSource.physicalAttacks(event.getSource())) {
+                    if (livingAttacker.getMainHandItem().getItem() instanceof BlazeBurnerItem) {
+                        if (!livingAttacker.fireImmune() && !livingAttacker.hasEffect(MobEffects.FIRE_RESISTANCE)) {
+                            victim.setRemainingFireTicks(120);
+                        }
+                    }
                     if (livingAttacker.getMainHandItem().getItem() instanceof TieredItem weapon) {
                         if (weapon.getTier() == CHTiers.EXTRATERRESTRIAL) {
                             victim.addEffect(new MobEffectInstance(CHEffects.COSMIC_IRRADIATION.get(), 400));
                         }
+                    }
+                }
+            }
+            if (victim.hasEffect(CHEffects.DEEP_BURN.get())) {
+                MobEffectInstance mobEffectInstance = victim.getEffect(CHEffects.DEEP_BURN.get());
+                if (mobEffectInstance != null){
+                    if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
+                        event.setAmount(event.getAmount() * 1.6F);
                     }
                 }
             }
@@ -100,7 +146,7 @@ public class CHEvents {
                     if (livingAttacker.getMainHandItem().getEnchantmentLevel(CHEnchantments.KILLER_CHARGE.get()) > 0) {
                         for (LivingEntity livingEntity : livingAttacker.level().getEntitiesOfClass(LivingEntity.class, victim.getBoundingBox().inflate(4.0D))) {
                             if (!MobUtil.areAllies(livingAttacker, livingEntity) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
-                                if (livingEntity.hurt(livingAttacker.damageSources().lightningBolt(), 7.0F)){
+                                if (livingEntity.hurt(CHDamageSource.lightning(livingAttacker, livingAttacker), 7.0F)){
                                     livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
                                 }
                             }

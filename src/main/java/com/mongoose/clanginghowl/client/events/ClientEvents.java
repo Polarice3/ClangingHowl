@@ -7,6 +7,7 @@ import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.energy.ChainsawItem;
 import com.mongoose.clanginghowl.common.items.energy.ChainswordItem;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
+import com.mongoose.clanginghowl.common.items.fuel.IFuel;
 import com.mongoose.clanginghowl.init.CHSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -15,7 +16,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -23,7 +23,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -31,15 +30,12 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientEvents {
 
     @SubscribeEvent
-    public static void onEntityHoldItem(LivingEvent.LivingTickEvent event) {
-        Entity entity = event.getEntity();
-        if (entity.level() instanceof ClientLevel) {
-            if (entity instanceof LivingEntity livingEntity) {
-                if (livingEntity.isHolding(itemStack -> itemStack.getItem() instanceof ChainsawItem && !IEnergyItem.isEmpty(itemStack))) {
-                    playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), livingEntity, CHItems.ADVANCED_CHAINSAW.get(), 0.4F, 1.0F);
-                } else if (livingEntity.isHolding(itemStack -> itemStack.getItem() instanceof ChainswordItem && !IEnergyItem.isEmpty(itemStack))) {
-                    playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), livingEntity, CHItems.ADVANCED_CHAINSWORD.get(), 0.3F, 1.0F);
-                }
+    public static void onPlayerHoldItem(TickEvent.PlayerTickEvent event) {
+        if (event.player.level() instanceof ClientLevel) {
+            if (event.player.isHolding(itemStack -> itemStack.getItem() instanceof ChainsawItem && !IEnergyItem.isEmpty(itemStack))) {
+                playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), event.player, CHItems.ADVANCED_CHAINSAW.get(), 0.4F, 1.0F);
+            } else if (event.player.isHolding(itemStack -> itemStack.getItem() instanceof ChainswordItem && !IEnergyItem.isEmpty(itemStack))) {
+                playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), event.player, CHItems.ADVANCED_CHAINSWORD.get(), 0.3F, 1.0F);
             }
         }
     }
@@ -71,6 +67,9 @@ public class ClientEvents {
             if (event.getItem().is(CHItems.ADVANCED_CHAINSAW.get())){
                 soundHandler.play(new ItemLoopSound(CHSounds.CHAINSAW_CUT.get(), event.getEntity()));
             }
+            if (event.getItem().is(CHItems.FLAMETHROWER.get())){
+                soundHandler.play(new ItemLoopSound(CHSounds.FLAMETHROWER_BURNS.get(), event.getEntity()));
+            }
         }
     }
 
@@ -89,7 +88,7 @@ public class ClientEvents {
         Input input = event.getInput();
         if (player instanceof LocalPlayer localPlayer) {
             if (localPlayer.isUsingItem() && !localPlayer.isPassenger()) {
-                if (localPlayer.getUseItem().is(itemHolder -> itemHolder.get() instanceof IEnergyItem)) {
+                if (localPlayer.getUseItem().is(itemHolder -> itemHolder.get() instanceof IEnergyItem || itemHolder.get() instanceof IFuel)) {
                     input.leftImpulse *= 5.0F;
                     input.forwardImpulse *= 5.0F;
                 }

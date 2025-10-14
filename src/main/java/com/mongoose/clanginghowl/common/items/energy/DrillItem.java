@@ -9,7 +9,7 @@ import com.mongoose.clanginghowl.client.render.item.AdvancedHandDrillRenderer;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
 import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import com.mongoose.clanginghowl.init.CHSounds;
-import com.mongoose.clanginghowl.utils.BlockUtil;
+import com.mongoose.clanginghowl.utils.CHBlockUtil;
 import com.mongoose.clanginghowl.utils.ItemHelper;
 import com.mongoose.clanginghowl.utils.MathHelper;
 import net.minecraft.client.model.HumanoidModel;
@@ -171,6 +171,9 @@ public class DrillItem extends EnergyItem implements GeoItem {
                 float toolSpeed = this.getBreakSpeed(blockPos, livingEntity, EnchantmentHelper.getBlockEfficiency(livingEntity));
                 if (livingEntity instanceof Player player) {
                     if (this.canMineBlock(serverLevel, player, blockPos, blockState)) {
+                        if (toolSpeed > 0.0F && itemStack.getEnchantmentLevel(CHEnchantments.TUNNEL_DRILLER.get()) > 0) {
+                            toolSpeed = Math.max(1.0F, toolSpeed - 2.0F);
+                        }
                         if (!(blockState.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockState.is(BlockTags.MINEABLE_WITH_SHOVEL))) {
                             toolSpeed = 1.0F;
                         }
@@ -204,9 +207,12 @@ public class DrillItem extends EnergyItem implements GeoItem {
                             } else if (fortune > 0) {
                                 tempTool.enchant(Enchantments.BLOCK_FORTUNE, fortune);
                             }
-                            if (itemStack.getEnchantmentLevel(CHEnchantments.TUNNEL_DRILLER.get()) > 0) {
-                                for (BlockPos blockPos1 : BlockUtil.multiBlockBreak(player, blockPos, 1, 1, 1)) {
-                                    this.breakBlocks(serverLevel, blockState, blockPos1, player, soundtype, 0, 0, tempTool);
+                            if (!player.isCrouching() && itemStack.getEnchantmentLevel(CHEnchantments.TUNNEL_DRILLER.get()) > 0) {
+                                for (BlockPos blockPos1 : CHBlockUtil.multiBlockBreak(player, blockPos, 1, 1, 1)) {
+                                    BlockState blockState1 = level.getBlockState(blockPos1);
+                                    if (blockState1.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockState1.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
+                                        this.breakBlocks(serverLevel, blockState, blockPos1, player, soundtype, 0, 0, tempTool);
+                                    }
                                 }
                             } else {
                                 this.breakBlocks(serverLevel, blockState, blockPos, player, soundtype, silk, fortune, tempTool);

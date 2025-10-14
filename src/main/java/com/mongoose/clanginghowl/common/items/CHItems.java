@@ -2,6 +2,8 @@ package com.mongoose.clanginghowl.common.items;
 
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.common.items.energy.*;
+import com.mongoose.clanginghowl.common.items.fuel.FlamethrowerItem;
+import com.mongoose.clanginghowl.common.items.fuel.IFuel;
 import com.mongoose.clanginghowl.utils.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
@@ -115,13 +117,15 @@ public class CHItems {
     public static final RegistryObject<Item> EXTRATERRESTRIAL_HAMMER = ITEMS.register("extraterrestrial_hammer", ExHammerItem::new);
 
     public static final RegistryObject<Item>  INDUSTRIAL_ADJUSTABLE_WRENCH = ITEMS.register("industrial_adjustable_wrench", WrenchItem::new);
+    public static final RegistryObject<Item> BLAZE_BURNER = ITEMS.register("blaze_burner", BlazeBurnerItem::new);
     public static final RegistryObject<DrillItem>  ADVANCED_HAND_DRILL = ITEMS.register("advanced_hand_drill", DrillItem::new);
     public static final RegistryObject<ChainsawItem>  ADVANCED_CHAINSAW = ITEMS.register("advanced_chainsaw", ChainsawItem::new);
     public static final RegistryObject<ChainswordItem>  ADVANCED_CHAINSWORD = ITEMS.register("advanced_chainsword", ChainswordItem::new);
+    public static final RegistryObject<FlamethrowerItem>  FLAMETHROWER = ITEMS.register("flamethrower", FlamethrowerItem::new);
 
     public static final RegistryObject<Item>  PORTABLE_CHARGER = ITEMS.register("portable_charger", PortableChargerItem::new);
 
     public static boolean shouldSkipCreativeModTab(Item item) {
-        return item instanceof EnergyItem;
+        return item instanceof EnergyItem || item instanceof IFuel;
     }
 }

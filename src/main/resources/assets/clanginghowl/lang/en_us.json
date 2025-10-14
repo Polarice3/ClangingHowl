@@ -26,9 +26,11 @@
   "item.clanginghowl.extraterrestrial_hammer": "§eExtraterrestrial Hammer",
 
   "item.clanginghowl.industrial_adjustable_wrench": "§eIndustrial Adjustable Wrench",
+  "item.clanginghowl.blaze_burner": "Blaze Burner",
   "item.clanginghowl.advanced_hand_drill": "§6Advanced Hand Drill",
   "item.clanginghowl.advanced_chainsaw": "§6Advanced Chainsaw",
   "item.clanginghowl.advanced_chainsword": "§6Advanced Chainsword",
+  "item.clanginghowl.flamethrower": "§6Flamethrower",
 
   "item.clanginghowl.portable_charger": "Portable Charger",
 
@@ -95,6 +97,8 @@
   "effect.clanginghowl.sawing_up_health.description": "Decreases max health by 5%%; higher levels decreases further.",
   "effect.clanginghowl.overdrive": "Overdrive",
   "effect.clanginghowl.overdrive.description": "Increases melee damage by 4 and movement speed by 40%%.",
+  "effect.clanginghowl.deep_burn": "Deep Burn",
+  "effect.clanginghowl.deep_burn.description": "Increases incoming fire damage by 60%%.",
 
   "enchantment.clanginghowl.energy_efficiency": "Energy Efficiency",
   "enchantment.clanginghowl.energy_efficiency.desc": "For each level, reduces energy consumption by one.",
@@ -106,12 +110,20 @@
   "enchantment.clanginghowl.overdrive.desc": "Grants Overdrive effect when using item, increasing movement speed and damage. Increases energy consumption.",
   "enchantment.clanginghowl.killer_charge": "Killer Charge",
   "enchantment.clanginghowl.killer_charge.desc": "Cause an electrical surge after killing, damaging other entities and charges all advanced tools in inventory.",
+  "enchantment.clanginghowl.fuel_saving": "Fuel Saving",
+  "enchantment.clanginghowl.fuel_saving.desc": "For each level, reduces fuel consumption by one.",
+  "enchantment.clanginghowl.napalm_stream": "Napalm Stream",
+  "enchantment.clanginghowl.napalm_stream.desc": "For each level, increases flamethrower damage and fire duration. Increases fuel consumption.",
+  "enchantment.clanginghowl.fuel_burst": "Fuel Burst",
+  "enchantment.clanginghowl.fuel_burst.desc": "Change the Flamethrower to only shoot a short burst that damages and pushes away entities. Increases fuel consumption.",
 
   "info.clanginghowl.battery.amount": "§7Energy capacity:",
   "info.clanginghowl.battery.number": "%s/%s",
   "info.clanginghowl.energy.amount": "§eEnergy capacity:",
   "info.clanginghowl.energy.number": "%s/%s",
   "info.clanginghowl.energy.empty": "The tool does not have enough energy",
+  "info.clanginghowl.fuel.amount": "§eFuel:",
+  "info.clanginghowl.fuel.empty": "Flamethrower is low on fuel",
   "info.clanginghowl.item.tooltip": "§8Press Shift to show tooltip",
   "info.clanginghowl.item.extraterrestrial": "§8-Attacks inflict §5Cosmic Irradiation §8on the opponent and also deal increased damage to §4techno-flesh §8creatures.",
   "info.clanginghowl.item.hammer": "§8-Right-clicking on some industrial blocks will cause them to become damaged.",
@@ -124,6 +136,8 @@
   "info.clanginghowl.item.chainsword.0": "§7Critical hits reduce the opponent's maximum health by §45§4%§7, repeated critical hits increase the effect, up to a maximum of §425§4%.",
   "info.clanginghowl.item.chainsword.1": "§7Attacks deal more damage to §4techno-flesh §7creatures.",
   "info.clanginghowl.item.chainsword.2": "§7Attacks consume energy. The tool can be charged using a Portable Charger or a Stationary Charging Station.",
+  "info.clanginghowl.item.flamethrower.0": "§7Holding the right mouse button launches a stream of flame that burns everything in front of it. Enemies hit by the stream of flame take increased fire damage.",
+  "info.clanginghowl.item.flamethrower.1": "§7Every second of use consumes fuel. The fuel cylinder can be replaced if you have a §eBlaze Fuel Cylinder §7in your inventory.",
   "info.clanginghowl.item.charger.0": "§7Passively transfers §eEnergy §7from the batteries in its storage to advanced tools in your inventory.",
   "info.clanginghowl.item.charger.1": "§8Right-click to access battery storage.",
   "info.clanginghowl.block.former.0": "§8Forms a small cold zone around itself while active.",
@@ -135,5 +149,12 @@
   "subtitle.clanginghowl.electric_shock": "Electric Shock",
   "subtitle.clanginghowl.chainsaw_idle": "Chainsaw idle",
   "subtitle.clanginghowl.chainsaw_cut": "Chainsaw cuts",
-  "subtitle.clanginghowl.chainsaw_overdrive": "Overdrive starts"
+  "subtitle.clanginghowl.chainsaw_overdrive": "Overdrive starts",
+  "subtitle.clanginghowl.flamethrower_activation": "Flamethrower starts",
+  "subtitle.clanginghowl.flamethrower_burns": "Flamethrower burns",
+
+  "death.attack.clanginghowl.lightning": "%1$s was struck by %2$s",
+  "death.attack.clanginghowl.lightning.item": "%1$s was struck by %2$s using %3$s",
+  "death.attack.clanginghowl.fire_stream": "%1$s has been incinerated by %2$s",
+  "death.attack.clanginghowl.fire_stream.item": "%1$s has been incinerated by %2$s using %3$s"
 }

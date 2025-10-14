@@ -22,6 +22,9 @@ public class CHSounds {
     public static final RegistryObject<SoundEvent> CHAINSAW_DISCHARGED = create("chainsaw_discharged");
     public static final RegistryObject<SoundEvent> CHAINSAW_OVERDRIVE = create("chainsaw_overdrive");
 
+    public static final RegistryObject<SoundEvent> FLAMETHROWER_ACTIVATION = create("flamethrower_activation");
+    public static final RegistryObject<SoundEvent> FLAMETHROWER_BURNS = create("flamethrower_burns");
+
     public static final RegistryObject<SoundEvent> DISCHARGED = create("discharged");
     public static final RegistryObject<SoundEvent> ELECTRIC_SHOCK = create("electric_shock");
 

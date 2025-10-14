@@ -4,17 +4,14 @@ import com.mongoose.clanginghowl.common.blocks.CHBlocks;
 import com.mongoose.clanginghowl.common.blocks.CrystalFormerBlock;
 import com.mongoose.clanginghowl.common.blocks.ExEnergyClusterBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 
 public class CrystalFormerBlockEntity extends BlockEntity {
@@ -36,12 +33,6 @@ public class CrystalFormerBlockEntity extends BlockEntity {
                             int i = entity.getTicksFrozen();
                             int j = 4;
                             entity.setTicksFrozen(Math.min(entity.getTicksRequiredToFreeze() + 5, i + j));
-                        }
-                    }
-                    for (Direction direction : Direction.values()) {
-                        BlockPos blockPos = this.worldPosition.relative(direction);
-                        if (this.level.getFluidState(blockPos).isSourceOfType(Fluids.WATER)) {
-                            this.level.setBlock(blockPos, Blocks.ICE.defaultBlockState(), 2);
                         }
                     }
                     BlockState above = this.level.getBlockState(this.worldPosition.above());

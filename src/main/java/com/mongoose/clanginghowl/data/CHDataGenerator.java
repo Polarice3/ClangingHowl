@@ -30,6 +30,7 @@ public class CHDataGenerator {
         DatapackBuiltinEntriesProvider datapackProvider = new CHRegisteryDataProvider(generator.getPackOutput(), provider);
         CompletableFuture<HolderLookup.Provider> lookupProvider = datapackProvider.getRegistryProvider();
         generator.addProvider(event.includeServer(), datapackProvider);
+        generator.addProvider(event.includeServer(), new CHDamageTagsProvider(generator.getPackOutput(), lookupProvider, event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new CHItemTagsProvider(generator.getPackOutput(), lookupProvider, event.getExistingFileHelper()));
         generator.addProvider(event.includeServer(), new CHBlockTagsProvider(generator.getPackOutput(), lookupProvider, event.getExistingFileHelper()));
     }

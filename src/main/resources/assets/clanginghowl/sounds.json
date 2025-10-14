@@ -64,6 +64,22 @@
     ],
     "subtitle": "subtitle.clanginghowl.chainsaw_overdrive"
   },
+  "flamethrower_activation": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/flamethrower/activation"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.flamethrower_activation"
+  },
+  "flamethrower_burns": {
+    "sounds": [
+      {
+        "name": "clanginghowl:item/flamethrower/burns"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.flamethrower_burns"
+  },
   "electric_shock": {
     "sounds": [
       {

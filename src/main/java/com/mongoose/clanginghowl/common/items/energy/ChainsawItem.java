@@ -162,6 +162,9 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
                             if (entity instanceof Mob mob) {
                                 extraDamage = EnchantmentHelper.getDamageBonus(itemStack, mob.getMobType());
                             }
+                            if (itemStack.getEnchantmentLevel(CHEnchantments.OVERDRIVE.get()) > 0) {
+                                extraDamage += 4.0F;
+                            }
                             if (entity.hurt(livingEntity.damageSources().mobAttack(livingEntity), 3.0F + extraDamage)) {
                                 int j = EnchantmentHelper.getFireAspect(livingEntity);
                                 if (j > 0 && !entity.isOnFire()) {

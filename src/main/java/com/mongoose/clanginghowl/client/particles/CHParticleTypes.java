@@ -23,6 +23,9 @@ public class CHParticleTypes {
     public static final RegistryObject<SimpleParticleType> OVERDRIVE_FIRE = PARTICLE_TYPES.register("overdrive_fire",
             () -> new SimpleParticleType(false));
 
+    public static final RegistryObject<SimpleParticleType> FLAMETHROWER_FLAME = PARTICLE_TYPES.register("flamethrower_flame",
+            () -> new SimpleParticleType(false));
+
     public static final RegistryObject<ParticleType<ElectricSplashParticleOption>> HORIZONTAL_ELECTRICAL_SPLASH = PARTICLE_TYPES.register("horizontal_electrical_splash",
             () -> new ParticleType<>(false, ElectricSplashParticleOption.DESERIALIZER) {
                 @Override

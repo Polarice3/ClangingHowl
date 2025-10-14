@@ -2,15 +2,16 @@ package com.mongoose.clanginghowl.client.audio;
 
 import com.mongoose.clanginghowl.client.events.ClientEvents;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemIdleSound extends AbstractTickableSoundInstance {
-    protected final LivingEntity entity;
     protected final Item item;
 
     public ItemIdleSound(SoundEvent soundEvent, LivingEntity entity, Item item) {
@@ -19,7 +20,6 @@ public class ItemIdleSound extends AbstractTickableSoundInstance {
 
     public ItemIdleSound(SoundEvent soundEvent, LivingEntity entity, Item item, float volume, float pitch) {
         super(soundEvent, entity.getSoundSource(), SoundInstance.createUnseededRandom());
-        this.entity = entity;
         this.item = item;
         this.x = (float)entity.getX();
         this.y = (float)entity.getY();
@@ -46,33 +46,41 @@ public class ItemIdleSound extends AbstractTickableSoundInstance {
     }
 
     public void tick() {
-        if (this.entity.isRemoved()
-                || !this.entity.isAlive()
-                || !this.entity.isHolding(this.item)){
-            ClientEvents.ITEM_TICK = null;
-            this.stop();
-        } else {
-            this.x = this.entity.getX();
-            this.y = this.entity.getY();
-            this.z = this.entity.getZ();
-            if (this.item instanceof IEnergyItem) {
-                ItemStack itemStack = ItemStack.EMPTY;
-                if (this.entity.getMainHandItem().is(this.item)) {
-                    itemStack = this.entity.getMainHandItem();
-                } else if (this.entity.getOffhandItem().is(this.item)) {
-                    itemStack = this.entity.getOffhandItem();
-                }
-                boolean flag;
-                if (!itemStack.isEmpty()) {
-                    flag = IEnergyItem.isEmpty(itemStack);
-                } else {
-                    flag = true;
-                }
-                if (flag) {
-                    ClientEvents.ITEM_TICK = null;
-                    this.stop();
+        Minecraft minecraft = Minecraft.getInstance();
+        Player player = minecraft.player;
+        if (player != null) {
+            if (player.isRemoved()
+                    || !player.isAlive()
+                    || !player.isHolding(this.item)){
+                ClientEvents.ITEM_TICK = null;
+                this.stop();
+            } else {
+                this.x = player.getX();
+                this.y = player.getY();
+                this.z = player.getZ();
+                if (this.item instanceof IEnergyItem) {
+                    ItemStack itemStack = ItemStack.EMPTY;
+                    if (player.getMainHandItem().is(this.item)) {
+                        itemStack = player.getMainHandItem();
+                    } else if (player.getOffhandItem().is(this.item)) {
+                        itemStack = player.getOffhandItem();
+                    }
+                    boolean flag;
+                    if (!itemStack.isEmpty()) {
+                        flag = IEnergyItem.isEmpty(itemStack);
+                    } else {
+                        flag = true;
+                    }
+                    if (flag) {
+                        ClientEvents.ITEM_TICK = null;
+                        this.stop();
+                    }
                 }
             }
+        } else {
+            ClientEvents.ITEM_TICK = null;
+            this.stop();
         }
+
     }
 }
