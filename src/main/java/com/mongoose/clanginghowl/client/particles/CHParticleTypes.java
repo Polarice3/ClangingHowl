@@ -29,6 +29,12 @@ public class CHParticleTypes {
     public static final RegistryObject<SimpleParticleType> FLAMETHROWER_BURST = PARTICLE_TYPES.register("flamethrower_burst",
             () -> new SimpleParticleType(false));
 
+    public static final RegistryObject<SimpleParticleType> SPIT = PARTICLE_TYPES.register("extraterrestrial_spit",
+            () -> new SimpleParticleType(false));
+
+    public static final RegistryObject<SimpleParticleType> INFECTION = PARTICLE_TYPES.register("sign_of_infection",
+            () -> new SimpleParticleType(false));
+
     public static final RegistryObject<ParticleType<ElectricSplashParticleOption>> HORIZONTAL_ELECTRICAL_SPLASH = PARTICLE_TYPES.register("horizontal_electrical_splash",
             () -> new ParticleType<>(false, ElectricSplashParticleOption.DESERIALIZER) {
                 @Override
@@ -50,6 +56,14 @@ public class CHParticleTypes {
                 @Override
                 public Codec<FieryExplosionParticleOption> codec() {
                     return FieryExplosionParticleOption.CODEC;
+                }
+            });
+
+    public static final RegistryObject<ParticleType<BloodSplashParticleOption>> BLOOD_SPLASH = PARTICLE_TYPES.register("blood_splash",
+            () -> new ParticleType<>(false, BloodSplashParticleOption.DESERIALIZER) {
+                @Override
+                public Codec<BloodSplashParticleOption> codec() {
+                    return BloodSplashParticleOption.CODEC;
                 }
             });
 }

@@ -2,6 +2,8 @@ package com.mongoose.clanginghowl.common.network;
 
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.common.capabilities.CHCapUpdatePacket;
+import com.mongoose.clanginghowl.common.network.client.CIsMovingPacket;
+import com.mongoose.clanginghowl.common.network.server.SInstaLookPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -22,6 +24,8 @@ public class CHNetwork {
     public static void init() {
         INSTANCE = NetworkRegistry.newSimpleChannel(ClangingHowl.location("channel"), () -> "1.0", s -> true, s -> true);
 
+        INSTANCE.registerMessage(nextID(), CIsMovingPacket.class, CIsMovingPacket::encode, CIsMovingPacket::decode, CIsMovingPacket::consume);
+        INSTANCE.registerMessage(nextID(), SInstaLookPacket.class, SInstaLookPacket::encode, SInstaLookPacket::decode, SInstaLookPacket::consume);
         INSTANCE.registerMessage(nextID(), CHCapUpdatePacket.class, CHCapUpdatePacket::encode, CHCapUpdatePacket::decode, CHCapUpdatePacket::consume);
     }
 

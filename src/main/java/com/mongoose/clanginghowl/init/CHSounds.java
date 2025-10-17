@@ -14,6 +14,15 @@ public class CHSounds {
         SOUNDS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
+    public static final RegistryObject<SoundEvent> TECHNO_FLESH_IDLE = create("techno_flesh_idle");
+    public static final RegistryObject<SoundEvent> TECHNO_FLESH_HURT = create("techno_flesh_hurt");
+    public static final RegistryObject<SoundEvent> TECHNO_FLESH_DEATH = create("techno_flesh_death");
+
+    public static final RegistryObject<SoundEvent> HEART_OF_DECAY_DEATH = create("heart_of_decay_death");
+
+    public static final RegistryObject<SoundEvent> FLESH_RUPTURE_BEGINNING = create("flesh_rupture_beginning");
+    public static final RegistryObject<SoundEvent> FLESH_RUPTURE_ENDING = create("flesh_rupture_ending");
+
     public static final RegistryObject<SoundEvent> DRILLING = create("drilling");
 
     public static final RegistryObject<SoundEvent> CHAINSAW_IDLE = create("chainsaw_idle");

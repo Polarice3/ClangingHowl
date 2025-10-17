@@ -192,7 +192,7 @@ public class FlamethrowerItem extends Item implements IFuel{
                 }
             }
         }
-        this.dragonBreathAttack(CHParticleTypes.FLAMETHROWER_FLAME.get(), livingEntity, 0.1F + ((double) range / 10));
+        this.dragonBreathAttack(CHParticleTypes.FLAMETHROWER_FLAME.get(), livingEntity, ((double) range / 10) * 0.5D);
     }
 
     public List<Entity> getBreathTarget(LivingEntity livingEntity, double range) {
@@ -210,7 +210,7 @@ public class FlamethrowerItem extends Item implements IFuel{
     public void dragonBreathAttack(ParticleOptions particleOptions, LivingEntity entityLiving, int pParticleAmount, double pVelocity){
         Vec3 look = entityLiving.getLookAngle();
 
-        double dist = 0.9D;
+        double dist = 2.0D;
         double px = entityLiving.getX() + look.x * dist;
         double py = entityLiving.getEyeY() + look.y * dist;
         double pz = entityLiving.getZ() + look.z * dist;
@@ -230,9 +230,9 @@ public class FlamethrowerItem extends Item implements IFuel{
                 particleOptions = ParticleTypes.BUBBLE;
             }
             if (entityLiving.level() instanceof ServerLevel serverLevel){
-                serverLevel.sendParticles(particleOptions, px + dx, py + dy, pz + dz, 0, result.x, result.y, result.z, 1.0F);
+                serverLevel.sendParticles(particleOptions, px + dx, (py + dy) - 0.2D, pz + dz, 0, result.x, result.y, result.z, 1.0F);
             } else {
-                entityLiving.level().addAlwaysVisibleParticle(particleOptions, px + dx, py + dy, pz + dz, result.x, result.y, result.z);
+                entityLiving.level().addAlwaysVisibleParticle(particleOptions, px + dx, (py + dy) - 0.2D, pz + dz, result.x, result.y, result.z);
             }
         }
     }
@@ -318,29 +318,35 @@ public class FlamethrowerItem extends Item implements IFuel{
     public static class FlameClient implements IClientItemExtensions{
         private static final HumanoidModel.ArmPose FLAME = HumanoidModel.ArmPose.create("CH_FLAME", false, (model, entity, arm) -> {
             if (arm == HumanoidArm.RIGHT) {
-                model.rightArm.xRot = -MathHelper.modelDegrees(55);
-                model.leftArm.xRot = -MathHelper.modelDegrees(50);
+                model.rightArm.xRot = -MathHelper.modelDegrees(55) + model.head.xRot;
+                model.rightArm.yRot = -0.1F + model.head.yRot;
+                model.leftArm.xRot = -MathHelper.modelDegrees(50) + model.head.xRot;
+                model.leftArm.yRot = 0.1F + model.head.yRot + 0.4F;
                 model.leftArm.zRot = MathHelper.modelDegrees(30);
             } else {
-                model.leftArm.xRot = -MathHelper.modelDegrees(55);
-                model.rightArm.xRot = -MathHelper.modelDegrees(50);
-                model.rightArm.zRot = MathHelper.modelDegrees(30);
+                model.leftArm.xRot = -MathHelper.modelDegrees(55) + model.head.xRot;
+                model.leftArm.yRot = 0.1F + model.head.yRot;
+                model.rightArm.xRot = -MathHelper.modelDegrees(50) + model.head.xRot;
+                model.rightArm.yRot = -0.1F + model.head.yRot - 0.4F;
+                model.rightArm.zRot = -MathHelper.modelDegrees(30);
             }
         });
 
         private static final HumanoidModel.ArmPose IDLE_FLAME = HumanoidModel.ArmPose.create("CH_IDLE_FLAME", false, (model, entity, arm) -> {
             if (arm == HumanoidArm.RIGHT) {
-                model.rightArm.xRot = -MathHelper.modelDegrees(45);
-                model.rightArm.yRot = 0.0F;
+                model.rightArm.xRot = -MathHelper.modelDegrees(45) + model.head.xRot;
+                model.rightArm.yRot = -0.1F + model.head.yRot;
                 model.rightArm.zRot = 0.0F;
-                model.leftArm.xRot = -MathHelper.modelDegrees(45);
+                model.leftArm.xRot = -MathHelper.modelDegrees(45) + model.head.xRot;
+                model.leftArm.yRot = 0.1F + model.head.yRot + 0.4F;
                 model.leftArm.zRot = MathHelper.modelDegrees(30);
             } else {
-                model.leftArm.xRot = -MathHelper.modelDegrees(45);
-                model.leftArm.yRot = 0.0F;
+                model.leftArm.xRot = -MathHelper.modelDegrees(45) + model.head.xRot;
+                model.leftArm.yRot = 0.1F + model.head.yRot;
                 model.leftArm.zRot = 0.0F;
-                model.rightArm.xRot = -MathHelper.modelDegrees(45);
-                model.rightArm.zRot = MathHelper.modelDegrees(30);
+                model.rightArm.xRot = -MathHelper.modelDegrees(45) + model.head.xRot;
+                model.rightArm.yRot = -0.1F + model.head.yRot - 0.4F;
+                model.rightArm.zRot = -MathHelper.modelDegrees(30);
             }
         });
 

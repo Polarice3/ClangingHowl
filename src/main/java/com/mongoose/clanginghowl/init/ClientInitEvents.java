@@ -3,9 +3,17 @@ package com.mongoose.clanginghowl.init;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.client.gui.screen.inventory.PortableChargerScreen;
 import com.mongoose.clanginghowl.client.inventory.menu.CHMenuTypes;
+import com.mongoose.clanginghowl.client.render.CHModelLayer;
+import com.mongoose.clanginghowl.client.render.ExReaperRenderer;
+import com.mongoose.clanginghowl.client.render.HeartOfDecayRenderer;
+import com.mongoose.clanginghowl.client.render.SpitProjectileRenderer;
 import com.mongoose.clanginghowl.client.render.block.CHBlockEntityRenderer;
 import com.mongoose.clanginghowl.client.render.block.ChargingStationRenderer;
+import com.mongoose.clanginghowl.client.render.model.ExtraterrestrialReaperModel;
+import com.mongoose.clanginghowl.client.render.model.HeartOfDecayModel;
+import com.mongoose.clanginghowl.client.render.model.SpitProjectileModel;
 import com.mongoose.clanginghowl.common.blocks.entities.CHBlockEntities;
+import com.mongoose.clanginghowl.common.entities.CHEntityType;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
 import com.mongoose.clanginghowl.common.items.energy.PortableChargerItem;
@@ -33,8 +41,18 @@ public class ClientInitEvents {
     }
 
     @SubscribeEvent
+    public static void onRegisterLayers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(CHModelLayer.SPIT, SpitProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(CHModelLayer.HEART_OF_DECAY, HeartOfDecayModel::createBodyLayer);
+        event.registerLayerDefinition(CHModelLayer.EXTRATERRESTRIAL_REAPER, ExtraterrestrialReaperModel::createBodyLayer);
+    }
+
+    @SubscribeEvent
     public static void onRegisterRenders(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(CHBlockEntities.CRYSTAL_FORMER.get(), CHBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(CHBlockEntities.STATIONARY_CHARGING_STATION.get(), ChargingStationRenderer::new);
+        event.registerEntityRenderer(CHEntityType.SPIT_PROJECTILE.get(), SpitProjectileRenderer::new);
+        event.registerEntityRenderer(CHEntityType.HEART_OF_DECAY.get(), HeartOfDecayRenderer::new);
+        event.registerEntityRenderer(CHEntityType.EX_REAPER.get(), ExReaperRenderer::new);
     }
 }

@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 public class CHDamageSource extends DamageSource {
     public static ResourceKey<DamageType> LIGHTNING = create("lightning");
     public static ResourceKey<DamageType> FIRE_STREAM = create("fire_stream");
+    public static ResourceKey<DamageType> NEUROTOXIN = create("neurotoxin");
 
     public CHDamageSource(Holder<DamageType> p_270906_, @Nullable Entity p_270796_, @Nullable Entity p_270459_, @Nullable Vec3 p_270623_) {
         super(p_270906_, p_270796_, p_270459_, p_270623_);
@@ -27,12 +28,20 @@ public class CHDamageSource extends DamageSource {
         return ResourceKey.create(Registries.DAMAGE_TYPE, ClangingHowl.location(name));
     }
 
+    public static DamageSource getDamageSource(Level level, ResourceKey<DamageType> type) {
+        return getEntityDamageSource(level, type, null);
+    }
+
     public static DamageSource source(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, @Nullable Entity indirectAttacker){
         return new DamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker);
     }
 
     public static DamageSource noKnockbackDamageSource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, @Nullable Entity indirectAttacker) {
         return new NoKnockBackDamageSource(level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(type), attacker, indirectAttacker);
+    }
+
+    public static DamageSource getEntityDamageSource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker) {
+        return indirectEntityDamageSource(level, type, attacker, attacker);
     }
 
     public static DamageSource indirectEntityDamageSource(Level level, ResourceKey<DamageType> type, @Nullable Entity attacker, @Nullable Entity indirectAttacker){
@@ -61,5 +70,6 @@ public class CHDamageSource extends DamageSource {
     public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(LIGHTNING, new DamageType("clanginghowl.lightning", 0.0F));
         context.register(FIRE_STREAM, new DamageType("clanginghowl.fire_stream", 0.0F, DamageEffects.BURNING));
+        context.register(NEUROTOXIN, new DamageType("clanginghowl.neurotoxin", 0.0F));
     }
 }

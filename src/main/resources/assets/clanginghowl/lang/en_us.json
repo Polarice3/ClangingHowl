@@ -38,6 +38,9 @@
   "item.clanginghowl.medium_extraterrestrial_energy_cluster": "Medium Extraterrestrial Energy Cluster",
   "item.clanginghowl.large_extraterrestrial_energy_cluster": "Large Extraterrestrial Energy Cluster",
 
+  "item.clanginghowl.heart_of_decay_spawn_egg": "Heart of Decay Spawn Egg",
+  "item.clanginghowl.extraterrestrial_reaper_spawn_egg": "Extraterrestrial Reaper Spawn Egg",
+
   "block.clanginghowl.extraterrestrial_stone": "Extraterrestrial Stone",
   "block.clanginghowl.extraterrestrial_stone_stairs": "Extraterrestrial Stone Stairs",
   "block.clanginghowl.extraterrestrial_stone_slab": "Extraterrestrial Stone Slab",
@@ -92,6 +95,11 @@
   "block.clanginghowl.crystal_former": "§eCrystal Former",
   "block.clanginghowl.stationary_charging_station": "§bStationary Charging Station",
 
+  "entity.clanginghowl.spit_projectile":"Spit",
+
+  "entity.clanginghowl.heart_of_decay":"Heart of Decay",
+  "entity.clanginghowl.extraterrestrial_reaper":"Extraterrestrial Reaper",
+
   "effect.clanginghowl.cosmic_irradiation": "Cosmic Irradiation",
   "effect.clanginghowl.cosmic_irradiation.description": "Decreases max health by 15%% and attack damage by 10%%; higher levels decreases further.",
   "effect.clanginghowl.sawing_up_health": "Sawing Up Health",
@@ -102,6 +110,10 @@
   "effect.clanginghowl.deep_burn.description": "Increases incoming fire damage by 60%%.",
   "effect.clanginghowl.internal_heat": "Internal Heat",
   "effect.clanginghowl.internal_heat.description": "Emits non-destructive explosion that gives effect, and sets fire, to other entities.",
+  "effect.clanginghowl.neurotoxin": "Neurotoxin",
+  "effect.clanginghowl.neurotoxin.description": "Inflicts damage over time, when moving; higher levels do more damage per second.",
+  "effect.clanginghowl.beyond_flesh": "Beyond Flesh",
+  "effect.clanginghowl.beyond_flesh.description": "Certain affected will transform into a techno-flesh creature after effect nearly finishes.",
 
   "enchantment.clanginghowl.energy_efficiency": "Energy Efficiency",
   "enchantment.clanginghowl.energy_efficiency.desc": "For each level, reduces energy consumption by one.",
@@ -150,6 +162,15 @@
   "info.clanginghowl.block.former.2": "§8The crystal former can be turned on and off by applying a redstone signal or using an Industrial Adjustable Wrench.",
   "info.clanginghowl.block.charger": "§7Gradually charges the §eEnergy §7reserve of advanced tools placed on it.",
 
+  "subtitle.clanginghowl.techno_flesh_idle": "Techno Flesh wheeze",
+  "subtitle.clanginghowl.techno_flesh_hurt": "Techno Flesh hurts",
+  "subtitle.clanginghowl.techno_flesh_death": "Techno Flesh dies",
+
+  "subtitle.clanginghowl.heart_of_decay_death": "Heart of Decay dies",
+
+  "subtitle.clanginghowl.flesh_rupture_beginning": "Flesh rupturing",
+  "subtitle.clanginghowl.flesh_rupture_ending": "Flesh ruptures",
+
   "subtitle.clanginghowl.drilling": "Drilling",
   "subtitle.clanginghowl.discharged": "Discharged",
   "subtitle.clanginghowl.electric_shock": "Electric Shock",
@@ -162,5 +183,7 @@
   "death.attack.clanginghowl.lightning": "%1$s was struck by %2$s",
   "death.attack.clanginghowl.lightning.item": "%1$s was struck by %2$s using %3$s",
   "death.attack.clanginghowl.fire_stream": "%1$s has been incinerated by %2$s",
-  "death.attack.clanginghowl.fire_stream.item": "%1$s has been incinerated by %2$s using %3$s"
+  "death.attack.clanginghowl.fire_stream.item": "%1$s has been incinerated by %2$s using %3$s",
+  "death.attack.clanginghowl.neurotoxin": "%1$s's nervous system has shut down",
+  "death.attack.clanginghowl.neurotoxin.player": "%1$s's nervous system shuts down while fighting %3$s"
 }

@@ -10,8 +10,8 @@ public class FieryExplosionParticle extends TextureSheetParticle {
 
    public FieryExplosionParticle(ClientLevel p_233976_, double p_233977_, double p_233978_, double p_233979_, SpriteSet spriteSet) {
       super(p_233976_, p_233977_, p_233978_, p_233979_, 0.0D, 0.0D, 0.0D);
-      this.quadSize = 10.0F;
-      this.lifetime = 7;
+      this.quadSize = 3.0F;
+      this.lifetime = 14;
       this.gravity = 0.0F;
       this.xd = 0.0D;
       this.yd = 0.0D;
@@ -40,7 +40,7 @@ public class FieryExplosionParticle extends TextureSheetParticle {
       if (this.age++ >= this.lifetime) {
          this.remove();
       } else {
-         this.setSpriteFromAge(this.spriteSet);
+         this.setSprite(this.spriteSet.get((this.age / 2) % 8 + 1, 8));
       }
    }
 

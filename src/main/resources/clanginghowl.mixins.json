@@ -11,5 +11,8 @@
     "EnchantRandomlyFunctionMixin",
     "LivingEntityMixin",
     "MobEffectInstanceMixin"
+  ],
+  "client": [
+    "LivingEntityRendererMixin"
   ]
 }

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,6 +73,25 @@ public class ChargingStationBlock extends HorizontalDirectionalBlock implements 
         return InteractionResult.SUCCESS;
     }
 
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if (!pState.is(pNewState.getBlock())) {
+            BlockEntity tileentity = pLevel.getBlockEntity(pPos);
+            if (tileentity instanceof ChargingStationBlockEntity) {
+                tileentity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
+                    dropInventoryItems(tileentity.getLevel(), tileentity.getBlockPos(), handler);
+                });
+            }
+
+            super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        }
+    }
+
+    public static void dropInventoryItems(Level worldIn, BlockPos pos, IItemHandler itemHandler) {
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), itemHandler.getStackInSlot(i));
+        }
+    }
+
     public RenderShape getRenderShape(BlockState p_53840_) {
         return RenderShape.MODEL;
     }
@@ -78,7 +99,7 @@ public class ChargingStationBlock extends HorizontalDirectionalBlock implements 
     public BlockState getStateForPlacement(BlockPlaceContext p_48781_) {
         FluidState fluidstate = p_48781_.getLevel().getFluidState(p_48781_.getClickedPos());
         boolean flag = fluidstate.getType() == Fluids.WATER;
-        return this.defaultBlockState().setValue(FACING, p_48781_.getHorizontalDirection().getClockWise()).setValue(WATERLOGGED, flag);
+        return this.defaultBlockState().setValue(FACING, p_48781_.getHorizontalDirection()).setValue(WATERLOGGED, flag);
     }
 
     public FluidState getFluidState(BlockState p_153759_) {

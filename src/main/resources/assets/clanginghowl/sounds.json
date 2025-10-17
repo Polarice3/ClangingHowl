@@ -1,4 +1,61 @@
 {
+  "techno_flesh_idle": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/techno_flesh_idle"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.techno_flesh_idle"
+  },
+  "techno_flesh_hurt": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/techno_flesh_damage"
+      },
+      {
+        "name": "clanginghowl:entity/techno_flesh_damage2"
+      },
+      {
+        "name": "clanginghowl:entity/techno_flesh_damage3"
+      },
+      {
+        "name": "clanginghowl:entity/techno_flesh_damage4"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.techno_flesh_hurt"
+  },
+  "techno_flesh_death": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/techno_flesh_death"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.techno_flesh_death"
+  },
+  "heart_of_decay_death": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/heart_of_decay_death"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.heart_of_decay_death"
+  },
+  "flesh_rupture_beginning": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/flesh_rupture_beginning"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.flesh_rupture_beginning"
+  },
+  "flesh_rupture_ending": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/flesh_rupture_ending"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.flesh_rupture_ending"
+  },
   "drilling": {
     "sounds": [
       {

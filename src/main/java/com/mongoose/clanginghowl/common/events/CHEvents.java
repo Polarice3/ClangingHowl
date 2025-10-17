@@ -11,6 +11,8 @@ import com.mongoose.clanginghowl.common.capabilities.CHCapProvider;
 import com.mongoose.clanginghowl.common.capabilities.ICHCap;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
+import com.mongoose.clanginghowl.common.entities.CHEntityType;
+import com.mongoose.clanginghowl.common.entities.hostiles.HeartOfDecay;
 import com.mongoose.clanginghowl.common.items.BlazeBurnerItem;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.CHTiers;
@@ -18,11 +20,11 @@ import com.mongoose.clanginghowl.common.items.energy.BatteryItem;
 import com.mongoose.clanginghowl.common.items.energy.ChainswordItem;
 import com.mongoose.clanginghowl.common.items.energy.EnergyItem;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
+import com.mongoose.clanginghowl.common.network.CHNetwork;
+import com.mongoose.clanginghowl.common.network.client.CIsMovingPacket;
 import com.mongoose.clanginghowl.init.CHSounds;
-import com.mongoose.clanginghowl.utils.CHDamageSource;
-import com.mongoose.clanginghowl.utils.EffectsUtil;
-import com.mongoose.clanginghowl.utils.MobUtil;
-import com.mongoose.clanginghowl.utils.NoKnockBackDamageSource;
+import com.mongoose.clanginghowl.init.CHTags;
+import com.mongoose.clanginghowl.utils.*;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
@@ -31,20 +33,19 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -74,10 +75,41 @@ public class CHEvents {
     @SubscribeEvent
     public static void TickEvent(LivingEvent.LivingTickEvent event) {
         LivingEntity livingEntity = event.getEntity();
+        if (CHCapHelper.getShakeTime(livingEntity) > 0) {
+            CHCapHelper.setShakeTime(livingEntity, CHCapHelper.getShakeTime(livingEntity) - 1);
+        }
+        if (livingEntity.level().isClientSide) {
+            CHNetwork.sendToServer(new CIsMovingPacket(livingEntity.getId(), MobUtil.isMoving(livingEntity)));
+        }
         if (livingEntity.hasEffect(CHEffects.OVERDRIVE.get())) {
-            if (MobUtil.isMoving(livingEntity)) {
+            if (MobUtil.isWalking(livingEntity)) {
                 livingEntity.level().addParticle(CHParticleTypes.OVERDRIVE_FIRE.get(), livingEntity.getX(), livingEntity.getY() + 0.25F, livingEntity.getZ(), 0.0D, 0.0D, 0.0D);
             }
+        }
+        if (livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())) {
+            MobEffectInstance instance = livingEntity.getEffect(CHEffects.BEYOND_FLESH.get());
+            if (instance != null) {
+                int duration = instance.getDuration();
+                if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                    if (duration % 200 == 0) {
+                        for (int i = 0; i < serverLevel.getRandom().nextIntBetweenInclusive(1, 3); ++i) {
+                            serverLevel.sendParticles(CHParticleTypes.INFECTION.get(), livingEntity.getRandomX(0.5D), livingEntity.getRandomY(), livingEntity.getRandomZ(0.5D), 1, 0.0D, 0.0D, 0.0D, 0);
+                        }
+                    }
+                    if (livingEntity instanceof Mob mob && mob.isAlive()) {
+                        if (duration <= 100) {
+                            if (CHCapHelper.getShakeTime(mob) == 0) {
+                                serverLevel.playSound(null, mob.getX(), mob.getY(), mob.getZ(), CHSounds.FLESH_RUPTURE_BEGINNING.get(), mob.getSoundSource(), 1.0F, 1.0F);
+                            }
+                            CHCapHelper.setShakeTime(mob, 20);
+                        }
+
+                        if (duration <= 60) {
+                            MobUtil.convertTechno(mob);
+                        }
+                    }
+                }
+             }
         }
     }
 
@@ -116,11 +148,20 @@ public class CHEvents {
                     if (livingAttacker.getMainHandItem().getItem() instanceof BlazeBurnerItem) {
                         if (!livingAttacker.fireImmune() && !livingAttacker.hasEffect(MobEffects.FIRE_RESISTANCE)) {
                             victim.setRemainingFireTicks(120);
+                            ItemHelper.hurtAndBreak(livingAttacker.getMainHandItem(), 1, livingAttacker);
                         }
                     }
                     if (livingAttacker.getMainHandItem().getItem() instanceof TieredItem weapon) {
                         if (weapon.getTier() == CHTiers.EXTRATERRESTRIAL) {
                             victim.addEffect(new MobEffectInstance(CHEffects.COSMIC_IRRADIATION.get(), 400));
+                            if (victim.getType().is(CHTags.EntityTypes.TECHNO_FLESH)) {
+                                event.setAmount(event.getAmount() + 4.0F);
+                            }
+                        }
+                    }
+                    if (livingAttacker.getMainHandItem().getItem() instanceof ChainswordItem) {
+                        if (victim.getType().is(CHTags.EntityTypes.TECHNO_FLESH)) {
+                            event.setAmount(event.getAmount() + 7.0F);
                         }
                     }
                 }
@@ -178,7 +219,7 @@ public class CHEvents {
         if (victim.hasEffect(CHEffects.INTERNAL_HEAT.get())) {
             victim.level().playSound(null, victim.getX(), victim.getY(), victim.getZ(), SoundEvents.GENERIC_EXPLODE, victim.getSoundSource(), 1.0F, 1.0F);
             if (victim.level() instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(new FieryExplosionParticleOption(3.0F, 0), victim.getX(), victim.getY() + 0.5D, victim.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                serverLevel.sendParticles(new FieryExplosionParticleOption(3.0F, 0), victim.getX(), victim.getY() + 1.0D, victim.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
             }
             for (LivingEntity livingEntity : victim.level().getEntitiesOfClass(LivingEntity.class, victim.getBoundingBox().inflate(3.0D))) {
                 if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)
@@ -191,6 +232,17 @@ public class CHEvents {
                     }
                 }
             }
+        }
+        if (victim.level() instanceof ServerLevel serverLevel) {
+            if (victim.hasEffect(CHEffects.BEYOND_FLESH.get())) {
+                HeartOfDecay heartOfDecay = new HeartOfDecay(CHEntityType.HEART_OF_DECAY.get(), victim.level());
+                heartOfDecay.setPos(victim.position().add(0.0D, 1.0D, 0.0D));
+                ForgeEventFactory.onFinalizeSpawn(heartOfDecay, serverLevel, serverLevel.getCurrentDifficultyAt(victim.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+                serverLevel.addFreshEntity(heartOfDecay);
+            }
+        }
+        if (!event.isCanceled()){
+            CHCapHelper.setShakeTime(victim, 0);
         }
     }
 
@@ -224,6 +276,17 @@ public class CHEvents {
         if (event.phase == TickEvent.Phase.END) {
             if (!player.isUsingItem() || !(player.getUseItem().getItem() instanceof EnergyItem)) {
                 EnergyItem.resetMiningProgress(world, player);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onInteract(PlayerInteractEvent.EntityInteract event) {
+        if (event.getLevel() instanceof ServerLevel) {
+            if (event.getTarget() instanceof Mob mob && mob.isAlive()) {
+                if (mob.hasEffect(CHEffects.BEYOND_FLESH.get())) {
+                    MobUtil.convertTechno(mob);
+                }
             }
         }
     }

@@ -1,12 +1,21 @@
 package com.mongoose.clanginghowl.utils;
 
+import com.mongoose.clanginghowl.client.particles.BloodSplashParticleOption;
+import com.mongoose.clanginghowl.common.entities.CHEntityType;
+import com.mongoose.clanginghowl.common.network.CHNetwork;
+import com.mongoose.clanginghowl.common.network.server.SInstaLookPacket;
+import com.mongoose.clanginghowl.init.CHSounds;
+import com.mongoose.clanginghowl.init.CHTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySelector;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.*;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
@@ -14,6 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.PartEntity;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -34,8 +44,36 @@ public class MobUtil {
         }
     }
 
+    public static void instaLook(Mob mob, Vec3 vec3){
+        mob.getLookControl().setLookAt(vec3.x, vec3.y, vec3.z, 200.0F, mob.getMaxHeadXRot());
+        double d2 = vec3.x - mob.getX();
+        double d1 = vec3.z - mob.getZ();
+        float rotate = -((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI);
+        mob.setYRot(rotate);
+        mob.yBodyRot = rotate;
+        mob.yHeadRot = rotate;
+    }
+
+    public static void instaLook(Mob looker, Entity target){
+        instaLook(looker, target, false);
+    }
+
+    public static void instaLook(Mob looker, Entity target, boolean clientSent){
+        looker.lookAt(target, 100.0F, 100.0F);
+        instaLook(looker, target.position());
+        if (clientSent) {
+            if (!looker.level().isClientSide) {
+                CHNetwork.sendToALL(new SInstaLookPacket(looker, target));
+            }
+        }
+    }
+
+    public static boolean isWalking(LivingEntity livingEntity){
+        return livingEntity.onGround() && isMoving(livingEntity);
+    }
+
     public static boolean isMoving(LivingEntity livingEntity){
-        return livingEntity.onGround() && livingEntity.getDeltaMovement().horizontalDistanceSqr() > (double) 2.5000003E-7F;
+        return livingEntity.getDeltaMovement().horizontalDistanceSqr() > (double) 2.5000003E-7F;
     }
 
     public static BlockHitResult rayTrace(Entity entity, double distance, boolean fluids) {
@@ -107,6 +145,60 @@ public class MobUtil {
             }
         }
         return list;
+    }
+
+    public static void buffTechnoFlesh(ServerLevel serverLevel, LivingEntity livingEntity) {
+        int buff = ((int)serverLevel.getGameTime()) / 24000;
+        if (serverLevel.getGameTime() % 24000 == 0) {
+            float increase = 1.5F * buff;
+            AttributeInstance health = livingEntity.getAttribute(Attributes.MAX_HEALTH);
+            AttributeInstance attack = livingEntity.getAttribute(Attributes.ATTACK_DAMAGE);
+            AttributeInstance armor = livingEntity.getAttribute(Attributes.ARMOR);
+            if (health != null) {
+                health.setBaseValue(health.getBaseValue() * increase);
+                livingEntity.heal((float) health.getBaseValue());
+            }
+            if (attack != null) {
+                attack.setBaseValue(attack.getBaseValue() * increase);
+            }
+            if (armor != null) {
+                armor.setBaseValue(armor.getBaseValue() * increase);
+            }
+        }
+    }
+
+    public static boolean isTechnoConvert(LivingEntity livingEntity) {
+        return livingEntity.getType().is(CHTags.EntityTypes.TECHNO_CONVERT) || isHoDConvert(livingEntity) || isReaperConvert(livingEntity);
+    }
+
+    public static boolean isHoDConvert(LivingEntity livingEntity) {
+        return livingEntity.getType().is(CHTags.EntityTypes.HOD_CONVERT) || livingEntity instanceof Animal || livingEntity instanceof Spider;
+    }
+
+    public static boolean isReaperConvert(LivingEntity livingEntity) {
+        return isReaperTarget(livingEntity) || livingEntity instanceof Zombie;
+    }
+
+    public static boolean isReaperTarget(LivingEntity livingEntity) {
+        return livingEntity.getType().is(CHTags.EntityTypes.REAPER_CONVERT) || livingEntity instanceof AbstractVillager || livingEntity instanceof AbstractIllager || livingEntity instanceof Witch;
+    }
+
+    public static void convertTechno(Mob original) {
+        if (original.level() instanceof ServerLevel serverLevel) {
+            Monster convert = null;
+            if (MobUtil.isHoDConvert(original)) {
+                convert = original.convertTo(CHEntityType.HEART_OF_DECAY.get(), false);
+            }
+            if (MobUtil.isReaperConvert(original)) {
+                convert = original.convertTo(CHEntityType.EX_REAPER.get(), false);
+            }
+            if (convert != null) {
+                convert.removeAllEffects();
+                ForgeEventFactory.onFinalizeSpawn(convert, serverLevel, serverLevel.getCurrentDifficultyAt(convert.blockPosition()), MobSpawnType.CONVERSION, null, null);
+                serverLevel.sendParticles(new BloodSplashParticleOption(3.0F, 0), convert.getX(), convert.getY() + 1.0D, convert.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                serverLevel.playSound(null, convert.getX(), convert.getY(), convert.getZ(), CHSounds.FLESH_RUPTURE_ENDING.get(), convert.getSoundSource(), 2.0F, 1.0F);
+            }
+        }
     }
 
 }

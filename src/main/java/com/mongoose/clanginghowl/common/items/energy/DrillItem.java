@@ -311,28 +311,34 @@ public class DrillItem extends EnergyItem implements GeoItem {
         private static final HumanoidModel.ArmPose DRILL = HumanoidModel.ArmPose.create("CH_DRILL", false, (model, entity, arm) -> {
             if (arm == HumanoidArm.RIGHT) {
                 model.rightArm.xRot = -MathHelper.modelDegrees(55);
+                model.rightArm.yRot = -0.1F + model.head.yRot;
                 model.leftArm.xRot = -MathHelper.modelDegrees(50);
+                model.leftArm.yRot = 0.1F + model.head.yRot + 0.4F;
                 model.leftArm.zRot = MathHelper.modelDegrees(30);
             } else {
                 model.leftArm.xRot = -MathHelper.modelDegrees(55);
+                model.leftArm.yRot = 0.1F + model.head.yRot;
                 model.rightArm.xRot = -MathHelper.modelDegrees(50);
-                model.rightArm.zRot = MathHelper.modelDegrees(30);
+                model.rightArm.yRot = -0.1F + model.head.yRot - 0.4F;
+                model.rightArm.zRot = -MathHelper.modelDegrees(30);
             }
         });
 
         private static final HumanoidModel.ArmPose IDLE_DRILL = HumanoidModel.ArmPose.create("CH_IDLE_DRILL", false, (model, entity, arm) -> {
             if (arm == HumanoidArm.RIGHT) {
                 model.rightArm.xRot = -MathHelper.modelDegrees(45);
-                model.rightArm.yRot = 0.0F;
+                model.rightArm.yRot = -0.1F + model.head.yRot;
                 model.rightArm.zRot = 0.0F;
                 model.leftArm.xRot = -MathHelper.modelDegrees(45);
+                model.leftArm.yRot = 0.1F + model.head.yRot + 0.4F;
                 model.leftArm.zRot = MathHelper.modelDegrees(30);
             } else {
                 model.leftArm.xRot = -MathHelper.modelDegrees(45);
-                model.leftArm.yRot = 0.0F;
+                model.leftArm.yRot = 0.1F + model.head.yRot;
                 model.leftArm.zRot = 0.0F;
                 model.rightArm.xRot = -MathHelper.modelDegrees(45);
-                model.rightArm.zRot = MathHelper.modelDegrees(30);
+                model.rightArm.yRot = -0.1F + model.head.yRot - 0.4F;
+                model.rightArm.zRot = -MathHelper.modelDegrees(30);
             }
         });
 

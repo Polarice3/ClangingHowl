@@ -127,6 +127,9 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:mob-battle-mod-268746:6596542")
     runtimeOnly fg.deobf("curse.maven:retro-damage-indicators-1003431:5268035")
     runtimeOnly fg.deobf("curse.maven:kiwi-303657:4688568")
+    runtimeOnly fg.deobf("curse.maven:framework-549225:5180972")
+    runtimeOnly fg.deobf("curse.maven:configured-457570:5180900")
+    runtimeOnly fg.deobf("curse.maven:free-cam-557076:4643128")
 }
 
 tasks.named('jar', Jar).configure {

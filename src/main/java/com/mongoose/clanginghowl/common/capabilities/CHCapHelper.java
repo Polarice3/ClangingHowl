@@ -3,12 +3,13 @@ package com.mongoose.clanginghowl.common.capabilities;
 import com.mongoose.clanginghowl.common.network.CHNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 public class CHCapHelper {
 
-    public static ICHCap getCapability(Player player) {
+    public static ICHCap getCapability(LivingEntity player) {
         return player.getCapability(CHCapProvider.CAPABILITY).orElse(new CHCapImp());
     }
 
@@ -33,9 +34,26 @@ public class CHCapHelper {
         getCapability(player).setMiningPos(blockPos);
     }
 
-    public static void sendCHCapUpdatePacket(Player player) {
-        if (!player.level().isClientSide()) {
-            CHNetwork.sendTo(player, new CHCapUpdatePacket(player));
+    public static int getShakeTime(LivingEntity livingEntity){
+        return getCapability(livingEntity).getShakeTime();
+    }
+
+    public static void setShakeTime(LivingEntity livingEntity, int ticks){
+        getCapability(livingEntity).setShakeTime(ticks);
+        sendCHCapUpdatePacket(livingEntity);
+    }
+
+    public static boolean isMoving(LivingEntity livingEntity){
+        return getCapability(livingEntity).isMoving();
+    }
+
+    public static void setMoving(LivingEntity livingEntity, boolean moving){
+        getCapability(livingEntity).setMoving(moving);
+    }
+
+    public static void sendCHCapUpdatePacket(LivingEntity livingEntity) {
+        if (!livingEntity.level().isClientSide()) {
+            CHNetwork.sentToTrackingEntityAndPlayer(livingEntity, new CHCapUpdatePacket(livingEntity));
         }
     }
 
@@ -45,7 +63,11 @@ public class CHCapHelper {
             tag.putInt("miningPosY", cap.getMiningPos().getY());
             tag.putInt("miningPosZ", cap.getMiningPos().getZ());
         }
-        tag.putInt("miningProgress", cap.getMiningProgress());
+        if (cap.getMiningProgress() > 0) {
+            tag.putInt("miningProgress", cap.getMiningProgress());
+        }
+        tag.putInt("shakeTime", cap.getShakeTime());
+        tag.putBoolean("isMoving", cap.isMoving());
         return tag;
     }
 
@@ -53,7 +75,15 @@ public class CHCapHelper {
         if (tag.contains("miningPosX") && tag.contains("miningPosY") && tag.contains("miningPosZ")) {
             cap.setMiningPos(new BlockPos(tag.getInt("miningPosX"), tag.getInt("miningPosY"), tag.getInt("miningPosZ")));
         }
-        cap.setMiningProgress(tag.getInt("miningProgress"));
+        if (tag.contains("miningProgress")) {
+            cap.setMiningProgress(tag.getInt("miningProgress"));
+        }
+        if (tag.contains("shakeTime")){
+            cap.setShakeTime(tag.getInt("shakeTime"));
+        }
+        if (tag.contains("isMoving")){
+            cap.setMoving(tag.getBoolean("isMoving"));
+        }
         return cap;
     }
 }

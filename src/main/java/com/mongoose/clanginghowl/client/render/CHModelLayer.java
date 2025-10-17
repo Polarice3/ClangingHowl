@@ -9,6 +9,11 @@ import java.util.Set;
 public class CHModelLayer {
     private static final Set<ModelLayerLocation> ALL_MODELS = Sets.newHashSet();
 
+    public static final ModelLayerLocation SPIT = register("spit");
+
+    public static final ModelLayerLocation HEART_OF_DECAY = register("heart_of_decay");
+    public static final ModelLayerLocation EXTRATERRESTRIAL_REAPER = register("extraterrestrial_reaper");
+
     private static ModelLayerLocation register(String p_171294_) {
         return register(p_171294_, "main");
     }

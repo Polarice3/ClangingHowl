@@ -1,6 +1,7 @@
 package com.mongoose.clanginghowl.common.items;
 
 import com.mongoose.clanginghowl.ClangingHowl;
+import com.mongoose.clanginghowl.common.entities.CHEntityType;
 import com.mongoose.clanginghowl.common.items.energy.*;
 import com.mongoose.clanginghowl.common.items.fuel.FlamethrowerItem;
 import com.mongoose.clanginghowl.common.items.fuel.IFuel;
@@ -8,6 +9,7 @@ import com.mongoose.clanginghowl.utils.ItemHelper;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -124,6 +126,12 @@ public class CHItems {
     public static final RegistryObject<FlamethrowerItem>  FLAMETHROWER = ITEMS.register("flamethrower", FlamethrowerItem::new);
 
     public static final RegistryObject<Item>  PORTABLE_CHARGER = ITEMS.register("portable_charger", PortableChargerItem::new);
+
+    public static final RegistryObject<ForgeSpawnEggItem> HEART_OF_DECAY_SPAWN_EGG = ITEMS.register("heart_of_decay_spawn_egg",
+            () -> new ForgeSpawnEggItem(CHEntityType.HEART_OF_DECAY, 0x161f2c, 0xc362d9, new Item.Properties()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> EX_REAPER_SPAWN_EGG = ITEMS.register("extraterrestrial_reaper_spawn_egg",
+            () -> new ForgeSpawnEggItem(CHEntityType.EX_REAPER, 0x621224, 0xbc636b, new Item.Properties()));
 
     public static boolean shouldSkipCreativeModTab(Item item) {
         return item instanceof EnergyItem || item instanceof IFuel;

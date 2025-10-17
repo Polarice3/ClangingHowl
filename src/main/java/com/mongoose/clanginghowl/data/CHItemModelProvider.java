@@ -5,6 +5,7 @@ import com.mongoose.clanginghowl.common.items.CHItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -34,6 +35,18 @@ public class CHItemModelProvider extends ItemModelProvider {
         this.itemHandheldModel(CHItems.EXTRATERRESTRIAL_PICKAXE.get());
         this.itemHandheldModel(CHItems.EXTRATERRESTRIAL_AXE.get());
         this.itemHandheldModel(CHItems.EXTRATERRESTRIAL_HOE.get());
+
+        for (Item item : ForgeRegistries.ITEMS) {
+            if (ForgeRegistries.ITEMS.getKey(item) != null) {
+                ResourceLocation resourceLocation = ForgeRegistries.ITEMS.getKey(item);
+                if (resourceLocation != null) {
+                    if (item instanceof SpawnEggItem && resourceLocation.getNamespace().equals(ClangingHowl.MOD_ID)) {
+                        getBuilder(resourceLocation.getPath())
+                                .parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
+                    }
+                }
+            }
+        }
     }
 
     public void itemHandheldModel(Item item) {

@@ -23,5 +23,8 @@ public class ClientSideInit extends SidedInit {
         event.registerSpriteSet(CHParticleTypes.HORIZONTAL_ELECTRICAL_SPLASH.get(), ElectricSplashParticle.Provider::new);
         event.registerSpriteSet(CHParticleTypes.VERTICAL_ELECTRIC_SHOCK.get(), ElectricShockParticle.Provider::new);
         event.registerSpriteSet(CHParticleTypes.FIERY_EXPLOSION.get(), FieryExplosionParticle.Provider::new);
+        event.registerSpriteSet(CHParticleTypes.SPIT.get(), SpitParticle.Provider::new);
+        event.registerSpriteSet(CHParticleTypes.INFECTION.get(), InfectionParticle.Provider::new);
+        event.registerSpriteSet(CHParticleTypes.BLOOD_SPLASH.get(), BloodSplashParticle.Provider::new);
     }
 }

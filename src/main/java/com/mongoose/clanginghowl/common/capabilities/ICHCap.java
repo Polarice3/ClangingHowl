@@ -9,4 +9,8 @@ public interface ICHCap {
     @Nullable
     BlockPos getMiningPos();
     void setMiningPos(BlockPos blockPos);
+    int getShakeTime();
+    void setShakeTime(int ticks);
+    boolean isMoving();
+    void setMoving(boolean moving);
 }

@@ -19,6 +19,9 @@ public class CHDamageTagsProvider extends TagsProvider<DamageType> {
     }
 
     protected void addTags(HolderLookup.Provider provider) {
+        this.tag(DamageTypeTags.BYPASSES_ARMOR).add(CHDamageSource.NEUROTOXIN);
+        this.tag(DamageTypeTags.AVOIDS_GUARDIAN_THORNS).add(CHDamageSource.NEUROTOXIN);
+        this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(CHDamageSource.NEUROTOXIN);
         this.tag(DamageTypeTags.IS_LIGHTNING).add(CHDamageSource.LIGHTNING);
         this.tag(DamageTypeTags.IS_FIRE).add(CHDamageSource.FIRE_STREAM);
     }
