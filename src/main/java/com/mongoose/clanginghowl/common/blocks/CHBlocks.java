@@ -115,6 +115,7 @@ public class CHBlocks {
     public static final RegistryObject<Block> TECHNOFLESH_SLAB = registerSlabs("technoflesh_slab",
             TECHNOFLESH_BLOCK);
     public static final RegistryObject<Block> TECHNOFLESH_MEMBRANE = register("technoflesh_membrane", TechnoFleshMembraneBlock::new);
+    public static final RegistryObject<Block> TECHNOFLESH_NEST = register("technoflesh_nest", FleshNestBlock::new, true, LootTableType.EMPTY);
 
     //Tech
     public static final RegistryObject<Block> CRYSTAL_FORMER = register("crystal_former", CrystalFormerBlock::new);

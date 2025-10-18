@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-18T22:53:49.5749071	Loot Tables
+// 1.20.1	2025-10-18T23:58:21.2039839	Loot Tables
 7cbbfdf3c5824c9049b9600b528727dbd51df951 data/clanginghowl/loot_tables/blocks/calcite_tiles.json
 50a4fe38cc45603dce89291541e9295c1bf44bac data/clanginghowl/loot_tables/blocks/calcite_tile_slab.json
 1544f15fccc1bb1b7776728204bb291e57a817dc data/clanginghowl/loot_tables/blocks/calcite_tile_stairs.json
@@ -39,4 +39,5 @@ b6bbd1cecca91ed77c46277b88076c69720fb03e data/clanginghowl/loot_tables/blocks/sm
 e623085f3166c1c6aa2318783b795aefff03f8df data/clanginghowl/loot_tables/blocks/steel_trapdoor.json
 6bb113c7d413663aac41caa9db2d1a2fefa756cf data/clanginghowl/loot_tables/blocks/technoflesh_block.json
 40fbd5ff5855ce52819de7c0d223583b1a169aea data/clanginghowl/loot_tables/blocks/technoflesh_membrane.json
+a3b1acbdba4315bfaa44625e0aebb90d5c49cc28 data/clanginghowl/loot_tables/blocks/technoflesh_nest.json
 c9b8ff02a7ffb382b7bac54e674080a092375aa2 data/clanginghowl/loot_tables/blocks/technoflesh_slab.json

@@ -92,7 +92,8 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
         this.tag(BlockTags.MINEABLE_WITH_HOE)
                 .add(CHBlocks.TECHNOFLESH_BLOCK.get())
                 .add(CHBlocks.TECHNOFLESH_SLAB.get())
-                .add(CHBlocks.TECHNOFLESH_MEMBRANE.get());
+                .add(CHBlocks.TECHNOFLESH_MEMBRANE.get())
+                .add(CHBlocks.TECHNOFLESH_NEST.get());
         this.tag(BlockTags.NEEDS_STONE_TOOL)
                 .add(CHBlocks.METEORITE_STEEL_ORE.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get())

@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-18T22:44:28.7746728	Block States: clanginghowl
+// 1.20.1	2025-10-19T00:01:12.5941369	Block States: clanginghowl
 ea14ac9b4a749197b329f48876fa59aca69a5783 assets/clanginghowl/blockstates/calcite_tiles.json
 799109472836347f8779d2e80683f04dc1b5a1a9 assets/clanginghowl/blockstates/calcite_tile_slab.json
 b245b7b02feaf0c65601f639c8e4e5c99c7ffc95 assets/clanginghowl/blockstates/calcite_tile_stairs.json
@@ -28,6 +28,7 @@ c33423b22f5c0796c2700f68568cc6cdd5b34383 assets/clanginghowl/blockstates/raw_ext
 40572fa910839f430a3b89c909a577f093fdca22 assets/clanginghowl/blockstates/steel_door.json
 ed0b6721075fdaa79fa2f23a7f1394a0a700f336 assets/clanginghowl/blockstates/steel_plate_block.json
 ecdcec452481fa667f1a810c2cc4c2e53498c9f7 assets/clanginghowl/blockstates/steel_trapdoor.json
+26a810338d5a534c99dc6ae5b4fe38d17d7a2ef9 assets/clanginghowl/blockstates/technoflesh_nest.json
 1892b9610d5a03956d6991af5c8b85d7a80c074e assets/clanginghowl/blockstates/technoflesh_slab.json
 ca5439cfbb2c1af2a459cc7eeec1bda1e896ac51 assets/clanginghowl/models/block/calcite_tiles.json
 b9f5457bc06b6789c7d164e38990f45e9b5b799d assets/clanginghowl/models/block/calcite_tile_slab.json
@@ -92,6 +93,7 @@ affb5aa4d4c01e92c35617b7aa3bf81b952b6805 assets/clanginghowl/models/block/steel_
 2b3dfd801c4bf37949a3770b49eaae5e43168625 assets/clanginghowl/models/block/steel_trapdoor_bottom.json
 a600786e7d68c6ec70679d3a986ce80f0f195dad assets/clanginghowl/models/block/steel_trapdoor_open.json
 667cf9139b23e8cbaa061b4da444d9dc8290df87 assets/clanginghowl/models/block/steel_trapdoor_top.json
+22f11e6c121eaa35587dfd54aa4bc2b80bec4938 assets/clanginghowl/models/block/technoflesh_nest.json
 1e2dfea1ec9387b5deefdf44d397494a2c467b06 assets/clanginghowl/models/block/technoflesh_slab.json
 7f3b2943c03542e86519be86c4d578c8af79408b assets/clanginghowl/models/block/technoflesh_slab_top.json
 ed53a4a9767f516e3af1669dfa0894f83b61c59e assets/clanginghowl/models/item/calcite_tiles.json
@@ -122,4 +124,5 @@ dfc218330b8ca1d9c64c905d86ea4f1156febc73 assets/clanginghowl/models/item/smooth_
 e56496cbdd15c52058307670974b51d77db86aac assets/clanginghowl/models/item/smooth_extraterrestrial_stone_wall.json
 8e6a8941b75580e9f46e02a49a78b1945e8c7cc1 assets/clanginghowl/models/item/steel_plate_block.json
 89ea7431d38f61e6ee7871e30933e28a3515e778 assets/clanginghowl/models/item/steel_trapdoor.json
+519b939981a37b661686dd507dafa9a1199dc268 assets/clanginghowl/models/item/technoflesh_nest.json
 4cd71046bb0cf8a38e3291af95960ad3c81973d6 assets/clanginghowl/models/item/technoflesh_slab.json

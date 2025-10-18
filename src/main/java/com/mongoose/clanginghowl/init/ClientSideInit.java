@@ -1,6 +1,7 @@
 package com.mongoose.clanginghowl.init;
 
 import com.mongoose.clanginghowl.client.particles.*;
+import net.minecraft.client.particle.ExplodeParticle;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -26,5 +27,6 @@ public class ClientSideInit extends SidedInit {
         event.registerSpriteSet(CHParticleTypes.SPIT.get(), SpitParticle.Provider::new);
         event.registerSpriteSet(CHParticleTypes.INFECTION.get(), InfectionParticle.Provider::new);
         event.registerSpriteSet(CHParticleTypes.BLOOD_SPLASH.get(), BloodSplashParticle.Provider::new);
+        event.registerSpriteSet(CHParticleTypes.CRIMSON_POOF.get(), ExplodeParticle.Provider::new);
     }
 }

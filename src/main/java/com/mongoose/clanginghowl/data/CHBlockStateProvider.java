@@ -28,6 +28,7 @@ public class CHBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get());
         simpleBlockWithItem(CHBlocks.CALCITE_TILES.get());
         simpleBlockWithItem(CHBlocks.CRACKED_CALCITE_TILES.get());
+        simpleBlockWithItem(CHBlocks.TECHNOFLESH_NEST.get());
 
         doorBlockWithRenderType((DoorBlock) CHBlocks.STEEL_DOOR.get(), ClangingHowl.location("block/steel_door_bottom"), ClangingHowl.location("block/steel_door_top"), "translucent");
 

@@ -353,5 +353,17 @@ public class CHEvents {
                 }
             }
         }
+        if (instance.getEffect() == CHEffects.BEYOND_FLESH.get()) {
+            if (livingEntity.level() instanceof ServerLevel serverLevel) {
+                if (livingEntity.isAlive() && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())) {
+                    for(int i = 0; i < 20; ++i) {
+                        double d0 = serverLevel.getRandom().nextGaussian() * 0.02D;
+                        double d1 = serverLevel.getRandom().nextGaussian() * 0.02D;
+                        double d2 = serverLevel.getRandom().nextGaussian() * 0.02D;
+                        serverLevel.sendParticles(CHParticleTypes.CRIMSON_POOF.get(), livingEntity.getRandomX(1.0D), livingEntity.getRandomY(), livingEntity.getRandomZ(1.0D), 0, d0, d1, d2, 1.0D);
+                    }
+                }
+            }
+        }
     }
 }

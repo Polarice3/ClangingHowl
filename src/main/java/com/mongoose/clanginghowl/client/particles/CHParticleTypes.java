@@ -35,6 +35,9 @@ public class CHParticleTypes {
     public static final RegistryObject<SimpleParticleType> INFECTION = PARTICLE_TYPES.register("sign_of_infection",
             () -> new SimpleParticleType(false));
 
+    public static final RegistryObject<SimpleParticleType> CRIMSON_POOF = PARTICLE_TYPES.register("crimson_poof",
+            () -> new SimpleParticleType(false));
+
     public static final RegistryObject<ParticleType<ElectricSplashParticleOption>> HORIZONTAL_ELECTRICAL_SPLASH = PARTICLE_TYPES.register("horizontal_electrical_splash",
             () -> new ParticleType<>(false, ElectricSplashParticleOption.DESERIALIZER) {
                 @Override

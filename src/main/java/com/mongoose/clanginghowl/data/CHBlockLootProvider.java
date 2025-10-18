@@ -117,6 +117,7 @@ public class CHBlockLootProvider extends BlockLootSubProvider {
         this.add(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get(), (p_124076_) -> {
             return createOreDrop(p_124076_, CHItems.EXTRATERRESTRIAL_STEEL.get());
         });
+        this.dropWhenSilkTouch(CHBlocks.TECHNOFLESH_NEST.get());
     }
 
     protected LootTable.Builder createHugeExEnergyCluster() {
