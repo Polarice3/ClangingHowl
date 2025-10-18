@@ -1,6 +1,7 @@
 package com.mongoose.clanginghowl.utils;
 
 import com.mongoose.clanginghowl.client.particles.BloodSplashParticleOption;
+import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
 import com.mongoose.clanginghowl.common.entities.CHEntityType;
 import com.mongoose.clanginghowl.common.network.CHNetwork;
 import com.mongoose.clanginghowl.common.network.server.SInstaLookPacket;
@@ -148,9 +149,9 @@ public class MobUtil {
     }
 
     public static void buffTechnoFlesh(ServerLevel serverLevel, LivingEntity livingEntity) {
-        int buff = ((int)serverLevel.getGameTime()) / 24000;
-        if (serverLevel.getGameTime() % 24000 == 0) {
-            float increase = 1.5F * buff;
+        int buff = Mth.floor((float) (serverLevel.getGameTime()) / 24000);
+        if (buff >= 1 && buff < 1000) {
+            float increase = (0.005F * buff) + 1.0F;
             AttributeInstance health = livingEntity.getAttribute(Attributes.MAX_HEALTH);
             AttributeInstance attack = livingEntity.getAttribute(Attributes.ATTACK_DAMAGE);
             AttributeInstance armor = livingEntity.getAttribute(Attributes.ARMOR);
@@ -164,6 +165,9 @@ public class MobUtil {
             if (armor != null) {
                 armor.setBaseValue(armor.getBaseValue() * increase);
             }
+            if (CHCapHelper.getTechnoResist(livingEntity) < 80.0F) {
+                CHCapHelper.setTechnoResist(livingEntity, CHCapHelper.getTechnoResist(livingEntity) + buff);
+            }
         }
     }
 
@@ -176,11 +180,7 @@ public class MobUtil {
     }
 
     public static boolean isReaperConvert(LivingEntity livingEntity) {
-        return isReaperTarget(livingEntity) || livingEntity instanceof Zombie;
-    }
-
-    public static boolean isReaperTarget(LivingEntity livingEntity) {
-        return livingEntity.getType().is(CHTags.EntityTypes.REAPER_CONVERT) || livingEntity instanceof AbstractVillager || livingEntity instanceof AbstractIllager || livingEntity instanceof Witch;
+        return livingEntity.getType().is(CHTags.EntityTypes.REAPER_CONVERT) || livingEntity instanceof AbstractVillager || livingEntity instanceof AbstractIllager || livingEntity instanceof Witch || livingEntity instanceof Zombie;
     }
 
     public static void convertTechno(Mob original) {
@@ -190,12 +190,16 @@ public class MobUtil {
                 convert = original.convertTo(CHEntityType.HEART_OF_DECAY.get(), false);
             }
             if (MobUtil.isReaperConvert(original)) {
-                convert = original.convertTo(CHEntityType.EX_REAPER.get(), false);
+                if (serverLevel.getRandom().nextBoolean()) {
+                    convert = original.convertTo(CHEntityType.FLESH_MAIDEN.get(), false);
+                } else {
+                    convert = original.convertTo(CHEntityType.EX_REAPER.get(), false);
+                }
             }
             if (convert != null) {
                 convert.removeAllEffects();
                 ForgeEventFactory.onFinalizeSpawn(convert, serverLevel, serverLevel.getCurrentDifficultyAt(convert.blockPosition()), MobSpawnType.CONVERSION, null, null);
-                serverLevel.sendParticles(new BloodSplashParticleOption(3.0F, 0), convert.getX(), convert.getY() + 1.0D, convert.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
+                serverLevel.sendParticles(new BloodSplashParticleOption(((float)convert.getBoundingBox().getSize() * 2.0F), 0), convert.getX(), convert.getY() + 1.0D, convert.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
                 serverLevel.playSound(null, convert.getX(), convert.getY(), convert.getZ(), CHSounds.FLESH_RUPTURE_ENDING.get(), convert.getSoundSource(), 2.0F, 1.0F);
             }
         }

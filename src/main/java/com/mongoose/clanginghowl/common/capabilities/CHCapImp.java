@@ -9,6 +9,7 @@ public class CHCapImp implements ICHCap {
     private BlockPos miningPos = null;
     private int shakeTime = 0;
     private boolean moving = false;
+    private float resist = 0;
 
     @Override
     public int getMiningProgress() {
@@ -48,5 +49,15 @@ public class CHCapImp implements ICHCap {
     @Override
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+
+    @Override
+    public float technoResist() {
+        return this.resist;
+    }
+
+    @Override
+    public void setTechnoResist(float resist) {
+        this.resist = resist;
     }
 }

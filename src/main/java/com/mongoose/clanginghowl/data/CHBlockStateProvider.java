@@ -41,6 +41,7 @@ public class CHBlockStateProvider extends BlockStateProvider {
         slabBlockWithItem((SlabBlock) CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_SLAB.get(), ClangingHowl.location("block/extraterrestrial_stone_bricks"));
         slabBlockWithItem((SlabBlock) CHBlocks.CARVED_STEEL_PLATE_SLAB.get(), ClangingHowl.location("block/carved_steel_plate_block"));
         slabBlockWithItem((SlabBlock) CHBlocks.CALCITE_TILE_SLAB.get(), ClangingHowl.location("block/calcite_tiles"));
+        slabBlockWithItem((SlabBlock) CHBlocks.TECHNO_FLESH_SLAB.get(), ClangingHowl.location("block/techno_flesh_block_ordinary"));
 
         stairsBlockWithItem((StairBlock) CHBlocks.EXTRATERRESTRIAL_STONE_STAIRS.get(), ClangingHowl.location("block/extraterrestrial_stone"));
         stairsBlockWithItem((StairBlock) CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_STAIRS.get(), ClangingHowl.location("block/smooth_extraterrestrial_stone"));

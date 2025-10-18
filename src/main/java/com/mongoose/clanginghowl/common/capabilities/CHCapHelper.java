@@ -51,6 +51,15 @@ public class CHCapHelper {
         getCapability(livingEntity).setMoving(moving);
     }
 
+    public static float getTechnoResist(LivingEntity livingEntity){
+        return getCapability(livingEntity).technoResist();
+    }
+
+    public static void setTechnoResist(LivingEntity livingEntity, float resist){
+        getCapability(livingEntity).setTechnoResist(resist);
+        sendCHCapUpdatePacket(livingEntity);
+    }
+
     public static void sendCHCapUpdatePacket(LivingEntity livingEntity) {
         if (!livingEntity.level().isClientSide()) {
             CHNetwork.sentToTrackingEntityAndPlayer(livingEntity, new CHCapUpdatePacket(livingEntity));
@@ -68,6 +77,9 @@ public class CHCapHelper {
         }
         tag.putInt("shakeTime", cap.getShakeTime());
         tag.putBoolean("isMoving", cap.isMoving());
+        if (cap.technoResist() > 0.0F) {
+            tag.putFloat("technoResist", cap.technoResist());
+        }
         return tag;
     }
 
@@ -83,6 +95,9 @@ public class CHCapHelper {
         }
         if (tag.contains("isMoving")){
             cap.setMoving(tag.getBoolean("isMoving"));
+        }
+        if (tag.contains("technoResist")){
+            cap.setTechnoResist(tag.getFloat("technoResist"));
         }
         return cap;
     }

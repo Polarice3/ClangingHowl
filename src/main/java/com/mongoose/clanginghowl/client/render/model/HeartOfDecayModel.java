@@ -128,8 +128,6 @@ public class HeartOfDecayModel<T extends Entity> extends HierarchicalModel<T> {
 	@Override
 	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		/*this.body_main.yRot = netHeadYaw * ((float)Math.PI / 180F);
-		this.body_main.xRot = headPitch * ((float)Math.PI / 180F);*/
 		if (entity instanceof HeartOfDecay hod){
 			this.animate(hod.idleAnimationState, HeartOfDecayAnimations.IDLE, ageInTicks);
 			this.animateWalk(HeartOfDecayAnimations.WALK, limbSwing, limbSwingAmount, 2.5F, 20.0F);

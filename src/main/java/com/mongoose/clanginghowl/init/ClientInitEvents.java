@@ -3,13 +3,11 @@ package com.mongoose.clanginghowl.init;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.client.gui.screen.inventory.PortableChargerScreen;
 import com.mongoose.clanginghowl.client.inventory.menu.CHMenuTypes;
-import com.mongoose.clanginghowl.client.render.CHModelLayer;
-import com.mongoose.clanginghowl.client.render.ExReaperRenderer;
-import com.mongoose.clanginghowl.client.render.HeartOfDecayRenderer;
-import com.mongoose.clanginghowl.client.render.SpitProjectileRenderer;
+import com.mongoose.clanginghowl.client.render.*;
 import com.mongoose.clanginghowl.client.render.block.CHBlockEntityRenderer;
 import com.mongoose.clanginghowl.client.render.block.ChargingStationRenderer;
 import com.mongoose.clanginghowl.client.render.model.ExtraterrestrialReaperModel;
+import com.mongoose.clanginghowl.client.render.model.FleshMaidenModel;
 import com.mongoose.clanginghowl.client.render.model.HeartOfDecayModel;
 import com.mongoose.clanginghowl.client.render.model.SpitProjectileModel;
 import com.mongoose.clanginghowl.common.blocks.entities.CHBlockEntities;
@@ -45,6 +43,7 @@ public class ClientInitEvents {
         event.registerLayerDefinition(CHModelLayer.SPIT, SpitProjectileModel::createBodyLayer);
         event.registerLayerDefinition(CHModelLayer.HEART_OF_DECAY, HeartOfDecayModel::createBodyLayer);
         event.registerLayerDefinition(CHModelLayer.EXTRATERRESTRIAL_REAPER, ExtraterrestrialReaperModel::createBodyLayer);
+        event.registerLayerDefinition(CHModelLayer.FLESH_MAIDEN, FleshMaidenModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -54,5 +53,6 @@ public class ClientInitEvents {
         event.registerEntityRenderer(CHEntityType.SPIT_PROJECTILE.get(), SpitProjectileRenderer::new);
         event.registerEntityRenderer(CHEntityType.HEART_OF_DECAY.get(), HeartOfDecayRenderer::new);
         event.registerEntityRenderer(CHEntityType.EX_REAPER.get(), ExReaperRenderer::new);
+        event.registerEntityRenderer(CHEntityType.FLESH_MAIDEN.get(), FleshMaidenRenderer::new);
     }
 }

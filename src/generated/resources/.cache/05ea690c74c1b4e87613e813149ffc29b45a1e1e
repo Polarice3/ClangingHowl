@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-08T16:14:35.6232708	Tags for minecraft:item mod id clanginghowl
+// 1.20.1	2025-10-18T12:26:41.1260042	Tags for minecraft:item mod id clanginghowl
 11e9d5a7714e5ee1e9598a64bb63d5b772224ecb data/forge/tags/items/ingots.json
 6d426330a072e38b90ecf950aa17e6d5822c6e05 data/forge/tags/items/nuggets.json
 390dfc79e733dc4e1873eb635a66c7a8d4ace6b3 data/forge/tags/items/tools.json
@@ -6,7 +6,7 @@ ee374f1b2afc9204f5b6d9a8b6093afecd089946 data/minecraft/tags/items/axes.json
 9f7684c1c2304d5ec0a286f2628e170d219b51d5 data/minecraft/tags/items/hoes.json
 298685f516cd86929f104819ed99f28f30090c23 data/minecraft/tags/items/pickaxes.json
 49a3e9f5798a53e55ffe4b721c1385e1e0fa963b data/minecraft/tags/items/shovels.json
-93762b08d4006c99dfedadc1c8286798c4e0b25a data/minecraft/tags/items/slabs.json
+ee092f8ba8814eec6d56f3017b221ff4857bda5a data/minecraft/tags/items/slabs.json
 2d6d007c326ccc70e0a25821bc410e8a7db7b8fd data/minecraft/tags/items/stairs.json
 e44e07cadba2e2dfebd61661f516d292be776f4e data/minecraft/tags/items/swords.json
 14c0ed571131e24558fc7e59a5ff22b8cd98aeb7 data/minecraft/tags/items/walls.json

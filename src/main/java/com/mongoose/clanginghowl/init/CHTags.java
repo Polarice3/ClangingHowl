@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -38,6 +39,21 @@ public class CHTags {
 
         private static TagKey<EntityType<?>> create(ResourceLocation p_215874_) {
             return TagKey.create(ForgeRegistries.ENTITY_TYPES.getRegistryKey(), p_215874_);
+        }
+    }
+
+    public static class Biomes {
+        public static final TagKey<Biome> COMMON_BLACKLIST = tag("mob_spawn/common_blacklist");
+        public static final TagKey<Biome> HOD_SPAWN = tag("mob_spawn/heart_of_decay");
+        public static final TagKey<Biome> EX_REAPER_SPAWN = tag("mob_spawn/ex_reaper");
+        public static final TagKey<Biome> FLESH_MAIDEN_SPAWN = tag("mob_spawn/flesh_maiden");
+
+        private static TagKey<Biome> tag(String name) {
+            return create(ClangingHowl.location(name));
+        }
+
+        private static TagKey<Biome> create(ResourceLocation p_215874_) {
+            return TagKey.create(ForgeRegistries.BIOMES.getRegistryKey(), p_215874_);
         }
     }
 }

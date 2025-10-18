@@ -2,11 +2,13 @@ package com.mongoose.clanginghowl.common.entities.hostiles;
 
 import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.entities.projectiles.SpitProjectile;
+import com.mongoose.clanginghowl.config.CHConfig;
 import com.mongoose.clanginghowl.init.CHSounds;
 import com.mongoose.clanginghowl.init.CHTags;
 import com.mongoose.clanginghowl.utils.CHUUIDUtil;
 import com.mongoose.clanginghowl.utils.MathHelper;
 import com.mongoose.clanginghowl.utils.MobUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -17,6 +19,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -122,6 +126,13 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
         }
     }
 
+    public static boolean checkHoDSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor levelAccessor, MobSpawnType spawnType, BlockPos blockPos, RandomSource randomSource) {
+        if (CHConfig.HoDDaySpawn.get() >= 0 && levelAccessor.dayTime() >= CHConfig.HoDDaySpawn.get()) {
+            return levelAccessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(levelAccessor, blockPos, randomSource) && checkMobSpawnRules(entityType, levelAccessor, spawnType, blockPos, randomSource);
+        }
+        return false;
+    }
+
     @Override
     public boolean canAttack(LivingEntity p_21171_) {
         return super.canAttack(p_21171_) && !p_21171_.hasEffect(CHEffects.BEYOND_FLESH.get());
@@ -194,6 +205,7 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
             if (this.level().isClientSide){
                 switch (this.entityData.get(ANIM_STATE)){
                     case 0:
+                        this.stopAllAnimation();
                         break;
                     case 1:
                         this.stopAllAnimation();
@@ -238,7 +250,6 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         this.setPose(Pose.EMERGING);
-        MobUtil.buffTechnoFlesh(pLevel.getLevel(), this);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
     }
 
@@ -324,6 +335,7 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
                 this.setAnimationState(ATTACK);
                 if (entityIn instanceof LivingEntity livingEntity) {
                     if (MobUtil.isTechnoConvert(livingEntity)) {
+                        this.playSound(CHSounds.INFECT.get(), 1.0F, 1.0F);
                         int time = 1000;
                         if (livingEntity instanceof Zombie) {
                             time = 300;
@@ -350,7 +362,7 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
         public HeartOfDecay heartOfDecay;
 
         public HoDAttackGoal(HeartOfDecay p_33822_) {
-            super(p_33822_, 1.0F, true);
+            super(p_33822_, 1.1F, true);
             this.heartOfDecay = p_33822_;
         }
 

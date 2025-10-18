@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "clanginghowl:block/techno_flesh_block_ordinary"
+    },
+    "age=1": {
+      "model": "clanginghowl:block/techno_flesh_block_bony"
+    },
+    "age=2": {
+      "model": "clanginghowl:block/techno_flesh_block_metallic"
+    },
+    "age=3": {
+      "model": "clanginghowl:block/techno_flesh_block_toothy"
+    },
+    "age=4": {
+      "model": "clanginghowl:block/techno_flesh_block_wired"
+    }
+  }
+}

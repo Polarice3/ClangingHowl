@@ -2,7 +2,6 @@ package com.mongoose.clanginghowl.client.particles;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.particles.SimpleParticleType;
 
 public class InfectionParticle extends TextureSheetParticle {
@@ -20,10 +19,6 @@ public class InfectionParticle extends TextureSheetParticle {
         this.yd = vy * 0.0F;
         this.zd = vz * 0.0F;
         this.setSpriteFromAge(spriteSet);
-    }
-
-    public int getLightColor(float partialTick) {
-        return LightTexture.FULL_BRIGHT;
     }
 
     @Override

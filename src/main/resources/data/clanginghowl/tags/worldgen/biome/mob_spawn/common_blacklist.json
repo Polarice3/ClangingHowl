@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:is_mushroom",
+    "#forge:is_hot",
+    "minecraft:deep_dark",
+    {
+      "id": "#alexscaves:alexs_caves_biomes",
+      "required": false
+    }
+  ]
+}

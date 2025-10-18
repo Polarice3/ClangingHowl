@@ -2,10 +2,7 @@ package com.mongoose.clanginghowl.common.events;
 
 import com.google.common.collect.ImmutableList;
 import com.mongoose.clanginghowl.ClangingHowl;
-import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
-import com.mongoose.clanginghowl.client.particles.ElectricShockParticleOption;
-import com.mongoose.clanginghowl.client.particles.ElectricSplashParticleOption;
-import com.mongoose.clanginghowl.client.particles.FieryExplosionParticleOption;
+import com.mongoose.clanginghowl.client.particles.*;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
 import com.mongoose.clanginghowl.common.capabilities.CHCapProvider;
 import com.mongoose.clanginghowl.common.capabilities.ICHCap;
@@ -34,6 +31,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -91,9 +89,9 @@ public class CHEvents {
             if (instance != null) {
                 int duration = instance.getDuration();
                 if (livingEntity.level() instanceof ServerLevel serverLevel) {
-                    if (duration % 200 == 0) {
+                    if (duration % 200 == 0 || duration <= 100) {
                         for (int i = 0; i < serverLevel.getRandom().nextIntBetweenInclusive(1, 3); ++i) {
-                            serverLevel.sendParticles(CHParticleTypes.INFECTION.get(), livingEntity.getRandomX(0.5D), livingEntity.getRandomY(), livingEntity.getRandomZ(0.5D), 1, 0.0D, 0.0D, 0.0D, 0);
+                            serverLevel.sendParticles(CHParticleTypes.INFECTION.get(), livingEntity.getRandomX(0.5D), livingEntity.getRandomY() + 0.5D, livingEntity.getRandomZ(0.5D), 1, 0.0D, 0.0D, 0.0D, 0);
                         }
                     }
                     if (livingEntity instanceof Mob mob && mob.isAlive()) {
@@ -102,6 +100,7 @@ public class CHEvents {
                                 serverLevel.playSound(null, mob.getX(), mob.getY(), mob.getZ(), CHSounds.FLESH_RUPTURE_BEGINNING.get(), mob.getSoundSource(), 1.0F, 1.0F);
                             }
                             CHCapHelper.setShakeTime(mob, 20);
+                            mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 5, 1, false, false));
                         }
 
                         if (duration <= 60) {
@@ -178,6 +177,25 @@ public class CHEvents {
     }
 
     @SubscribeEvent
+    public static void onDamage(LivingDamageEvent event) {
+        LivingEntity victim = event.getEntity();
+        if (event.getAmount() > 0.0F) {
+            if (CHCapHelper.getTechnoResist(victim) > 0.0F && !victim.isOnFire()) {
+                float percent = CHCapHelper.getTechnoResist(victim) / 100.0F;
+                float calc = 1.0F - percent;
+                event.setAmount(event.getAmount() * calc);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        if (event.getEntity().getType().is(CHTags.EntityTypes.TECHNO_FLESH)) {
+            MobUtil.buffTechnoFlesh(event.getLevel().getLevel(), event.getEntity());
+        }
+    }
+
+    @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         LivingEntity victim = event.getEntity();
         Entity directEntity = event.getSource().getDirectEntity();
@@ -234,10 +252,12 @@ public class CHEvents {
             }
         }
         if (victim.level() instanceof ServerLevel serverLevel) {
-            if (victim.hasEffect(CHEffects.BEYOND_FLESH.get())) {
+            if (victim.hasEffect(CHEffects.BEYOND_FLESH.get()) && !victim.isOnFire()) {
+                serverLevel.sendParticles(new BloodSplashParticleOption(1.0F, 0), victim.getX(), victim.getY() + 1.0D, victim.getZ(), 1, 0, 0, 0, 0);
                 HeartOfDecay heartOfDecay = new HeartOfDecay(CHEntityType.HEART_OF_DECAY.get(), victim.level());
                 heartOfDecay.setPos(victim.position().add(0.0D, 1.0D, 0.0D));
                 ForgeEventFactory.onFinalizeSpawn(heartOfDecay, serverLevel, serverLevel.getCurrentDifficultyAt(victim.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+                heartOfDecay.playSound(CHSounds.FLESH_TEAR.get(), 1.0F, 1.0F);
                 serverLevel.addFreshEntity(heartOfDecay);
             }
         }
@@ -283,9 +303,16 @@ public class CHEvents {
     @SubscribeEvent
     public static void onInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getLevel() instanceof ServerLevel) {
-            if (event.getTarget() instanceof Mob mob && mob.isAlive()) {
+            if (event.getTarget() instanceof Mob mob && mob.isAlive() && !(mob instanceof Enemy)) {
                 if (mob.hasEffect(CHEffects.BEYOND_FLESH.get())) {
-                    MobUtil.convertTechno(mob);
+                    MobEffectInstance instance = mob.getEffect(CHEffects.BEYOND_FLESH.get());
+                    if (instance != null) {
+                        int duration = instance.getDuration();
+                        if (duration > 100) {
+                            mob.removeEffect(CHEffects.BEYOND_FLESH.get());
+                            mob.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), 99, 0, false, false));
+                        }
+                    }
                 }
             }
         }

@@ -53,6 +53,8 @@ public class CHItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> DIAMOND_DIODE = ITEMS.register("diamond_diode",
             () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> CHUNK_OF_TECHNO_FLESH = ITEMS.register("chunk_of_techno_flesh",
+            () -> new Item(new Item.Properties()));
 
     //Batteries
     public static final RegistryObject<EnergyItem> ENERGY_BATTERY = ITEMS.register("energy_battery",
@@ -132,6 +134,9 @@ public class CHItems {
 
     public static final RegistryObject<ForgeSpawnEggItem> EX_REAPER_SPAWN_EGG = ITEMS.register("extraterrestrial_reaper_spawn_egg",
             () -> new ForgeSpawnEggItem(CHEntityType.EX_REAPER, 0x621224, 0xbc636b, new Item.Properties()));
+
+    public static final RegistryObject<ForgeSpawnEggItem> FLESH_MAIDEN_SPAWN_EGG = ITEMS.register("flesh_maiden_spawn_egg",
+            () -> new ForgeSpawnEggItem(CHEntityType.FLESH_MAIDEN, 0x5a3f3d, 0x637883, new Item.Properties()));
 
     public static boolean shouldSkipCreativeModTab(Item item) {
         return item instanceof EnergyItem || item instanceof IFuel;

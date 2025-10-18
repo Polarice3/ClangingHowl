@@ -2,7 +2,6 @@ package com.mongoose.clanginghowl.client.particles;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
-import net.minecraft.client.renderer.LightTexture;
 
 public class BloodSplashParticle extends TextureSheetParticle {
    private int speed;
@@ -22,10 +21,6 @@ public class BloodSplashParticle extends TextureSheetParticle {
 
    public float getQuadSize(float p_234003_) {
       return this.quadSize;
-   }
-
-   public int getLightColor(float p_233983_) {
-      return LightTexture.FULL_BRIGHT;
    }
 
    public ParticleRenderType getRenderType() {

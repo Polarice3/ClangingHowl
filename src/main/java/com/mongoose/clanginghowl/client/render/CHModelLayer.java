@@ -13,6 +13,7 @@ public class CHModelLayer {
 
     public static final ModelLayerLocation HEART_OF_DECAY = register("heart_of_decay");
     public static final ModelLayerLocation EXTRATERRESTRIAL_REAPER = register("extraterrestrial_reaper");
+    public static final ModelLayerLocation FLESH_MAIDEN = register("flesh_maiden");
 
     private static ModelLayerLocation register(String p_171294_) {
         return register(p_171294_, "main");

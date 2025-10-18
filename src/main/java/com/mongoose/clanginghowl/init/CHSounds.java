@@ -16,12 +16,20 @@ public class CHSounds {
 
     public static final RegistryObject<SoundEvent> TECHNO_FLESH_IDLE = create("techno_flesh_idle");
     public static final RegistryObject<SoundEvent> TECHNO_FLESH_HURT = create("techno_flesh_hurt");
+    public static final RegistryObject<SoundEvent> TECHNO_FLESH_STEP = create("techno_flesh_step");
     public static final RegistryObject<SoundEvent> TECHNO_FLESH_DEATH = create("techno_flesh_death");
 
     public static final RegistryObject<SoundEvent> HEART_OF_DECAY_DEATH = create("heart_of_decay_death");
 
+    public static final RegistryObject<SoundEvent> FLESH_WHIPPING = create("flesh_whipping");
+    public static final RegistryObject<SoundEvent> FLESH_MAIDEN_DEATH = create("flesh_maiden_death");
+
+    public static final RegistryObject<SoundEvent> INJECT = create("inject");
+    public static final RegistryObject<SoundEvent> INFECT = create("infect");
+
     public static final RegistryObject<SoundEvent> FLESH_RUPTURE_BEGINNING = create("flesh_rupture_beginning");
     public static final RegistryObject<SoundEvent> FLESH_RUPTURE_ENDING = create("flesh_rupture_ending");
+    public static final RegistryObject<SoundEvent> FLESH_TEAR = create("flesh_tear");
 
     public static final RegistryObject<SoundEvent> DRILLING = create("drilling");
 

@@ -2,6 +2,7 @@ package com.mongoose.clanginghowl.common.entities;
 
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.common.entities.hostiles.ExReaper;
+import com.mongoose.clanginghowl.common.entities.hostiles.FleshMaiden;
 import com.mongoose.clanginghowl.common.entities.hostiles.HeartOfDecay;
 import com.mongoose.clanginghowl.common.entities.projectiles.SpitProjectile;
 import net.minecraft.world.entity.Entity;
@@ -27,6 +28,11 @@ public class CHEntityType {
 
     public static final RegistryObject<EntityType<ExReaper>> EX_REAPER = register("extraterrestrial_reaper",
             EntityType.Builder.of(ExReaper::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8));
+
+    public static final RegistryObject<EntityType<FleshMaiden>> FLESH_MAIDEN = register("flesh_maiden",
+            EntityType.Builder.of(FleshMaiden::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8));
 

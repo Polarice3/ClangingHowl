@@ -24,6 +24,23 @@
     ],
     "subtitle": "subtitle.clanginghowl.techno_flesh_hurt"
   },
+  "techno_flesh_step": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/techno_flesh_steps"
+      },
+      {
+        "name": "clanginghowl:entity/techno_flesh_steps_2"
+      },
+      {
+        "name": "clanginghowl:entity/techno_flesh_steps_3"
+      },
+      {
+        "name": "clanginghowl:entity/techno_flesh_steps_4"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.techno_flesh_step"
+  },
   "techno_flesh_death": {
     "sounds": [
       {
@@ -40,6 +57,38 @@
     ],
     "subtitle": "subtitle.clanginghowl.heart_of_decay_death"
   },
+  "flesh_whipping": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/flesh_whipping"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.flesh_whipping"
+  },
+  "flesh_maiden_death": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/flesh_maiden_death"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.flesh_maiden_death"
+  },
+  "inject": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/techno_flesh_damage2"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.inject"
+  },
+  "infect": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/techno_flesh_damage3"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.infect"
+  },
   "flesh_rupture_beginning": {
     "sounds": [
       {
@@ -55,6 +104,14 @@
       }
     ],
     "subtitle": "subtitle.clanginghowl.flesh_rupture_ending"
+  },
+  "flesh_tear": {
+    "sounds": [
+      {
+        "name": "clanginghowl:entity/rapid_tearing_of_flesh"
+      }
+    ],
+    "subtitle": "subtitle.clanginghowl.flesh_tear"
   },
   "drilling": {
     "sounds": [

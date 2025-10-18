@@ -17,6 +17,7 @@
   "item.clanginghowl.chainsaw_teeth": "Chainsaw Teeth",
   "item.clanginghowl.redstone_wire": "Redstone Wire",
   "item.clanginghowl.diamond_diode": "Diamond Diode",
+  "item.clanginghowl.chunk_of_techno_flesh": "Chunk of Techno Flesh",
 
   "item.clanginghowl.extraterrestrial_sword": "§eExtraterrestrial Sword",
   "item.clanginghowl.extraterrestrial_shovel": "§eExtraterrestrial Shovel",
@@ -40,6 +41,7 @@
 
   "item.clanginghowl.heart_of_decay_spawn_egg": "Heart of Decay Spawn Egg",
   "item.clanginghowl.extraterrestrial_reaper_spawn_egg": "Extraterrestrial Reaper Spawn Egg",
+  "item.clanginghowl.flesh_maiden_spawn_egg": "Flesh Maiden Spawn Egg",
 
   "block.clanginghowl.extraterrestrial_stone": "Extraterrestrial Stone",
   "block.clanginghowl.extraterrestrial_stone_stairs": "Extraterrestrial Stone Stairs",
@@ -92,6 +94,9 @@
 
   "block.clanginghowl.cracked_calcite_tiles": "Cracked Calcite Tiles",
 
+  "block.clanginghowl.techno_flesh_block": "Techno Flesh Block",
+  "block.clanginghowl.techno_flesh_slab": "Techno Flesh Slab",
+
   "block.clanginghowl.crystal_former": "§eCrystal Former",
   "block.clanginghowl.stationary_charging_station": "§bStationary Charging Station",
 
@@ -99,6 +104,7 @@
 
   "entity.clanginghowl.heart_of_decay":"Heart of Decay",
   "entity.clanginghowl.extraterrestrial_reaper":"Extraterrestrial Reaper",
+  "entity.clanginghowl.flesh_maiden":"Flesh Maiden",
 
   "effect.clanginghowl.cosmic_irradiation": "Cosmic Irradiation",
   "effect.clanginghowl.cosmic_irradiation.description": "Decreases max health by 15%% and attack damage by 10%%; higher levels decreases further.",
@@ -168,8 +174,16 @@
 
   "subtitle.clanginghowl.heart_of_decay_death": "Heart of Decay dies",
 
+  "subtitle.clanginghowl.flesh_whipping": "Flesh whipping",
+  "subtitle.clanginghowl.flesh_maiden_death": "Flesh Maiden dies",
+
+  "subtitle.clanginghowl.inject": "Injection",
+  "subtitle.clanginghowl.infect": "Infection",
+
   "subtitle.clanginghowl.flesh_rupture_beginning": "Flesh rupturing",
   "subtitle.clanginghowl.flesh_rupture_ending": "Flesh ruptures",
+
+  "subtitle.clanginghowl.flesh_tear": "Rapid tearing of flesh",
 
   "subtitle.clanginghowl.drilling": "Drilling",
   "subtitle.clanginghowl.discharged": "Discharged",

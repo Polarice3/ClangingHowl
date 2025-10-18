@@ -1,5 +1,6 @@
-// 1.20.1	2025-10-17T12:06:08.5783588	Item Models: clanginghowl
+// 1.20.1	2025-10-18T21:10:21.8061141	Item Models: clanginghowl
 5fb5c8cc39ea1402b7f03de581047303eb2faf46 assets/clanginghowl/models/item/battery_panel.json
+26739deb08d13a7a477f805844a0528ae36225de assets/clanginghowl/models/item/chunk_of_techno_flesh.json
 6211200d745015d5000b7fc32f4cc10ad988c5cd assets/clanginghowl/models/item/energy_battery.json
 b0684bc36866e3cca9a0d15c16d4766db6f5d9e5 assets/clanginghowl/models/item/energy_intensive_battery.json
 942e980e8a442a17160c77a2fb00796a381eb511 assets/clanginghowl/models/item/extraterrestrial_axe.json
@@ -13,5 +14,6 @@ ffbff3d829563efc8474bdf22da4db1cf0fe7b6f assets/clanginghowl/models/item/extrate
 3845296d9034641f4c8d454af004afa673175b2c assets/clanginghowl/models/item/extraterrestrial_steel_nugget.json
 460185fbdd3e06d9ff8c51753971facc7a06ed5f assets/clanginghowl/models/item/extraterrestrial_steel_plate.json
 dff43a487337cf18ea20ca8f9a5fee2ea21f10b3 assets/clanginghowl/models/item/extraterrestrial_sword.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/clanginghowl/models/item/flesh_maiden_spawn_egg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/clanginghowl/models/item/heart_of_decay_spawn_egg.json
 5ef5b519ef1656bca2e1069ee35f3cec57ccb7ca assets/clanginghowl/models/item/piece_of_extraterrestrial_steel.json

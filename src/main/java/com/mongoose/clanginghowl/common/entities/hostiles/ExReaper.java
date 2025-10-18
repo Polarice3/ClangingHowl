@@ -1,6 +1,7 @@
 package com.mongoose.clanginghowl.common.entities.hostiles;
 
 import com.mongoose.clanginghowl.common.effects.CHEffects;
+import com.mongoose.clanginghowl.config.CHConfig;
 import com.mongoose.clanginghowl.init.CHSounds;
 import com.mongoose.clanginghowl.init.CHTags;
 import com.mongoose.clanginghowl.utils.MathHelper;
@@ -14,7 +15,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -56,16 +58,17 @@ public class ExReaper extends Monster {
 
     public ExReaper(EntityType<? extends Monster> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
+        this.xpReward = 6;
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, false));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, livingEntity -> MobUtil.isReaperTarget(livingEntity) && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, livingEntity -> MobUtil.isReaperConvert(livingEntity) && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     }
 
@@ -74,6 +77,7 @@ public class ExReaper extends Monster {
                 .add(Attributes.MAX_HEALTH, 40.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.24D)
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.ARMOR, 7.0D);
     }
 
@@ -97,6 +101,13 @@ public class ExReaper extends Monster {
         }
     }
 
+    public static boolean checkExReaperSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor levelAccessor, MobSpawnType spawnType, BlockPos blockPos, RandomSource randomSource) {
+        if (CHConfig.ExReaperDaySpawn.get() >= 0 && levelAccessor.dayTime() >= CHConfig.ExReaperDaySpawn.get()) {
+            return levelAccessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(levelAccessor, blockPos, randomSource) && checkMobSpawnRules(entityType, levelAccessor, spawnType, blockPos, randomSource);
+        }
+        return false;
+    }
+
     @Override
     public boolean canAttack(LivingEntity p_21171_) {
         return super.canAttack(p_21171_) && !p_21171_.hasEffect(CHEffects.BEYOND_FLESH.get());
@@ -115,7 +126,7 @@ public class ExReaper extends Monster {
     }
 
     protected SoundEvent getStepSound() {
-        return SoundEvents.ZOMBIE_STEP;
+        return CHSounds.TECHNO_FLESH_STEP.get();
     }
 
     protected void playStepSound(BlockPos p_34316_, BlockState p_34317_) {
@@ -171,6 +182,7 @@ public class ExReaper extends Monster {
             if (this.level().isClientSide){
                 switch (this.entityData.get(ANIM_STATE)){
                     case 0:
+                        this.stopAllAnimation();
                         break;
                     case 1:
                         this.stopAllAnimation();
@@ -215,16 +227,7 @@ public class ExReaper extends Monster {
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
         this.setPose(Pose.EMERGING);
-        MobUtil.buffTechnoFlesh(pLevel.getLevel(), this);
         return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
-    }
-
-    public boolean isMeleeAttacking() {
-        return this.attackTick > 0;
-    }
-
-    public boolean isAppearing() {
-        return this.hasPose(Pose.EMERGING);
     }
 
     public void tick() {
@@ -258,7 +261,7 @@ public class ExReaper extends Monster {
             if (flag) {
                 boolean infect = false;
                 if (entityIn instanceof Mob mob) {
-                    if (MobUtil.isReaperTarget(mob) && mob.getTarget() != this) {
+                    if (MobUtil.isReaperConvert(mob) && mob.getTarget() != this) {
                         infect = true;
                     }
                 }
@@ -266,6 +269,7 @@ public class ExReaper extends Monster {
                 if (!infect) {
                     this.setAnimationState(ATTACK);
                 } else {
+                    this.playSound(CHSounds.INJECT.get(), 1.0F, 1.0F);
                     this.setAnimationState(INFECT);
                     LivingEntity livingEntity = (LivingEntity) entityIn;
                     int time = 300;
@@ -276,6 +280,10 @@ public class ExReaper extends Monster {
                     }
                     livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), time, 0, false, false));
                     this.setTarget(null);
+                    if (livingEntity instanceof Mob mob) {
+                        mob.setTarget(null);
+                        mob.setLastHurtByMob(null);
+                    }
                 }
             }
         }

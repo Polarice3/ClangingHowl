@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "clanginghowl:block/techno_flesh_slab"
+    },
+    "type=double": {
+      "model": "clanginghowl:block/techno_flesh_block_ordinary"
+    },
+    "type=top": {
+      "model": "clanginghowl:block/techno_flesh_slab_top"
+    }
+  }
+}

@@ -89,6 +89,9 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 .add(CHBlocks.CRYSTAL_FORMER.get())
                 .add(CHBlocks.STATIONARY_CHARGING_STATION.get())
                 .replace(false);
+        this.tag(BlockTags.MINEABLE_WITH_HOE)
+                .add(CHBlocks.TECHNO_FLESH_BLOCK.get())
+                .add(CHBlocks.TECHNO_FLESH_SLAB.get());
         this.tag(BlockTags.NEEDS_STONE_TOOL)
                 .add(CHBlocks.METEORITE_STEEL_ORE.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get())
@@ -112,6 +115,7 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_SLAB.get())
                 .add(CHBlocks.CARVED_STEEL_PLATE_SLAB.get())
                 .add(CHBlocks.CALCITE_TILE_SLAB.get())
+                .add(CHBlocks.TECHNO_FLESH_SLAB.get())
                 .replace(false);
         this.tag(BlockTags.WALLS)
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE_WALL.get())

@@ -13,4 +13,6 @@ public interface ICHCap {
     void setShakeTime(int ticks);
     boolean isMoving();
     void setMoving(boolean moving);
+    float technoResist();
+    void setTechnoResist(float resist);
 }

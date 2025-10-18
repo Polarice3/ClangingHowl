@@ -26,6 +26,7 @@ public class CHEntityTypeTagsProvider extends IntrinsicHolderTagsProvider<Entity
                 CHEntityType.SPIT_PROJECTILE.get());
         this.tag(CHTags.EntityTypes.TECHNO_FLESH).add(
                 CHEntityType.HEART_OF_DECAY.get(),
-                CHEntityType.EX_REAPER.get());
+                CHEntityType.EX_REAPER.get(),
+                CHEntityType.FLESH_MAIDEN.get());
     }
 }
