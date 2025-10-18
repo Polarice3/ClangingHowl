@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "item": "clanginghowl:techno_flesh_block"
+      "item": "clanginghowl:technoflesh_block"
     }
   },
   "pattern": [
@@ -11,7 +11,7 @@
   ],
   "result": {
     "count": 6,
-    "item": "clanginghowl:techno_flesh_slab"
+    "item": "clanginghowl:technoflesh_slab"
   },
   "show_notification": false
 }

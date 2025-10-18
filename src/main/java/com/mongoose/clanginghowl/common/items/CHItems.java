@@ -53,7 +53,7 @@ public class CHItems {
             () -> new Item(new Item.Properties()));
     public static final RegistryObject<Item> DIAMOND_DIODE = ITEMS.register("diamond_diode",
             () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)));
-    public static final RegistryObject<Item> CHUNK_OF_TECHNO_FLESH = ITEMS.register("chunk_of_techno_flesh",
+    public static final RegistryObject<Item> CHUNK_OF_TECHNOFLESH = ITEMS.register("chunk_of_technoflesh",
             () -> new Item(new Item.Properties()));
 
     //Batteries

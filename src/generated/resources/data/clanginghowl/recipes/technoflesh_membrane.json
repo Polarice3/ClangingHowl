@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "clanginghowl:chunk_of_techno_flesh"
+    "F": {
+      "item": "clanginghowl:chunk_of_technoflesh"
     }
   },
   "pattern": [
-    "##",
-    "##"
+    "FF"
   ],
   "result": {
-    "item": "clanginghowl:techno_flesh_block"
+    "count": 4,
+    "item": "clanginghowl:technoflesh_membrane"
   },
   "show_notification": false
 }

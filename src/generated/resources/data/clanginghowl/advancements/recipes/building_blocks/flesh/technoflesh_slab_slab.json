@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "clanginghowl:chunk_of_techno_flesh"
+              "clanginghowl:technoflesh_block"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "clanginghowl:flesh/techno_flesh_block"
+        "recipe": "clanginghowl:flesh/technoflesh_slab_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "clanginghowl:flesh/techno_flesh_block"
+      "clanginghowl:flesh/technoflesh_slab_slab"
     ]
   },
   "sends_telemetry_event": false

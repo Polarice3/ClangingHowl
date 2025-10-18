@@ -111,9 +111,10 @@ public class CHBlocks {
     public static final RegistryObject<Block> CRACKED_CALCITE_TILES = register("cracked_calcite_tiles", () -> new Block(BlockBehaviour.Properties.copy(Blocks.CALCITE)));
 
     //Flesh
-    public static final RegistryObject<Block> TECHNO_FLESH_BLOCK = register("techno_flesh_block", FleshBlock::new);
-    public static final RegistryObject<Block> TECHNO_FLESH_SLAB = registerSlabs("techno_flesh_slab",
-            TECHNO_FLESH_BLOCK);
+    public static final RegistryObject<Block> TECHNOFLESH_BLOCK = register("technoflesh_block", FleshBlock::new);
+    public static final RegistryObject<Block> TECHNOFLESH_SLAB = registerSlabs("technoflesh_slab",
+            TECHNOFLESH_BLOCK);
+    public static final RegistryObject<Block> TECHNOFLESH_MEMBRANE = register("technoflesh_membrane", TechnoFleshMembraneBlock::new);
 
     //Tech
     public static final RegistryObject<Block> CRYSTAL_FORMER = register("crystal_former", CrystalFormerBlock::new);

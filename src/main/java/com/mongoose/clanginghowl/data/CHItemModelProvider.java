@@ -29,7 +29,7 @@ public class CHItemModelProvider extends ItemModelProvider {
         this.itemGeneratedModel(CHItems.ENERGY_BATTERY.get());
         this.itemGeneratedModel(CHItems.ENERGY_INTENSIVE_BATTERY.get());
         this.itemGeneratedModel(CHItems.BATTERY_PANEL.get());
-        this.itemGeneratedModel(CHItems.CHUNK_OF_TECHNO_FLESH.get());
+        this.itemGeneratedModel(CHItems.CHUNK_OF_TECHNOFLESH.get());
 
         this.itemHandheldModel(CHItems.EXTRATERRESTRIAL_SWORD.get());
         this.itemHandheldModel(CHItems.EXTRATERRESTRIAL_SHOVEL.get());

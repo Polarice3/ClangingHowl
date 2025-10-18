@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "clanginghowl:block/technoflesh_block_ordinary",
+    "side": "clanginghowl:block/technoflesh_block_ordinary",
+    "top": "clanginghowl:block/technoflesh_block_ordinary"
+  }
+}

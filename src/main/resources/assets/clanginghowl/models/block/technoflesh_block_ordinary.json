@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "clanginghowl:block/techno_flesh_block_toothy"
+    "all": "clanginghowl:block/technoflesh_block_ordinary"
   }
 }

@@ -9,6 +9,7 @@
   },
   "mixins": [
     "EnchantRandomlyFunctionMixin",
+    "FireBlockAccessor",
     "LivingEntityMixin",
     "MobEffectInstanceMixin"
   ],

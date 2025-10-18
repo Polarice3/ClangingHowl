@@ -17,7 +17,7 @@
   "item.clanginghowl.chainsaw_teeth": "Chainsaw Teeth",
   "item.clanginghowl.redstone_wire": "Redstone Wire",
   "item.clanginghowl.diamond_diode": "Diamond Diode",
-  "item.clanginghowl.chunk_of_techno_flesh": "Chunk of Techno Flesh",
+  "item.clanginghowl.chunk_of_technoflesh": "Chunk of Technoflesh",
 
   "item.clanginghowl.extraterrestrial_sword": "§eExtraterrestrial Sword",
   "item.clanginghowl.extraterrestrial_shovel": "§eExtraterrestrial Shovel",
@@ -94,8 +94,9 @@
 
   "block.clanginghowl.cracked_calcite_tiles": "Cracked Calcite Tiles",
 
-  "block.clanginghowl.techno_flesh_block": "Techno Flesh Block",
-  "block.clanginghowl.techno_flesh_slab": "Techno Flesh Slab",
+  "block.clanginghowl.technoflesh_block": "Technoflesh Block",
+  "block.clanginghowl.technoflesh_slab": "Technoflesh Slab",
+  "block.clanginghowl.technoflesh_membrane": "Technoflesh Membrane",
 
   "block.clanginghowl.crystal_former": "§eCrystal Former",
   "block.clanginghowl.stationary_charging_station": "§bStationary Charging Station",

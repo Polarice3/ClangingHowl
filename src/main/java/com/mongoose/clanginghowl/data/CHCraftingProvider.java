@@ -316,6 +316,12 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get()))
                 .showNotification(false)
                 .save(consumer, loc("portable_charger"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CHBlocks.TECHNOFLESH_MEMBRANE.get(), 4)
+                .pattern("FF")
+                .define('F', CHItems.CHUNK_OF_TECHNOFLESH.get())
+                .unlockedBy("has_item", has(CHItems.CHUNK_OF_TECHNOFLESH.get()))
+                .showNotification(false)
+                .save(consumer, loc("technoflesh_membrane"));
 
         smelting(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE.get(), CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get());
         smelting(consumer, "calcite/cracked_calcite_tiles", CHBlocks.CALCITE_TILES.get(), CHBlocks.CRACKED_CALCITE_TILES.get());
@@ -340,14 +346,14 @@ public class CHCraftingProvider extends RecipeProvider {
         twoByTwo(consumer, "ex_steel/steel_plate_block", CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get(), CHBlocks.STEEL_PLATE_BLOCK.get(), 2);
         twoByTwo(consumer, "ex_steel/carved_steel_plate_block", CHBlocks.STEEL_PLATE_BLOCK.get(), CHBlocks.CARVED_STEEL_PLATE_BLOCK.get());
         twoByTwo(consumer, "ex_steel/extraterrestrial_steel_grate", CHBlocks.STEEL_ROD.get(), CHBlocks.EXTRATERRESTRIAL_STEEL_GRATE.get(), 1);
-        twoByTwo(consumer, "flesh/techno_flesh_block", CHItems.CHUNK_OF_TECHNO_FLESH.get(), CHBlocks.TECHNO_FLESH_BLOCK.get(), 1);
+        twoByTwo(consumer, "flesh/technoflesh_block", CHItems.CHUNK_OF_TECHNOFLESH.get(), CHBlocks.TECHNOFLESH_BLOCK.get(), 1);
 
         slabBlock(consumer, "ex_stone/extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE, CHBlocks.EXTRATERRESTRIAL_STONE_SLAB);
         slabBlock(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE, CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_SLAB);
         slabBlock(consumer, "ex_stone/extraterrestrial_stone_bricks", CHBlocks.EXTRATERRESTRIAL_STONE_BRICKS, CHBlocks.EXTRATERRESTRIAL_STONE_BRICK_SLAB);
         slabBlock(consumer, "ex_steel/carved_steel_plate", CHBlocks.CARVED_STEEL_PLATE_BLOCK, CHBlocks.CARVED_STEEL_PLATE_SLAB);
         slabBlock(consumer, "calcite/calcite_tiles", CHBlocks.CALCITE_TILES, CHBlocks.CALCITE_TILE_SLAB);
-        slabBlock(consumer, "flesh/techno_flesh_slab", CHBlocks.TECHNO_FLESH_BLOCK, CHBlocks.TECHNO_FLESH_SLAB);
+        slabBlock(consumer, "flesh/technoflesh_slab", CHBlocks.TECHNOFLESH_BLOCK, CHBlocks.TECHNOFLESH_SLAB);
 
         stairsBlock(consumer, "ex_stone/extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE, CHBlocks.EXTRATERRESTRIAL_STONE_STAIRS);
         stairsBlock(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE, CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_STAIRS);

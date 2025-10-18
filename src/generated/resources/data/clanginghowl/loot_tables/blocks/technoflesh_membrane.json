@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "clanginghowl:techno_flesh_block"
+          "name": "clanginghowl:technoflesh_membrane"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "clanginghowl:blocks/techno_flesh_block"
+  "random_sequence": "clanginghowl:blocks/technoflesh_membrane"
 }

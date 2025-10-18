@@ -19,8 +19,10 @@ import com.mongoose.clanginghowl.common.network.CHNetwork;
 import com.mongoose.clanginghowl.common.world.CHMobSpawnBiomeModifier;
 import com.mongoose.clanginghowl.config.CHConfig;
 import com.mongoose.clanginghowl.init.*;
+import com.mongoose.clanginghowl.mixin.FireBlockAccessor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.BiomeModifier;
@@ -79,6 +81,12 @@ public class ClangingHowl {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         CHNetwork.init();
+        event.enqueueWork(() -> {
+            FireBlockAccessor fireBlockAccessor = (FireBlockAccessor) Blocks.FIRE;
+            fireBlockAccessor.callSetFlammable(CHBlocks.TECHNOFLESH_BLOCK.get(), 5, 20);
+            fireBlockAccessor.callSetFlammable(CHBlocks.TECHNOFLESH_SLAB.get(), 5, 20);
+            fireBlockAccessor.callSetFlammable(CHBlocks.TECHNOFLESH_MEMBRANE.get(), 5, 20);
+        });
     }
 
     private void setupEntityAttributeCreation(final EntityAttributeCreationEvent event) {

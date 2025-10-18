@@ -1,6 +1,7 @@
 {
   "values": [
-    "clanginghowl:techno_flesh_block",
-    "clanginghowl:techno_flesh_slab"
+    "clanginghowl:technoflesh_block",
+    "clanginghowl:technoflesh_slab",
+    "clanginghowl:technoflesh_membrane"
   ]
 }

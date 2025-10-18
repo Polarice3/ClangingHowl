@@ -1,0 +1,17 @@
+{
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "clanginghowl:block/technoflesh_membrane",
+        "membrane": "clanginghowl:block/technoflesh_membrane"
+    },
+    "render_type": "cutout",
+    "elements": [
+        {   "from": [ 0, 0, 0.1 ],
+            "to": [ 16, 16, 0.1 ],
+            "faces": {
+                "north": { "uv": [ 16, 0, 0, 16 ], "texture": "#membrane" },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#membrane" }
+            }
+        }
+    ]
+}
