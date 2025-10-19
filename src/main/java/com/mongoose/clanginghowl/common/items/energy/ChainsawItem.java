@@ -66,7 +66,7 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
     private final Multimap<Attribute, AttributeModifier> attributes;
 
     public ChainsawItem() {
-        super(new Properties());
+        super(new Properties().stacksTo(1));
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 9.0D, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -(4.0F - 0.9F), AttributeModifier.Operation.ADDITION));

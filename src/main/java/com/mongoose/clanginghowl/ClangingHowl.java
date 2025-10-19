@@ -86,6 +86,7 @@ public class ClangingHowl {
             fireBlockAccessor.callSetFlammable(CHBlocks.TECHNOFLESH_BLOCK.get(), 5, 20);
             fireBlockAccessor.callSetFlammable(CHBlocks.TECHNOFLESH_SLAB.get(), 5, 20);
             fireBlockAccessor.callSetFlammable(CHBlocks.TECHNOFLESH_MEMBRANE.get(), 5, 20);
+            fireBlockAccessor.callSetFlammable(CHBlocks.TECHNOFLESH_NEST.get(), 5, 20);
         });
     }
 

@@ -48,7 +48,7 @@ import java.util.function.Predicate;
 public class FlamethrowerItem extends Item implements IFuel{
 
     public FlamethrowerItem() {
-        super(new Properties());
+        super(new Properties().stacksTo(1));
     }
 
     @Override
@@ -137,6 +137,11 @@ public class FlamethrowerItem extends Item implements IFuel{
     @Override
     public int getEnchantmentValue(ItemStack stack) {
         return 10;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return true;
     }
 
     public boolean isFuelBurst(ItemStack stack) {

@@ -64,8 +64,10 @@ public class ExReaper extends Monster {
     protected void registerGoals() {
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, false){
             @Override
-            public boolean canUse() {
-                return super.canUse() && ExReaper.this.attackTick <= 0;
+            protected void checkAndPerformAttack(LivingEntity p_25557_, double p_25558_) {
+                if (ExReaper.this.isCurrentAnimation(IDLE)) {
+                    super.checkAndPerformAttack(p_25557_, p_25558_);
+                }
             }
         });
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0D));

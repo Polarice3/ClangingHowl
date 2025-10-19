@@ -124,6 +124,7 @@ dependencies {
     //Testing Only
     runtimeOnly fg.deobf("curse.maven:yeetus-635427:4680832")
     runtimeOnly fg.deobf("curse.maven:jeed-532286:4599236")
+    runtimeOnly fg.deobf("curse.maven:worldedit-225608:4586218")
     runtimeOnly fg.deobf("curse.maven:mob-battle-mod-268746:6596542")
     runtimeOnly fg.deobf("curse.maven:retro-damage-indicators-1003431:5268035")
     runtimeOnly fg.deobf("curse.maven:kiwi-303657:4688568")

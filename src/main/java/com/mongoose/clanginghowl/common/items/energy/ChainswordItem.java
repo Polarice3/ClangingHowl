@@ -33,7 +33,7 @@ public class ChainswordItem extends EnergyItem {
     private final Multimap<Attribute, AttributeModifier> dischargedModifiers;
 
     public ChainswordItem() {
-        super(new Properties());
+        super(new Properties().stacksTo(1));
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 6.5F, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -(4.0F - 1.6F), AttributeModifier.Operation.ADDITION));
