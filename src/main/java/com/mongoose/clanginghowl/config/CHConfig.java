@@ -11,6 +11,8 @@ public class CHConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Boolean> TechnoFleshBuff;
+
     public static final ForgeConfigSpec.ConfigValue<Integer> HoDSpawnWeight;
     public static final ForgeConfigSpec.ConfigValue<Integer> HoDSpawnMinCount;
     public static final ForgeConfigSpec.ConfigValue<Integer> HoDSpawnMaxCount;
@@ -27,6 +29,10 @@ public class CHConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FleshMaidenDaySpawn;
 
     static {
+        BUILDER.push("General");
+        TechnoFleshBuff = BUILDER.comment("Whether Technoflesh creatures gain buffs as game time goes by, Default: true")
+                        .define("TechnoFleshBuff", true);
+        BUILDER.pop();
         BUILDER.push("Mob Spawn");
             BUILDER.push("Heart of Decay");
             HoDSpawnWeight = BUILDER.comment("Spawn Weight for Heart of Decay, Default: 15")

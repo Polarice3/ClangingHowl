@@ -22,8 +22,9 @@ public class EnergyTreasureEnchantment extends Enchantment {
         return this.getMinCost(p_45105_) + 50;
     }
 
+    //Temp
     public boolean isTreasureOnly() {
-        return true;
+        return false;
     }
 
     @Override

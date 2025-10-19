@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.common.blocks.entities;
 
+import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
 import com.mongoose.clanginghowl.common.entities.CHEntityType;
 import com.mongoose.clanginghowl.common.entities.hostiles.HeartOfDecay;
 import com.mongoose.clanginghowl.init.CHSounds;
@@ -49,6 +50,12 @@ public class FleshNestBlockEntity extends BlockEntity {
                             BlockPos blockPos = this.worldPosition.relative(direction);
                             HeartOfDecay hod = new HeartOfDecay(CHEntityType.HEART_OF_DECAY.get(), this.level);
                             hod.setPos(blockPos.getCenter());
+                            for(int i = 0; i < 20; ++i) {
+                                double d0 = serverLevel.getRandom().nextGaussian() * 0.02D;
+                                double d1 = serverLevel.getRandom().nextGaussian() * 0.02D;
+                                double d2 = serverLevel.getRandom().nextGaussian() * 0.02D;
+                                serverLevel.sendParticles(CHParticleTypes.CRIMSON_POOF.get(), hod.getRandomX(1.0D), hod.getRandomY(), hod.getRandomZ(1.0D), 0, d0, d1, d2, 1.0D);
+                            }
                             ForgeEventFactory.onFinalizeSpawn(hod, serverLevel, serverLevel.getCurrentDifficultyAt(this.worldPosition), MobSpawnType.SPAWNER, null, null);
                             if (serverLevel.addFreshEntity(hod)) {
                                 serverLevel.playSound(null, hod.getX(), hod.getY(), hod.getZ(), CHSounds.FLESH_TEAR.get(), hod.getSoundSource(), 1.0F, 1.0F);

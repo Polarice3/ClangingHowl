@@ -19,6 +19,7 @@ import com.mongoose.clanginghowl.common.items.energy.EnergyItem;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
 import com.mongoose.clanginghowl.common.network.CHNetwork;
 import com.mongoose.clanginghowl.common.network.client.CIsMovingPacket;
+import com.mongoose.clanginghowl.config.CHConfig;
 import com.mongoose.clanginghowl.init.CHSounds;
 import com.mongoose.clanginghowl.init.CHTags;
 import com.mongoose.clanginghowl.utils.*;
@@ -190,7 +191,7 @@ public class CHEvents {
 
     @SubscribeEvent
     public static void onSpawn(MobSpawnEvent.FinalizeSpawn event) {
-        if (event.getEntity().getType().is(CHTags.EntityTypes.TECHNO_FLESH)) {
+        if (event.getEntity().getType().is(CHTags.EntityTypes.TECHNO_FLESH) && CHConfig.TechnoFleshBuff.get()) {
             MobUtil.buffTechnoFlesh(event.getLevel().getLevel(), event.getEntity());
         }
     }

@@ -251,6 +251,8 @@ public class ExReaper extends Monster {
         }
         if (!this.level().isClientSide) {
             if (this.attackTick > 0) {
+                this.getNavigation().stop();
+                this.moveControl.strafe(0.0F, 0.0F);
                 --this.attackTick;
             } else if (this.isCurrentAnimation(ATTACK) || this.isCurrentAnimation(INFECT)) {
                 this.setAnimationState(IDLE);
