@@ -19,7 +19,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -263,6 +262,16 @@ public class FleshMaiden extends Monster {
             }
             if (this.attackTick > 0) {
                 --this.attackTick;
+                if (this.getTarget() != null) {
+                    if (this.attackTick == 10) {
+                        if (this.isWithinMeleeAttackRange(this.getTarget())) {
+                            this.doHurtTarget(this.getTarget());
+                        }
+                        if (this.isCurrentAnimation(LONG_ATTACK)) {
+                            this.longAttackCool = 120;
+                        }
+                    }
+                }
             } else if (this.isCurrentAnimation(ATTACK) || this.isCurrentAnimation(LONG_ATTACK)) {
                 this.setAnimationState(IDLE);
             }
@@ -270,6 +279,13 @@ public class FleshMaiden extends Monster {
                 --this.longAttackCool;
             }
         }
+    }
+
+    public double getMeleeAttackRangeSqr(LivingEntity target) {
+        if (this.isCurrentAnimation(LONG_ATTACK)) {
+            return super.getMeleeAttackRangeSqr(target) * 4.0F;
+        }
+        return super.getMeleeAttackRangeSqr(target);
     }
 
     @Override
@@ -293,19 +309,17 @@ public class FleshMaiden extends Monster {
 
         @Override
         public boolean canUse() {
-            return super.canUse() && this.maiden.attackTick <= 0 && this.maiden.longAttackCool > 0;
+            return super.canUse() && this.maiden.longAttackCool > 0;
         }
 
         protected void checkAndPerformAttack(LivingEntity target, double distance) {
-            double d0 = this.getAttackReachSqr(target);
-            if (distance <= d0 && this.isTimeToAttack()) {
-                this.resetAttackCooldown();
-                this.mob.swing(InteractionHand.MAIN_HAND);
-                this.mob.doHurtTarget(target);
-                this.maiden.attackTick = 15;
-                this.maiden.setAnimationState(ATTACK);
+            if (this.maiden.isCurrentAnimation(IDLE)) {
+                double d0 = this.getAttackReachSqr(target);
+                if (distance <= d0 && this.isTimeToAttack()) {
+                    this.maiden.attackTick = 15;
+                    this.maiden.setAnimationState(ATTACK);
+                }
             }
-
         }
     }
 
@@ -319,22 +333,19 @@ public class FleshMaiden extends Monster {
 
         @Override
         public boolean canUse() {
-            return super.canUse() && this.maiden.attackTick <= 0 && this.maiden.longAttackCool <= 0;
+            return super.canUse() && this.maiden.longAttackCool <= 0;
         }
 
         protected void checkAndPerformAttack(LivingEntity target, double distance) {
-            double d0 = this.getAttackReachSqr(target);
-            if (distance <= d0 && this.isTimeToAttack()) {
-                MobUtil.instaLook(this.mob, target);
-                this.resetAttackCooldown();
-                this.mob.swing(InteractionHand.MAIN_HAND);
-                this.mob.doHurtTarget(target);
-                this.maiden.attackTick = 15;
-                this.maiden.playSound(CHSounds.FLESH_WHIPPING.get(), this.maiden.getSoundVolume(), this.maiden.getVoicePitch());
-                this.maiden.setAnimationState(LONG_ATTACK);
-                this.maiden.longAttackCool = 120;
+            if (this.maiden.isCurrentAnimation(IDLE)) {
+                double d0 = this.getAttackReachSqr(target);
+                if (distance <= d0 && this.isTimeToAttack()) {
+                    MobUtil.instaLook(this.mob, target);
+                    this.maiden.attackTick = 15;
+                    this.maiden.playSound(CHSounds.FLESH_WHIPPING.get(), this.maiden.getSoundVolume(), this.maiden.getVoicePitch());
+                    this.maiden.setAnimationState(LONG_ATTACK);
+                }
             }
-
         }
 
         protected double getAttackReachSqr(LivingEntity target) {

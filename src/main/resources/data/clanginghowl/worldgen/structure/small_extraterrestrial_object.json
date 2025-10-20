@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#clanginghowl:has_structure/small_extraterrestrial_object",
+  "step": "surface_structures",
+  "spawn_overrides": {
+  },
+  "start_pool": "clanginghowl:small_extraterrestrial_object/start_pool",
+  "size": 3,
+  "terrain_adaptation": "beard_thin",
+  "start_height": {
+    "absolute": 0
+  },
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "max_distance_from_center": 80,
+  "use_expansion_hack": true
+}

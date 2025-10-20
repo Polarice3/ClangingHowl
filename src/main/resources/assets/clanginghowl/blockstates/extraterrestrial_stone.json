@@ -1,9 +1,9 @@
 {
   "variants": {
-    "snowy=false": {
+    "overgrown=false": {
       "model": "clanginghowl:block/extraterrestrial_stone"
     },
-    "snowy=true": {
+    "overgrown=true": {
       "model": "clanginghowl:block/extraterrestrial_stone_overgrown"
     }
   }

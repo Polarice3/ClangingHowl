@@ -1,0 +1,22 @@
+{
+  "name": "clanginghowl:medium_extraterrestrial_object/bury",
+
+  "fallback": "minecraft:empty",
+
+  "elements": [
+    {
+
+      "weight": 1,
+      "element": {
+
+        "location": "clanginghowl:medium_extraterrestrial_object_buried",
+
+        "processors": "minecraft:empty",
+
+        "projection": "rigid",
+
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

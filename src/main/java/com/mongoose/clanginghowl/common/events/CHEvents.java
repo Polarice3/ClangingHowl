@@ -181,7 +181,7 @@ public class CHEvents {
     public static void onDamage(LivingDamageEvent event) {
         LivingEntity victim = event.getEntity();
         if (event.getAmount() > 0.0F) {
-            if (CHCapHelper.getTechnoResist(victim) > 0.0F && !victim.isOnFire()) {
+            if (CHCapHelper.getTechnoResist(victim) > 0.0F && !victim.isOnFire() && !event.getSource().is(DamageTypeTags.BYPASSES_RESISTANCE)) {
                 float percent = CHCapHelper.getTechnoResist(victim) / 100.0F;
                 float calc = 1.0F - percent;
                 event.setAmount(event.getAmount() * calc);

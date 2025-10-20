@@ -1,6 +1,7 @@
 package com.mongoose.clanginghowl.common.entities.hostiles;
 
 import com.mongoose.clanginghowl.common.effects.CHEffects;
+import com.mongoose.clanginghowl.common.entities.ai.ModMeleeAttackGoal;
 import com.mongoose.clanginghowl.config.CHConfig;
 import com.mongoose.clanginghowl.init.CHSounds;
 import com.mongoose.clanginghowl.init.CHTags;
@@ -24,7 +25,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -62,11 +62,25 @@ public class ExReaper extends Monster {
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2D, false){
+        this.goalSelector.addGoal(2, new ModMeleeAttackGoal(this, 1.2D, false){
             @Override
             protected void checkAndPerformAttack(LivingEntity p_25557_, double p_25558_) {
                 if (ExReaper.this.isCurrentAnimation(IDLE)) {
-                    super.checkAndPerformAttack(p_25557_, p_25558_);
+                    double d0 = this.getAttackReachSqr(p_25557_);
+                    if (p_25558_ <= d0) {
+                        ExReaper.this.attackTick = 15;
+                        boolean infect = false;
+                        if (ExReaper.this.getTarget() instanceof Mob mob1) {
+                            if (MobUtil.isReaperConvert(mob1) && mob1.getTarget() != ExReaper.this) {
+                                infect = true;
+                            }
+                        }
+                        if (!infect) {
+                            ExReaper.this.setAnimationState(ATTACK);
+                        } else {
+                            ExReaper.this.setAnimationState(INFECT);
+                        }
+                    }
                 }
             }
         });
@@ -256,6 +270,11 @@ public class ExReaper extends Monster {
                 this.getNavigation().stop();
                 this.moveControl.strafe(0.0F, 0.0F);
                 --this.attackTick;
+                if (this.getTarget() != null) {
+                    if (this.attackTick == 10 && this.isWithinMeleeAttackRange(this.getTarget())) {
+                        this.doHurtTarget(this.getTarget());
+                    }
+                }
             } else if (this.isCurrentAnimation(ATTACK) || this.isCurrentAnimation(INFECT)) {
                 this.setAnimationState(IDLE);
             }
@@ -268,16 +287,7 @@ public class ExReaper extends Monster {
 
         if (!this.level().isClientSide) {
             if (flag) {
-                boolean infect = false;
-                if (entityIn instanceof Mob mob) {
-                    if (MobUtil.isReaperConvert(mob) && mob.getTarget() != this) {
-                        infect = true;
-                    }
-                }
-                this.attackTick = 10;
-                if (!infect) {
-                    this.setAnimationState(ATTACK);
-                } else {
+                if (this.isCurrentAnimation(INFECT)) {
                     this.playSound(CHSounds.INJECT.get(), 1.0F, 1.0F);
                     this.setAnimationState(INFECT);
                     LivingEntity livingEntity = (LivingEntity) entityIn;

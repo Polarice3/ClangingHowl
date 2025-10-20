@@ -165,7 +165,7 @@ public class MobUtil {
             if (armor != null) {
                 armor.setBaseValue(armor.getBaseValue() * increase);
             }
-            if (CHCapHelper.getTechnoResist(livingEntity) < 80.0F) {
+            if (CHCapHelper.getTechnoResist(livingEntity) < 65.0F) {
                 CHCapHelper.setTechnoResist(livingEntity, CHCapHelper.getTechnoResist(livingEntity) + buff);
             }
         }

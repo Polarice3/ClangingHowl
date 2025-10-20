@@ -8,16 +8,19 @@ public class InfectionParticle extends TextureSheetParticle {
     private final SpriteSet spriteSet;
 
     protected InfectionParticle(ClientLevel world, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
-        super(world, x, y, z);
+        super(world, x, y, z, vx, vy, vz);
         this.spriteSet = spriteSet;
         this.setSize(0.2f, 0.2f);
         this.quadSize *= 1.5f;
-        this.lifetime = 12; //Equation: (Total Frames * Interval) - 2
+        this.speedUpWhenYMotionIsBlocked = true;
+        this.lifetime = 20; //Equation: (Total Frames * Interval) - 2
         this.gravity = -0.1F;
         this.hasPhysics = false;
-        this.xd = vx * 0.0F;
-        this.yd = vy * 0.0F;
-        this.zd = vz * 0.0F;
+        this.yd *= 0.2F;
+        if (vx == 0.0D && vz == 0.0D) {
+            this.xd *= 0.1F;
+            this.zd *= 0.1F;
+        }
         this.setSpriteFromAge(spriteSet);
     }
 
@@ -30,7 +33,7 @@ public class InfectionParticle extends TextureSheetParticle {
     public void tick() {
         super.tick();
         if (!this.removed) {
-            this.setSprite(this.spriteSet.get((this.age / 2) % 7 + 1, 7));
+            this.setSprite(this.spriteSet.get((this.age / 2) % 11 + 1, 11));
         }
     }
 

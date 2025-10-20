@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "clanginghowl:medium_extraterrestrial_object",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 717942018,
+    "spacing": 70,
+    "separation": 5,
+    "type": "minecraft:random_spread"
+  }
+}
