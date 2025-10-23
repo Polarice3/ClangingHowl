@@ -123,7 +123,7 @@ public class ExReaper extends Monster {
     }
 
     public static boolean checkExReaperSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor levelAccessor, MobSpawnType spawnType, BlockPos blockPos, RandomSource randomSource) {
-        if (CHConfig.ExReaperDaySpawn.get() >= 0 && levelAccessor.dayTime() >= CHConfig.ExReaperDaySpawn.get()) {
+        if (CHConfig.ExReaperDaySpawn.get() >= 0 && levelAccessor.dayTime() >= MathHelper.minecraftDayToTicks(CHConfig.ExReaperDaySpawn.get())) {
             return levelAccessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(levelAccessor, blockPos, randomSource) && checkMobSpawnRules(entityType, levelAccessor, spawnType, blockPos, randomSource);
         }
         return false;

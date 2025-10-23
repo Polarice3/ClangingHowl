@@ -135,7 +135,7 @@ public class FleshMaiden extends Monster {
     }
 
     public static boolean checkFleshMaidenSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor levelAccessor, MobSpawnType spawnType, BlockPos blockPos, RandomSource randomSource) {
-        if (CHConfig.FleshMaidenDaySpawn.get() >= 0 && levelAccessor.dayTime() >= CHConfig.FleshMaidenDaySpawn.get()) {
+        if (CHConfig.FleshMaidenDaySpawn.get() >= 0 && levelAccessor.dayTime() >= MathHelper.minecraftDayToTicks(CHConfig.FleshMaidenDaySpawn.get())) {
             return levelAccessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(levelAccessor, blockPos, randomSource) && checkMobSpawnRules(entityType, levelAccessor, spawnType, blockPos, randomSource);
         }
         return false;

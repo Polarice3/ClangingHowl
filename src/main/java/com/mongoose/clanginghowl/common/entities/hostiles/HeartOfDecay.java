@@ -127,7 +127,7 @@ public class HeartOfDecay extends Spider implements RangedAttackMob {
     }
 
     public static boolean checkHoDSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor levelAccessor, MobSpawnType spawnType, BlockPos blockPos, RandomSource randomSource) {
-        if (CHConfig.HoDDaySpawn.get() >= 0 && levelAccessor.dayTime() >= CHConfig.HoDDaySpawn.get()) {
+        if (CHConfig.HoDDaySpawn.get() >= 0 && levelAccessor.dayTime() >= MathHelper.minecraftDayToTicks(CHConfig.HoDDaySpawn.get())) {
             return levelAccessor.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(levelAccessor, blockPos, randomSource) && checkMobSpawnRules(entityType, levelAccessor, spawnType, blockPos, randomSource);
         }
         return false;
