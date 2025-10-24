@@ -201,5 +201,5 @@
   "death.attack.clanginghowl.fire_stream": "%1$s has been incinerated by %2$s",
   "death.attack.clanginghowl.fire_stream.item": "%1$s has been incinerated by %2$s using %3$s",
   "death.attack.clanginghowl.neurotoxin": "%1$s's nervous system has shut down",
-  "death.attack.clanginghowl.neurotoxin.player": "%1$s's nervous system shuts down while fighting %3$s"
+  "death.attack.clanginghowl.neurotoxin.player": "%1$s's nervous system shuts down while fighting %2$s"
 }
