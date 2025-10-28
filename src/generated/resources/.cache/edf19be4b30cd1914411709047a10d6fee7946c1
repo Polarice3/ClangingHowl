@@ -1,17 +1,18 @@
-// 1.20.1	2025-10-18T23:58:21.2089699	Tags for minecraft:block mod id clanginghowl
+// 1.20.1	2025-10-28T14:14:17.8516119	Tags for minecraft:block mod id clanginghowl
 ddb0f8e177f992af0442b486d5d8c67f5b229d20 data/clanginghowl/tags/blocks/calcite.json
 0fb1efccdf19a613dc45730e342b43afae7ab038 data/clanginghowl/tags/blocks/carved_steel.json
 458b1583af29c8d9f7f1c9439d3d0735c0928417 data/clanginghowl/tags/blocks/energy_cluster.json
-4cc773ace64a479063f338c759df86de0bb6f963 data/clanginghowl/tags/blocks/ex_steel_blocks.json
+524d5e23badf68f69761686b5bc49f9579446bbc data/clanginghowl/tags/blocks/ex_steel_blocks.json
 f59c2722055203824a42a75ce72bdca42b01a520 data/clanginghowl/tags/blocks/ex_stone.json
 70786517be3d452f987c9a9b5418f7fe6763178b data/clanginghowl/tags/blocks/ex_stone_blocks.json
 e3ad7ce28d45eeaa0bc1be4566005950a50f7531 data/clanginghowl/tags/blocks/ex_stone_bricks.json
 83d13947a5fc329d9cddfc37ffc640b138d5d2b8 data/clanginghowl/tags/blocks/smooth_ex_stone.json
+ec0be36de335deab2060a37b1b7b7723a5ab3c77 data/clanginghowl/tags/blocks/technoflesh.json
 d5991b33d987b32add879f482649dcfc834ad2f9 data/forge/tags/blocks/ores.json
 8f8ccee7d3b61668f2a77dd117dc4a6e32441ea8 data/forge/tags/blocks/stone.json
 857712344c9ceaa0a42a36f23102f8bf950926f1 data/minecraft/tags/blocks/doors.json
 33799635f587cb094a9188d5799d0b1926261090 data/minecraft/tags/blocks/infiniburn_overworld.json
-953f30f42733c5aef544ef389f45aaec28063f2c data/minecraft/tags/blocks/mineable/hoe.json
+8452a943f5abd492d2aaae5ad07703531da0a601 data/minecraft/tags/blocks/mineable/hoe.json
 f5dd79d09f3b35477c2548d98a9d866b628e6e31 data/minecraft/tags/blocks/mineable/pickaxe.json
 d5991b33d987b32add879f482649dcfc834ad2f9 data/minecraft/tags/blocks/needs_stone_tool.json
 c3d6d7f29655208203d6930fdd1e53ff0cf7b4b3 data/minecraft/tags/blocks/slabs.json

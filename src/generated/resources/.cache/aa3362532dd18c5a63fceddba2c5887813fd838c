@@ -1,6 +1,8 @@
-// 1.20.1	2025-10-17T22:35:46.4119418	Tags for minecraft:damage_type mod id clanginghowl
+// 1.20.1	2025-10-28T16:39:39.288347	Tags for minecraft:damage_type mod id clanginghowl
 8bf0e7821ecafbadd47a9d03480ee13ffda18ee8 data/minecraft/tags/damage_type/avoids_guardian_thorns.json
 8bf0e7821ecafbadd47a9d03480ee13ffda18ee8 data/minecraft/tags/damage_type/bypasses_armor.json
+2d2b97eb84099a53bd3b29a81d68b74da5782969 data/minecraft/tags/damage_type/bypasses_shield.json
+2d2b97eb84099a53bd3b29a81d68b74da5782969 data/minecraft/tags/damage_type/damages_helmet.json
 bf0c609fed1b322cff44d9dd23d9d1d5f2bda988 data/minecraft/tags/damage_type/is_fire.json
 654af4fc745a4c673fc194b987f2d8b5765c1157 data/minecraft/tags/damage_type/is_lightning.json
 8bf0e7821ecafbadd47a9d03480ee13ffda18ee8 data/minecraft/tags/damage_type/witch_resistant_to.json

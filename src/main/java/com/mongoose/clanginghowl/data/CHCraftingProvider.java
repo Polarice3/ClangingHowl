@@ -37,6 +37,15 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get()))
                 .showNotification(false)
                 .save(consumer, loc("ex_stone/extraterrestrial_column"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CHBlocks.STEEL_BRIDGE.get(), 6)
+                .pattern("###")
+                .pattern("$$$")
+                .pattern("###")
+                .define('#', CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get())
+                .define('$', CHBlocks.STEEL_ROD.get())
+                .unlockedBy("has_item", has(CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get()))
+                .showNotification(false)
+                .save(consumer, loc("ex_steel/steel_bridge"));
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CHBlocks.STEEL_ROD.get(), 4)
                 .pattern("#")
                 .pattern("#")
@@ -322,6 +331,32 @@ public class CHCraftingProvider extends RecipeProvider {
                 .unlockedBy("has_item", has(CHItems.CHUNK_OF_TECHNOFLESH.get()))
                 .showNotification(false)
                 .save(consumer, loc("technoflesh_membrane"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CHBlocks.HANGING_TECHNOFLESH.get(), 6)
+                .pattern("F F")
+                .pattern(" F ")
+                .define('F', CHItems.CHUNK_OF_TECHNOFLESH.get())
+                .unlockedBy("has_item", has(CHItems.CHUNK_OF_TECHNOFLESH.get()))
+                .showNotification(false)
+                .save(consumer, loc("hanging_technoflesh"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CHBlocks.TUBULAR_TECHNOFLESH.get(), 2)
+                .pattern("F")
+                .pattern("F")
+                .define('F', CHBlocks.TECHNOFLESH_BLOCK.get())
+                .unlockedBy("has_item", has(CHBlocks.TECHNOFLESH_BLOCK.get()))
+                .showNotification(false)
+                .save(consumer, loc("tubular_technoflesh"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CHBlocks.CRYOGENIC_ICICLE.get(), 4)
+                .pattern("F")
+                .pattern("F")
+                .define('F', CHItems.CRYOGENIC_FUEL.get())
+                .unlockedBy("has_item", has(CHItems.CRYOGENIC_FUEL.get()))
+                .showNotification(false)
+                .save(consumer, loc("cryogenic_icicle"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, CHBlocks.FROZEN_TECHNOFLESH_BLOCK.get())
+                .requires(CHBlocks.TECHNOFLESH_BLOCK.get())
+                .requires(Blocks.PACKED_ICE)
+                .unlockedBy("has_item", has(CHBlocks.TECHNOFLESH_BLOCK.get()))
+                .save(consumer, loc("frozen_technoflesh"));
 
         smelting(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE.get(), CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get());
         smelting(consumer, "calcite/cracked_calcite_tiles", CHBlocks.CALCITE_TILES.get(), CHBlocks.CRACKED_CALCITE_TILES.get());

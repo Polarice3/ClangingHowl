@@ -176,7 +176,7 @@ public class MobUtil {
     }
 
     public static boolean isHoDConvert(LivingEntity livingEntity) {
-        return livingEntity.getType().is(CHTags.EntityTypes.HOD_CONVERT) || livingEntity instanceof Animal || livingEntity instanceof Spider;
+        return livingEntity.getMaxHealth() <= 25.0D && (livingEntity.getType().is(CHTags.EntityTypes.HOD_CONVERT) || livingEntity instanceof Animal || livingEntity instanceof Spider);
     }
 
     public static boolean isReaperConvert(LivingEntity livingEntity) {

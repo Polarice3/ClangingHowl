@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "F": {
+      "item": "clanginghowl:technoflesh_block"
+    }
+  },
+  "pattern": [
+    "F",
+    "F"
+  ],
+  "result": {
+    "count": 2,
+    "item": "clanginghowl:tubular_technoflesh"
+  },
+  "show_notification": false
+}

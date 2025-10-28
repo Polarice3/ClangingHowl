@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    },
+    "$": {
+      "item": "clanginghowl:steel_rod"
+    }
+  },
+  "pattern": [
+    "###",
+    "$$$",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "clanginghowl:steel_bridge"
+  },
+  "show_notification": false
+}

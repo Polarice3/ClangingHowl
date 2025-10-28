@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "clanginghowl:block/hanging_technoflesh_big_bottom"
+    },
+    "half=upper": {
+      "model": "clanginghowl:block/hanging_technoflesh_big_top"
+    }
+  }
+}

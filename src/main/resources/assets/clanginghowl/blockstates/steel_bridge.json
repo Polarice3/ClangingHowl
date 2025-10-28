@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,alternate=false": {
+      "model": "clanginghowl:block/steel_bridge",
+      "y": 270
+    },
+    "facing=north,alternate=false": {
+      "model": "clanginghowl:block/steel_bridge",
+      "y": 180
+    },
+    "facing=south,alternate=false": {
+      "model": "clanginghowl:block/steel_bridge"
+    },
+    "facing=west,alternate=false": {
+      "model": "clanginghowl:block/steel_bridge",
+      "y": 90
+    },
+    "facing=east,alternate=true": {
+      "model": "clanginghowl:block/steel_bridge_alternate",
+      "y": 270
+    },
+    "facing=north,alternate=true": {
+      "model": "clanginghowl:block/steel_bridge_alternate",
+      "y": 180
+    },
+    "facing=south,alternate=true": {
+      "model": "clanginghowl:block/steel_bridge_alternate"
+    },
+    "facing=west,alternate=true": {
+      "model": "clanginghowl:block/steel_bridge_alternate",
+      "y": 90
+    }
+  }
+}

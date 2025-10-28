@@ -59,6 +59,7 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 .add(CHBlocks.STEEL_PLATE_BLOCK.get())
                 .add(CHBlocks.DAMAGED_STEEL_PLATE_BLOCK.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STEEL_GRATE.get())
+                .add(CHBlocks.STEEL_BRIDGE.get())
                 .add(CHBlocks.STEEL_ROD.get())
                 .add(CHBlocks.STEEL_DOOR.get())
                 .add(CHBlocks.STEEL_TRAPDOOR.get())
@@ -79,6 +80,16 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 .add(CHBlocks.EXTRATERRESTRIAL_ENERGY_CLUSTER.get())
                 .add(CHBlocks.HUGE_EXTRATERRESTRIAL_ENERGY_CLUSTER.get())
                 .replace(false);
+        this.tag(CHTags.Blocks.TECHNOFLESH)
+                .add(CHBlocks.TECHNOFLESH_BLOCK.get())
+                .add(CHBlocks.TECHNOFLESH_SLAB.get())
+                .add(CHBlocks.FROZEN_TECHNOFLESH_BLOCK.get())
+                .add(CHBlocks.TECHNOFLESH_MEMBRANE.get())
+                .add(CHBlocks.HANGING_TECHNOFLESH.get())
+                .add(CHBlocks.BIG_HANGING_TECHNOFLESH.get())
+                .add(CHBlocks.NERVE_ENDINGS.get())
+                .add(CHBlocks.TECHNOFLESH_NEST.get())
+                .replace(false);
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .addTag(CHTags.Blocks.EX_STONE_BLOCKS)
                 .addTag(CHTags.Blocks.EX_STEEL_BLOCKS)
@@ -90,10 +101,8 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
                 .add(CHBlocks.STATIONARY_CHARGING_STATION.get())
                 .replace(false);
         this.tag(BlockTags.MINEABLE_WITH_HOE)
-                .add(CHBlocks.TECHNOFLESH_BLOCK.get())
-                .add(CHBlocks.TECHNOFLESH_SLAB.get())
-                .add(CHBlocks.TECHNOFLESH_MEMBRANE.get())
-                .add(CHBlocks.TECHNOFLESH_NEST.get());
+                .addTag(CHTags.Blocks.TECHNOFLESH)
+                .replace(false);
         this.tag(BlockTags.NEEDS_STONE_TOOL)
                 .add(CHBlocks.METEORITE_STEEL_ORE.get())
                 .add(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get())

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "clanginghowl:block/tubular_technoflesh_top",
+    "side": "clanginghowl:block/tubular_technoflesh"
+  }
+}

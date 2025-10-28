@@ -16,6 +16,9 @@ public class CHBlockEntities {
     public static final RegistryObject<BlockEntityType<ChargingStationBlockEntity>> STATIONARY_CHARGING_STATION = BLOCK_ENTITY.register("stationary_charging_station",
             () -> BlockEntityType.Builder.of(ChargingStationBlockEntity::new, CHBlocks.STATIONARY_CHARGING_STATION.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<NerveEndingsBlockEntity>> NERVE_ENDINGS = BLOCK_ENTITY.register("nerve_endings",
+            () -> BlockEntityType.Builder.of(NerveEndingsBlockEntity::new, CHBlocks.NERVE_ENDINGS.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<FleshNestBlockEntity>> TECHNOFLESH_NEST = BLOCK_ENTITY.register("technoflesh_nest",
             () -> BlockEntityType.Builder.of(FleshNestBlockEntity::new, CHBlocks.TECHNOFLESH_NEST.get()).build(null));
 

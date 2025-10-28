@@ -15,11 +15,11 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
-public class TechnoFleshMembraneBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
+public class FleshMembraneBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
-    public TechnoFleshMembraneBlock() {
+    public FleshMembraneBlock() {
         super(Properties.of()
                 .mapColor(MapColor.COLOR_RED)
                 .strength(0.5F)

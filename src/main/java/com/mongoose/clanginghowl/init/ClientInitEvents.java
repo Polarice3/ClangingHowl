@@ -50,6 +50,7 @@ public class ClientInitEvents {
     public static void onRegisterRenders(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(CHBlockEntities.CRYSTAL_FORMER.get(), CHBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(CHBlockEntities.STATIONARY_CHARGING_STATION.get(), ChargingStationRenderer::new);
+        event.registerBlockEntityRenderer(CHBlockEntities.NERVE_ENDINGS.get(), CHBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(CHBlockEntities.TECHNOFLESH_NEST.get(), CHBlockEntityRenderer::new);
         event.registerEntityRenderer(CHEntityType.SPIT_PROJECTILE.get(), SpitProjectileRenderer::new);
         event.registerEntityRenderer(CHEntityType.HEART_OF_DECAY.get(), HeartOfDecayRenderer::new);

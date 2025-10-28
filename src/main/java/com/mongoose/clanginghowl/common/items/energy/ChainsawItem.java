@@ -110,6 +110,9 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
 
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
         if (!IEnergyItem.isEmpty(itemStack)) {
+            if (EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(attacker)) {
+                this.consumeEnergy(itemStack);
+            }
             attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), CHSounds.CHAINSAW_BLOW.get(), attacker.getSoundSource(), 1.0F, 1.0F);
         }
         return true;

@@ -69,4 +69,12 @@ public class CHParticleTypes {
                     return BloodSplashParticleOption.CODEC;
                 }
             });
+
+    public static final RegistryObject<ParticleType<RotationParticleOption>> ROTATION = PARTICLE_TYPES.register("rotation",
+            () -> new ParticleType<>(false, RotationParticleOption.DESERIALIZER) {
+                @Override
+                public Codec<RotationParticleOption> codec() {
+                    return RotationParticleOption.CODEC;
+                }
+            });
 }

@@ -74,6 +74,7 @@ public class FleshMaiden extends Monster {
                 .add(Attributes.MAX_HEALTH, 35.0D)
                 .add(Attributes.ARMOR, 6.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.23D)
+                .add(Attributes.FOLLOW_RANGE, 24.0D)
                 .add(Attributes.ATTACK_DAMAGE, 9.0D);
     }
 

@@ -45,7 +45,7 @@ public class CHEffects {
     public static final RegistryObject<MobEffect> OVERDRIVE = EFFECTS.register("overdrive",
             () -> new CHBaseEffect(MobEffectCategory.BENEFICIAL, 0)
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, CHUUIDUtil.uuidString("effect.clanginghowl.overdrive.movement"),
-                            0.4D, AttributeModifier.Operation.MULTIPLY_TOTAL)
+                            0.45D, AttributeModifier.Operation.MULTIPLY_TOTAL)
                     .addAttributeModifier(Attributes.ATTACK_DAMAGE, CHUUIDUtil.uuidString("effect.clanginghowl.overdrive.attack"),
                             4.0D, AttributeModifier.Operation.ADDITION));
 

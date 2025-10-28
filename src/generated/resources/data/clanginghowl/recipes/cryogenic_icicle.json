@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "F": {
+      "item": "clanginghowl:cryogenic_fuel"
+    }
+  },
+  "pattern": [
+    "F",
+    "F"
+  ],
+  "result": {
+    "count": 4,
+    "item": "clanginghowl:cryogenic_icicle"
+  },
+  "show_notification": false
+}

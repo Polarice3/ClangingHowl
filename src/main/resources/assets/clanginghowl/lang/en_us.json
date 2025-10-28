@@ -82,6 +82,7 @@
   "block.clanginghowl.carved_steel_plate_slab": "Carved Steel Plate Slab",
   "block.clanginghowl.damaged_carved_steel_plate_block": "Damaged Carved Steel Plate Block",
   "block.clanginghowl.extraterrestrial_steel_grate": "Extraterrestrial Steel Grate",
+  "block.clanginghowl.steel_bridge": "Steel Bridge",
 
   "block.clanginghowl.steel_rod": "Steel Rod",
 
@@ -94,9 +95,18 @@
 
   "block.clanginghowl.cracked_calcite_tiles": "Cracked Calcite Tiles",
 
+  "block.clanginghowl.cryogenic_icicle": "Cryogenic Icicle",
+  "block.clanginghowl.big_cryogenic_icicle": "Cryogenic Icicle",
+
   "block.clanginghowl.technoflesh_block": "Technoflesh Block",
   "block.clanginghowl.technoflesh_slab": "Technoflesh Slab",
+  "block.clanginghowl.frozen_technoflesh": "Frozen Technoflesh Block",
+  "block.clanginghowl.tubular_technoflesh": "Tubular Technoflesh",
   "block.clanginghowl.technoflesh_membrane": "Technoflesh Membrane",
+  "block.clanginghowl.hanging_technoflesh": "Hanging Technoflesh",
+  "block.clanginghowl.big_hanging_technoflesh": "Hanging Technoflesh",
+
+  "block.clanginghowl.nerve_endings": "Nerve Endings",
   "block.clanginghowl.technoflesh_nest": "Technoflesh Nest",
 
   "block.clanginghowl.crystal_former": "§eCrystal Former",
@@ -113,7 +123,7 @@
   "effect.clanginghowl.sawing_up_health": "Sawing Up Health",
   "effect.clanginghowl.sawing_up_health.description": "Decreases max health by 5%%; higher levels decreases further.",
   "effect.clanginghowl.overdrive": "Overdrive",
-  "effect.clanginghowl.overdrive.description": "Increases melee damage by 4 and movement speed by 40%%.",
+  "effect.clanginghowl.overdrive.description": "Increases melee damage by 4 and movement speed by 45%%.",
   "effect.clanginghowl.deep_burn": "Deep Burn",
   "effect.clanginghowl.deep_burn.description": "Increases incoming fire damage by 60%%.",
   "effect.clanginghowl.internal_heat": "Internal Heat",
@@ -201,5 +211,7 @@
   "death.attack.clanginghowl.fire_stream": "%1$s has been incinerated by %2$s",
   "death.attack.clanginghowl.fire_stream.item": "%1$s has been incinerated by %2$s using %3$s",
   "death.attack.clanginghowl.neurotoxin": "%1$s's nervous system has shut down",
-  "death.attack.clanginghowl.neurotoxin.player": "%1$s's nervous system shuts down while fighting %3$s"
+  "death.attack.clanginghowl.neurotoxin.player": "%1$s's nervous system shuts down while fighting %3$s",
+  "death.attack.clanginghowl.icicle": "%1$s was impaled by icicle",
+  "death.attack.clanginghowl.icicle.player": "%1$s was impaled by icicle while fighting %3$s"
 }

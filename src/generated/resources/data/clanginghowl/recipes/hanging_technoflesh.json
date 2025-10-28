@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "F": {
+      "item": "clanginghowl:chunk_of_technoflesh"
+    }
+  },
+  "pattern": [
+    "F F",
+    " F "
+  ],
+  "result": {
+    "count": 6,
+    "item": "clanginghowl:hanging_technoflesh"
+  },
+  "show_notification": false
+}

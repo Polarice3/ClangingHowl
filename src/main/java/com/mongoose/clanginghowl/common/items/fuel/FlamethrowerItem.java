@@ -28,6 +28,7 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -283,7 +284,8 @@ public class FlamethrowerItem extends Item implements IFuel{
                                     target.setSecondsOnFire(fireSeconds);
                                 }
                             }
-                            MobUtil.knockBack(target, player, 3.0D, 0.2D, 3.0D);
+                            double power = target instanceof Projectile ? 6.0D : 3.0D;
+                            MobUtil.knockBack(target, player, power, 0.2D, power);
                         }
                     }
                 }

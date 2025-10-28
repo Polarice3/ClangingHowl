@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "clanginghowl:block/big_cryogenic_icicle_top"
+  },
+  "render_type": "cutout"
+}

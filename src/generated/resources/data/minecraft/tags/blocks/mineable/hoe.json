@@ -1,8 +1,5 @@
 {
   "values": [
-    "clanginghowl:technoflesh_block",
-    "clanginghowl:technoflesh_slab",
-    "clanginghowl:technoflesh_membrane",
-    "clanginghowl:technoflesh_nest"
+    "#clanginghowl:technoflesh"
   ]
 }

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "clanginghowl:block/tubular_technoflesh",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "clanginghowl:block/tubular_technoflesh"
+    },
+    "axis=z": {
+      "model": "clanginghowl:block/tubular_technoflesh",
+      "x": 90
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "clanginghowl:big_cryogenic_icicle",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "half": "upper"
+          }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "clanginghowl:cryogenic_icicle"
+        }
+      ],
+      "rolls": 2.0
+    }
+  ],
+  "random_sequence": "clanginghowl:blocks/big_cryogenic_icicle"
+}

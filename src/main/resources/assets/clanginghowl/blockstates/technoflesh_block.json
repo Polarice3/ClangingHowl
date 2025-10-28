@@ -14,6 +14,9 @@
     },
     "age=4": {
       "model": "clanginghowl:block/technoflesh_block_wired"
+    },
+    "age=5": {
+      "model": "clanginghowl:block/technoflesh_block_eyes"
     }
   }
 }

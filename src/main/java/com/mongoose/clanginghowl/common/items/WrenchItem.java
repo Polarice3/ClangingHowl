@@ -3,8 +3,11 @@ package com.mongoose.clanginghowl.common.items;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.mongoose.clanginghowl.client.particles.CHParticleTypes;
+import com.mongoose.clanginghowl.client.particles.RotationParticleOption;
+import com.mongoose.clanginghowl.common.blocks.CHBlockStates;
 import com.mongoose.clanginghowl.common.blocks.CHBlocks;
 import com.mongoose.clanginghowl.common.blocks.CrystalFormerBlock;
+import com.mongoose.clanginghowl.common.blocks.SteelBridgeBlock;
 import com.mongoose.clanginghowl.utils.ItemHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -30,9 +33,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -65,9 +70,25 @@ public class WrenchItem extends Item {
         if (blockstate.is(CHBlocks.CRYSTAL_FORMER.get())) {
             result = blockstate.cycle(CrystalFormerBlock.ENABLED);
         }
+        if (blockstate.is(CHBlocks.STEEL_BRIDGE.get())) {
+            result = blockstate.cycle(SteelBridgeBlock.ALTERNATE);
+        }
+        if (blockstate.getBlock() instanceof StairBlock && blockstate.hasProperty(StairBlock.FACING)) {
+            result = blockstate.cycle(StairBlock.FACING);
+        }
         if (result != null) {
-            if (blockstate.hasProperty(BlockStateProperties.ENABLED)) {
+            Vec3 vec3 = blockpos.getCenter();
+            if (blockstate.hasProperty(CHBlockStates.ALTERNATE)) {
+                level.playSound(player, blockpos, SoundEvents.COPPER_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.addParticle(new RotationParticleOption(1.0F, 0), vec3.x, vec3.y, vec3.z, 0.0F, 0.0F, 0.0F);
+            } else if (blockstate.hasProperty(BlockStateProperties.ENABLED)) {
                 level.playSound(player, blockpos, SoundEvents.COMPARATOR_CLICK, SoundSource.BLOCKS, 1.0F, 1.0F);
+            } else if (blockstate.hasProperty(StairBlock.FACING)) {
+                if (player != null) {
+                    player.getCooldowns().addCooldown(this, 5);
+                }
+                level.playSound(player, blockpos, SoundEvents.COMPARATOR_CLICK, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.addParticle(new RotationParticleOption(1.0F, 0), vec3.x, vec3.y, vec3.z, 0.0F, 0.0F, 0.0F);
             } else {
                 level.playSound(player, blockpos, SoundEvents.IRON_GOLEM_REPAIR, SoundSource.BLOCKS, 1.0F, 1.0F);
                 ItemHelper.hurtAndBreak(itemstack, 1, player);

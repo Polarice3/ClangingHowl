@@ -99,6 +99,7 @@ public class ExReaper extends Monster {
                 .add(Attributes.MOVEMENT_SPEED, 0.24D)
                 .add(Attributes.ATTACK_DAMAGE, 5.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
+                .add(Attributes.FOLLOW_RANGE, 24.0D)
                 .add(Attributes.ARMOR, 7.0D);
     }
 

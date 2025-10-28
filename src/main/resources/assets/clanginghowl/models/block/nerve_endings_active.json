@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "clanginghowl:block/active_nerve_endings"
+  },
+  "render_type": "cutout"
+}

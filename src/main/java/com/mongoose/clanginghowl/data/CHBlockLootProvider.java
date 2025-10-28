@@ -14,6 +14,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
@@ -117,6 +119,11 @@ public class CHBlockLootProvider extends BlockLootSubProvider {
         this.add(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get(), (p_124076_) -> {
             return createOreDrop(p_124076_, CHItems.EXTRATERRESTRIAL_STEEL.get());
         });
+        this.add(CHBlocks.BIG_CRYOGENIC_ICICLE.get(), this.createBigIcicle());
+        this.add(CHBlocks.TECHNOFLESH_MEMBRANE.get(), this.dropSilkTouchOrShears(CHBlocks.TECHNOFLESH_MEMBRANE.get()));
+        this.add(CHBlocks.HANGING_TECHNOFLESH.get(), this.dropSilkTouchOrShears(CHBlocks.HANGING_TECHNOFLESH.get()));
+        this.add(CHBlocks.BIG_HANGING_TECHNOFLESH.get(), this.createBigHangingFlesh());
+        this.dropWhenSilkTouch(CHBlocks.NERVE_ENDINGS.get());
         this.dropWhenSilkTouch(CHBlocks.TECHNOFLESH_NEST.get());
     }
 
@@ -132,6 +139,40 @@ public class CHBlockLootProvider extends BlockLootSubProvider {
                 applyExplosionDecay(block, LootItem.lootTableItem(item)
                         .when(lootitemcondition$builder3)
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(4)))));
+    }
+
+    protected LootTable.Builder createBigHangingFlesh() {
+        Block block = CHBlocks.BIG_HANGING_TECHNOFLESH.get();
+        Item item = CHBlocks.HANGING_TECHNOFLESH.get().asItem();
+        LootItemCondition.Builder lootitemcondition$builder3 =
+                LootItemBlockStatePropertyCondition
+                        .hasBlockStateProperties(block)
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(HugeExEnergyClusterBlock.HALF, DoubleBlockHalf.UPPER));
+        return dropSilkTouchOrShears(item, 2, lootitemcondition$builder3);
+    }
+
+    protected LootTable.Builder createBigIcicle() {
+        Block block = CHBlocks.BIG_CRYOGENIC_ICICLE.get();
+        Item item = CHBlocks.CRYOGENIC_ICICLE.get().asItem();
+        LootItemCondition.Builder lootitemcondition$builder3 =
+                LootItemBlockStatePropertyCondition
+                        .hasBlockStateProperties(block)
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(HugeExEnergyClusterBlock.HALF, DoubleBlockHalf.UPPER));
+        return LootTable.lootTable().withPool(this.applyExplosionCondition(item, LootPool.lootPool().setRolls(ConstantValue.exactly(2)).add(LootItem.lootTableItem(item)).when(lootitemcondition$builder3)));
+    }
+
+    public LootTable.Builder dropSilkTouchOrShears(ItemLike p_251912_, int count, LootItemCondition.Builder other) {
+        return LootTable.lootTable().withPool(this.applyExplosionCondition(p_251912_, LootPool.lootPool().setRolls(ConstantValue.exactly(count)).add(LootItem.lootTableItem(p_251912_))).when(HAS_SHEARS_OR_SILK_TOUCH.and(other)));
+    }
+
+    protected LootTable.Builder dropSilkTouchOrShears(ItemLike p_251912_) {
+        return LootTable.lootTable().withPool(this.applyExplosionCondition(p_251912_, LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(p_251912_))).when(HAS_SHEARS_OR_SILK_TOUCH));
+    }
+
+    public LootTable.Builder createConstantDrop(ItemLike p_251912_, int count) {
+        return LootTable.lootTable().withPool(this.applyExplosionCondition(p_251912_, LootPool.lootPool().setRolls(ConstantValue.exactly(count)).add(LootItem.lootTableItem(p_251912_))));
     }
 
     protected LootTable.Builder createConstantDrop(Block p_124140_, Item p_124141_, int count) {

@@ -20,6 +20,7 @@ public class CHTags {
         public static final TagKey<Block> CARVED_STEEL = tag("carved_steel");
         public static final TagKey<Block> CALCITE = tag("calcite");
         public static final TagKey<Block> ENERGY_CLUSTER = tag("energy_cluster");
+        public static final TagKey<Block> TECHNOFLESH = tag("technoflesh");
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(ClangingHowl.location(name));

@@ -19,6 +19,8 @@ public class CHDamageTagsProvider extends TagsProvider<DamageType> {
     }
 
     protected void addTags(HolderLookup.Provider provider) {
+        this.tag(DamageTypeTags.DAMAGES_HELMET).add(CHDamageSource.ICICLE);
+        this.tag(DamageTypeTags.BYPASSES_SHIELD).add(CHDamageSource.ICICLE);
         this.tag(DamageTypeTags.BYPASSES_ARMOR).add(CHDamageSource.NEUROTOXIN);
         this.tag(DamageTypeTags.AVOIDS_GUARDIAN_THORNS).add(CHDamageSource.NEUROTOXIN);
         this.tag(DamageTypeTags.WITCH_RESISTANT_TO).add(CHDamageSource.NEUROTOXIN);

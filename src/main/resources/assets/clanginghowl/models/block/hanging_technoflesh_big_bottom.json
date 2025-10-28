@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "clanginghowl:block/hanging_technoflesh_big_bottom"
+  },
+  "render_type": "cutout"
+}

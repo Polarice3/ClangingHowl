@@ -12,7 +12,7 @@ public class OverdriveParticle extends TextureSheetParticle {
         super(world, x, y, z);
         this.spriteSet = spriteSet;
         this.setSize(0.2f, 0.2f);
-        this.quadSize *= 2.0F;
+        this.quadSize *= 2.4F;
         this.lifetime = 16; //Equation: (Total Frames * Interval) - 2
         this.gravity = -0.01F;
         this.hasPhysics = false;

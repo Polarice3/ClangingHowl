@@ -84,6 +84,7 @@ public class CHBlocks {
             CARVED_STEEL_PLATE_BLOCK);
     public static final RegistryObject<Block> DAMAGED_CARVED_STEEL_PLATE_BLOCK = register("damaged_carved_steel_plate_block", () -> pillar(exSteelPlateProperties()));
     public static final RegistryObject<Block> EXTRATERRESTRIAL_STEEL_GRATE = register("extraterrestrial_steel_grate", GrateBlock::new);
+    public static final RegistryObject<Block> STEEL_BRIDGE = register("steel_bridge", SteelBridgeBlock::new);
     public static final RegistryObject<Block> STEEL_ROD = register("steel_rod", () -> new SteelRodBlock(exSteelPlateProperties().noOcclusion()));
     public static final RegistryObject<Block> STEEL_DOOR = register("steel_door",
             () -> new DoorBlock(Block.Properties.of()
@@ -110,11 +111,24 @@ public class CHBlocks {
 
     public static final RegistryObject<Block> CRACKED_CALCITE_TILES = register("cracked_calcite_tiles", () -> new Block(BlockBehaviour.Properties.copy(Blocks.CALCITE)));
 
+    //Ice
+    public static final RegistryObject<Block> CRYOGENIC_ICICLE = register("cryogenic_icicle", IcicleBlock::new);
+    public static final RegistryObject<Block> BIG_CRYOGENIC_ICICLE = register("big_cryogenic_icicle", BigIcicleBlock::new, false, LootTableType.EMPTY);
+
     //Flesh
     public static final RegistryObject<Block> TECHNOFLESH_BLOCK = register("technoflesh_block", FleshBlock::new);
     public static final RegistryObject<Block> TECHNOFLESH_SLAB = registerSlabs("technoflesh_slab",
             TECHNOFLESH_BLOCK);
-    public static final RegistryObject<Block> TECHNOFLESH_MEMBRANE = register("technoflesh_membrane", TechnoFleshMembraneBlock::new);
+    public static final RegistryObject<Block> FROZEN_TECHNOFLESH_BLOCK = register("frozen_technoflesh", () -> new Block(BlockBehaviour.Properties.copy(Blocks.PACKED_ICE)));
+    public static final RegistryObject<Block> TUBULAR_TECHNOFLESH = register("tubular_technoflesh", () -> pillar(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_RED)
+            .strength(2.0F)
+            .ignitedByLava()
+            .sound(SoundType.HONEY_BLOCK)));
+    public static final RegistryObject<Block> TECHNOFLESH_MEMBRANE = register("technoflesh_membrane", FleshMembraneBlock::new, true, LootTableType.EMPTY);
+    public static final RegistryObject<Block> HANGING_TECHNOFLESH = register("hanging_technoflesh", HangingFleshBlock::new, true, LootTableType.EMPTY);
+    public static final RegistryObject<Block> BIG_HANGING_TECHNOFLESH = register("big_hanging_technoflesh", BigHangingFleshBlock::new, false, LootTableType.EMPTY);
+    public static final RegistryObject<Block> NERVE_ENDINGS = register("nerve_endings", NerveEndingsBlock::new, true, LootTableType.EMPTY);
     public static final RegistryObject<Block> TECHNOFLESH_NEST = register("technoflesh_nest", FleshNestBlock::new, true, LootTableType.EMPTY);
 
     //Tech

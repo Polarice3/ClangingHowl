@@ -6,6 +6,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -28,7 +29,11 @@ public class CHBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(CHBlocks.EXTRATERRESTRIAL_STEEL_ORE.get());
         simpleBlockWithItem(CHBlocks.CALCITE_TILES.get());
         simpleBlockWithItem(CHBlocks.CRACKED_CALCITE_TILES.get());
+        simpleBlockWithItem(CHBlocks.FROZEN_TECHNOFLESH_BLOCK.get());
         simpleBlockWithItem(CHBlocks.TECHNOFLESH_NEST.get());
+
+        crossBlockWithItem(CHBlocks.CRYOGENIC_ICICLE.get());
+        crossBlockWithItem(CHBlocks.HANGING_TECHNOFLESH.get());
 
         doorBlockWithRenderType((DoorBlock) CHBlocks.STEEL_DOOR.get(), ClangingHowl.location("block/steel_door_bottom"), ClangingHowl.location("block/steel_door_top"), "translucent");
 
@@ -36,6 +41,7 @@ public class CHBlockStateProvider extends BlockStateProvider {
         sideBottomTopColumnBlock((RotatedPillarBlock) CHBlocks.DAMAGED_CARVED_STEEL_PLATE_BLOCK.get(), ClangingHowl.location("block/damaged_carved_steel_plate_block_top"), ClangingHowl.location("block/damaged_carved_steel_plate_block"), ClangingHowl.location("block/damaged_carved_steel_plate_block_bottom"));
 
         columnBlockWithItem((RotatedPillarBlock) CHBlocks.EXTRATERRESTRIAL_COLUMN.get(), ClangingHowl.location("block/extraterrestrial_column"), ClangingHowl.location("block/extraterrestrial_column_top"));
+        columnBlockWithItem((RotatedPillarBlock) CHBlocks.TUBULAR_TECHNOFLESH.get(), ClangingHowl.location("block/tubular_technoflesh"), ClangingHowl.location("block/tubular_technoflesh_top"));
 
         slabBlockWithItem((SlabBlock) CHBlocks.EXTRATERRESTRIAL_STONE_SLAB.get(), ClangingHowl.location("block/extraterrestrial_stone"));
         slabBlockWithItem((SlabBlock) CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE_SLAB.get(), ClangingHowl.location("block/smooth_extraterrestrial_stone"));
@@ -237,6 +243,21 @@ public class CHBlockStateProvider extends BlockStateProvider {
         simpleBlock(b, models().getBuilder(name(b))
                 .parent(new ModelFile.UncheckedModelFile("builtin/entity"))
                 .texture("particle", particle));
+    }
+
+    public ModelFile cross(Block block) {
+        return models().cross(name(block), blockTexture(block)).renderType("cutout");
+    }
+
+    public ItemModelBuilder generatedItem(Block block) {
+        return itemModels().getBuilder(key(block).getPath())
+                .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", blockTexture(block));
+    }
+
+    protected void crossBlockWithItem(Block block) {
+        simpleBlock(block, cross(block));
+        generatedItem(block);
     }
 
     private ResourceLocation extend(ResourceLocation rl, String suffix) {

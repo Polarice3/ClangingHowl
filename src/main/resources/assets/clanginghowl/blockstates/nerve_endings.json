@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "triggered=false": {
+      "model": "clanginghowl:block/nerve_endings"
+    },
+    "triggered=true": {
+      "model": "clanginghowl:block/nerve_endings_active"
+    }
+  }
+}

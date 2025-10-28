@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "clanginghowl:block/big_cryogenic_icicle_bottom"
+    },
+    "half=upper": {
+      "model": "clanginghowl:block/big_cryogenic_icicle_top"
+    }
+  }
+}

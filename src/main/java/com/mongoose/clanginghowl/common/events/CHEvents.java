@@ -90,7 +90,7 @@ public class CHEvents {
             if (instance != null) {
                 int duration = instance.getDuration();
                 if (livingEntity.level() instanceof ServerLevel serverLevel) {
-                    if (duration % 200 == 0 || duration <= 100) {
+                    if (duration % 200 == 0 || (duration <= 100 && duration % 5 == 0)) {
                         for (int i = 0; i < serverLevel.getRandom().nextIntBetweenInclusive(1, 3); ++i) {
                             serverLevel.sendParticles(CHParticleTypes.INFECTION.get(), livingEntity.getRandomX(0.5D), livingEntity.getRandomY() + 0.5D, livingEntity.getRandomZ(0.5D), 1, 0.0D, 0.0D, 0.0D, 0);
                         }
@@ -143,6 +143,11 @@ public class CHEvents {
         LivingEntity victim = event.getEntity();
         Entity directEntity = event.getSource().getDirectEntity();
         if (event.getAmount() > 0.0F) {
+            if (event.getSource().is(CHDamageSource.ICICLE)) {
+                if (victim.canFreeze()) {
+                    victim.setTicksFrozen(140 + (160 * 2));
+                }
+            }
             if (directEntity instanceof LivingEntity livingAttacker) {
                 if (CHDamageSource.physicalAttacks(event.getSource())) {
                     if (livingAttacker.getMainHandItem().getItem() instanceof BlazeBurnerItem) {
