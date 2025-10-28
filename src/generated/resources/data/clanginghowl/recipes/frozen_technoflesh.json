@@ -3,7 +3,7 @@
   "category": "building",
   "ingredients": [
     {
-      "item": "clanginghowl:technoflesh_block"
+      "item": "clanginghowl:chunk_of_technoflesh"
     },
     {
       "item": "minecraft:packed_ice"

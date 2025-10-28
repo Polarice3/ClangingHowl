@@ -353,9 +353,9 @@ public class CHCraftingProvider extends RecipeProvider {
                 .showNotification(false)
                 .save(consumer, loc("cryogenic_icicle"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, CHBlocks.FROZEN_TECHNOFLESH_BLOCK.get())
-                .requires(CHBlocks.TECHNOFLESH_BLOCK.get())
+                .requires(CHItems.CHUNK_OF_TECHNOFLESH.get())
                 .requires(Blocks.PACKED_ICE)
-                .unlockedBy("has_item", has(CHBlocks.TECHNOFLESH_BLOCK.get()))
+                .unlockedBy("has_item", has(CHItems.CHUNK_OF_TECHNOFLESH.get()))
                 .save(consumer, loc("frozen_technoflesh"));
 
         smelting(consumer, "ex_stone/smooth_extraterrestrial_stone", CHBlocks.EXTRATERRESTRIAL_STONE.get(), CHBlocks.SMOOTH_EXTRATERRESTRIAL_STONE.get());
