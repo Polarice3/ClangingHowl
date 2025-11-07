@@ -93,7 +93,7 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
 
     @Override
     public void onCraftedBy(ItemStack pStack, Level pLevel, Player pPlayer) {
-        IEnergyItem.setEnergy(pStack, 0);
+        IEnergyItem.setEnergy(pStack, this.getMaxEnergy());
         IEnergyItem.setMaxEnergyAmount(pStack, this.getMaxEnergy());
         super.onCraftedBy(pStack, pLevel, pPlayer);
     }
