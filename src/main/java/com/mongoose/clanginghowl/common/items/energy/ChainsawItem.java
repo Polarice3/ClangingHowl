@@ -230,18 +230,10 @@ public class ChainsawItem extends EnergyItem implements GeoItem {
                                 return;
                             }
 
-                            if (TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState) && !(blockState.is(BlockTags.MINEABLE_WITH_PICKAXE) && blockState.requiresCorrectToolForDrops())) {
-                                List<ItemStack> drops = Block.getDrops(blockState, serverLevel, blockPos, null, player, tempTool);
-
-                                int exp = blockState.getExpDrop(serverLevel, serverLevel.random, blockPos, fortune, silk);
-                                for (ItemStack drop : drops) {
-                                    if (drop != null) {
-                                        Block.popResource(serverLevel, blockPos, drop);
-                                    }
-                                }
-                                if (exp > 0) {
-                                    blockState.getBlock().popExperience(serverLevel, blockPos, exp);
-                                }
+                            if (TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState) && !(blockState.is(BlockTags.MINEABLE_WITH_PICKAXE) && !blockState.is(BlockTags.MINEABLE_WITH_AXE) && blockState.requiresCorrectToolForDrops())) {
+                                Block.dropResources(blockState, serverLevel, blockPos, null, player, tempTool);
+                            } else {
+                                blockState.spawnAfterBreak(serverLevel, blockPos, tempTool, false);
                             }
 
                             serverLevel.playSound(null, blockPos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
