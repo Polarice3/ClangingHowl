@@ -260,7 +260,6 @@ public class DrillItem extends EnergyItem implements GeoItem {
 
         serverLevel.playSound(null, blockPos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 
-        serverLevel.removeBlockEntity(blockPos);
         serverLevel.levelEvent(2001, blockPos, Block.getId(blockState));
         serverLevel.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
 
