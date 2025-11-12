@@ -36,7 +36,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -244,8 +246,17 @@ public class DrillItem extends EnergyItem implements GeoItem {
             return;
         }
 
-        if (TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState)) {
-            Block.dropResources(blockState, serverLevel, blockPos, null, player, tempTool);
+        FluidState fluidstate = serverLevel.getFluidState(blockPos);
+        BlockEntity blockEntity = serverLevel.getBlockEntity(blockPos);
+        boolean canHarvest = TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState);
+        if (blockState.onDestroyedByPlayer(serverLevel, blockPos, player, canHarvest, fluidstate)) {
+            player.awardStat(Stats.BLOCK_MINED.get(blockState.getBlock()));
+            blockState.getBlock().destroy(serverLevel, blockPos, blockState);
+            if (canHarvest) {
+                Block.dropResources(blockState, serverLevel, blockPos, blockEntity, player, tempTool);
+            } else {
+                blockState.spawnAfterBreak(serverLevel, blockPos, tempTool, false);
+            }
         }
 
         serverLevel.playSound(null, blockPos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);

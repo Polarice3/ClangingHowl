@@ -131,6 +131,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:framework-549225:5180972")
     runtimeOnly fg.deobf("curse.maven:configured-457570:5180900")
     runtimeOnly fg.deobf("curse.maven:free-cam-557076:4643128")
+    runtimeOnly fg.deobf("curse.maven:treechop-421377:5565422")
 }
 
 tasks.named('jar', Jar).configure {
