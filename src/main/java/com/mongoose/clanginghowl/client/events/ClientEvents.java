@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.client.events;
 
+import net.neoforged.fml.common.EventBusSubscriber;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.client.audio.ItemIdleSound;
@@ -39,31 +40,30 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.*;
+import net.minecraft.client.gui.Gui;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.Optional;
 import java.util.Random;
 
-@Mod.EventBusSubscriber(modid = ClangingHowl.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = ClangingHowl.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
 
     @SubscribeEvent
-    public static void onPlayerHoldItem(TickEvent.PlayerTickEvent event) {
-        if (event.player.level() instanceof ClientLevel) {
-            if (event.player.isHolding(itemStack -> itemStack.getItem() instanceof ChainsawItem && !IEnergyItem.isEmpty(itemStack))) {
-                playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), event.player, CHItems.ADVANCED_CHAINSAW.get(), 0.4F, 1.0F);
-            } else if (event.player.isHolding(itemStack -> itemStack.getItem() instanceof ChainswordItem && !IEnergyItem.isEmpty(itemStack))) {
-                playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), event.player, CHItems.ADVANCED_CHAINSWORD.get(), 0.3F, 1.0F);
+    public static void onPlayerHoldItem(PlayerTickEvent.Post event) {
+        if (event.getEntity().level() instanceof ClientLevel) {
+            if (event.getEntity().isHolding(itemStack -> itemStack.getItem() instanceof ChainsawItem && !IEnergyItem.isEmpty(itemStack))) {
+                playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), event.getEntity(), CHItems.ADVANCED_CHAINSAW.get(), 0.4F, 1.0F);
+            } else if (event.getEntity().isHolding(itemStack -> itemStack.getItem() instanceof ChainswordItem && !IEnergyItem.isEmpty(itemStack))) {
+                playItemIdleLoop(CHSounds.CHAINSAW_IDLE.get(), event.getEntity(), CHItems.ADVANCED_CHAINSWORD.get(), 0.3F, 1.0F);
             }
         }
     }
@@ -123,10 +123,8 @@ public class ClientEvents {
     public static float PARTIAL_TICK = 0;
 
     @SubscribeEvent
-    public static void renderTick(TickEvent.RenderTickEvent event){
-        if (event.phase == TickEvent.Phase.START){
-            PARTIAL_TICK = event.renderTickTime;
-        }
+    public static void renderTick(RenderFrameEvent.Pre event){
+        PARTIAL_TICK = event.getPartialTick().getGameTimeDeltaPartialTick(false);
     }
 
     @SubscribeEvent
@@ -135,7 +133,7 @@ public class ClientEvents {
         Input input = event.getInput();
         if (player instanceof LocalPlayer localPlayer) {
             if (localPlayer.isUsingItem() && !localPlayer.isPassenger()) {
-                if (localPlayer.getUseItem().is(itemHolder -> itemHolder.get() instanceof IEnergyItem || itemHolder.get() instanceof IFuel)) {
+                if (localPlayer.getUseItem().is(itemHolder -> itemHolder.value() instanceof IEnergyItem || itemHolder.value() instanceof IFuel)) {
                     input.leftImpulse *= 5.0F;
                     input.forwardImpulse *= 5.0F;
                 }
@@ -144,8 +142,8 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public static void RenderHealthBarPre(RenderGuiOverlayEvent.Pre event) {
-        if (event.getOverlay().id() != VanillaGuiOverlay.PLAYER_HEALTH.id()) {
+    public static void RenderHealthBarPre(RenderGuiLayerEvent.Pre event) {
+        if (!event.getName().equals(VanillaGuiLayers.PLAYER_HEALTH)) {
             return;
         }
         Minecraft minecraft = Minecraft.getInstance();
@@ -154,11 +152,9 @@ public class ClientEvents {
             return;
         }
 
-        if (minecraft.gui instanceof ForgeGui gui) {
-            if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements()
-                    && (player.hasEffect(CHEffects.NEUROTOXIN.get()))) {
-                setHearts(event);
-            }
+        if (!minecraft.options.hideGui && minecraft.gameMode != null
+                && minecraft.gameMode.canHurtPlayer() && player.hasEffect(CHEffects.NEUROTOXIN)) {
+            setHearts(event);
         }
     }
 
@@ -169,17 +165,17 @@ public class ClientEvents {
     private static long lastHealthTime;
     private static long healthBlinkTime;
 
-    private static void setHearts(RenderGuiOverlayEvent.Pre event) {
+    private static void setHearts(RenderGuiLayerEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
         Minecraft mc = Minecraft.getInstance();
         if (player == null){
             return;
         }
-        ForgeGui gui = (ForgeGui)mc.gui;
+        Gui gui = mc.gui;
         GuiGraphics stack = event.getGuiGraphics();
-        gui.setupOverlayRenderState(true, false);
-        int width = event.getWindow().getGuiScaledWidth();
-        int height = event.getWindow().getGuiScaledHeight();
+        RenderSystem.defaultBlendFunc();
+        int width = event.getGuiGraphics().guiWidth();
+        int height = event.getGuiGraphics().guiHeight();
         event.setCanceled(true);
         RenderSystem.setShaderTexture(0, CUSTOM_HEARTS);
         RenderSystem.enableBlend();
@@ -227,7 +223,7 @@ public class ClientEvents {
         int BACKGROUND_X = highlight ? 25 : 16;
         int BACKGROUND_Y = player.level().getLevelData().isHardcore() ? 9 : 0;
         int heartX = 0;
-        if (player.hasEffect(CHEffects.NEUROTOXIN.get())){
+        if (player.hasEffect(CHEffects.NEUROTOXIN)){
             heartX = 34;
         }
         float absorptionRemaining = (float)absorption;
@@ -275,8 +271,8 @@ public class ClientEvents {
     private static boolean prevJumpBindState = false;
 
     @SubscribeEvent
-    public static void TickEvents(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.START){
+    public static void TickEvents(ClientTickEvent.Post event) {
+        {
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft.player != null){
                 Player player = minecraft.player;
@@ -316,7 +312,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void onSetupCamera(ViewportEvent.ComputeCameraAngles event) {
         Player player = Minecraft.getInstance().player;
-        float delta = Minecraft.getInstance().getFrameTime();
+        float delta = Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
         if (player != null) {
             float ticksExistedDelta = player.tickCount + delta;
             if (CHConfig.CameraShake.get() && !Minecraft.getInstance().isPaused()) {
@@ -342,7 +338,7 @@ public class ClientEvents {
 
         if (MINECRAFT.player != null) {
             if (CHKeybindings.keyBindings[0].isDown() && MINECRAFT.player.isCrouching() && MINECRAFT.isWindowActive()) {
-                CHNetwork.INSTANCE.send(PacketDistributor.SERVER.noArg(), new CActivateCurioKeyPacket());
+                CHNetwork.sendToServer(new CActivateCurioKeyPacket());
             }
         }
     }

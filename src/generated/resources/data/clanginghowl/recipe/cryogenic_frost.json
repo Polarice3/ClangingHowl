@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "clanginghowl:cryogenic_fuel"
+    },
+    {
+      "item": "clanginghowl:cryogenic_fuel"
+    },
+    {
+      "item": "clanginghowl:cryogenic_fuel"
+    },
+    {
+      "item": "clanginghowl:cryogenic_fuel"
+    }
+  ],
+  "result": {
+    "count": 16,
+    "id": "clanginghowl:cryogenic_frost"
+  }
+}

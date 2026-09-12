@@ -89,9 +89,9 @@ public class BigIcicleBlock extends IcicleBlock {
         return p_182456_.hasProperty(BlockStateProperties.WATERLOGGED) ? p_182456_.setValue(BlockStateProperties.WATERLOGGED, Boolean.valueOf(p_182454_.isWaterAt(p_182455_))) : p_182456_;
     }
 
-    public void playerWillDestroy(Level p_52878_, BlockPos p_52879_, BlockState p_52880_, Player p_52881_) {
+    public BlockState playerWillDestroy(Level p_52878_, BlockPos p_52879_, BlockState p_52880_, Player p_52881_) {
         if (!p_52878_.isClientSide) {
-            if (p_52881_.isCreative() || EnchantmentHelper.hasSilkTouch(p_52881_.getMainHandItem())) {
+            if (p_52881_.isCreative() || (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(p_52881_.getMainHandItem(), net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH) > 0)) {
                 preventCreativeDropFromUpperPart(p_52878_, p_52879_, p_52880_, p_52881_);
                 if (!p_52881_.isCreative()) {
                     dropResources(p_52880_, p_52878_, p_52879_, null, p_52881_, p_52881_.getMainHandItem());
@@ -101,7 +101,7 @@ public class BigIcicleBlock extends IcicleBlock {
             }
         }
 
-        super.playerWillDestroy(p_52878_, p_52879_, p_52880_, p_52881_);
+        return super.playerWillDestroy(p_52878_, p_52879_, p_52880_, p_52881_);
     }
 
     public void playerDestroy(Level p_52865_, Player p_52866_, BlockPos p_52867_, BlockState p_52868_, @Nullable BlockEntity p_52869_, ItemStack p_52870_) {
@@ -128,7 +128,7 @@ public class BigIcicleBlock extends IcicleBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, net.minecraft.world.level.LevelReader level, BlockPos pos, Player player) {
         return new ItemStack(CHBlocks.CRYOGENIC_ICICLE.get().asItem());
     }
 }

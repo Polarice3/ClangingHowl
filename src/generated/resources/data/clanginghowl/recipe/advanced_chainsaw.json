@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "clanginghowl:battery_panel"
+    },
+    "C": {
+      "tag": "c:ingots/copper"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_ingot"
+    },
+    "T": {
+      "item": "clanginghowl:chainsaw_teeth"
+    }
+  },
+  "pattern": [
+    " CB",
+    "TPC",
+    "TT "
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:advanced_chainsaw"
+  },
+  "show_notification": false
+}

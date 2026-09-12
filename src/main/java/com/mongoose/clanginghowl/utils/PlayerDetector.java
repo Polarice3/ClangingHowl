@@ -47,7 +47,7 @@ public interface PlayerDetector {
 	List<UUID> detect(ServerLevel serverLevel, EntitySelector entitySelector, BlockPos blockPos, double d, boolean bl);
 
 	private static boolean inLineOfSight(Level level, Vec3 vec3, Vec3 vec32) {
-		BlockHitResult blockHitResult = level.clip(new ClipContext(vec32, vec3, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, null));
+		BlockHitResult blockHitResult = level.clip(new ClipContext(vec32, vec3, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, (net.minecraft.world.entity.Entity) null));
 		return blockHitResult.getBlockPos().equals(BlockPos.containing(vec3)) || blockHitResult.getType() == HitResult.Type.MISS;
 	}
 

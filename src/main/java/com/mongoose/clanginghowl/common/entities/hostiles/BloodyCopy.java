@@ -46,7 +46,7 @@ import java.util.Objects;
 
 public class BloodyCopy extends TFleshMonster {
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(BloodyCopy.class, EntityDataSerializers.INT);
-    public static AttributeModifier APPEAR_SPEED_MODIFIER = new AttributeModifier(CHUUIDUtil.createUUID("entity.clanginghowl.bloody_copy.immobile"), "Appearing speed penalty", -1.0D, AttributeModifier.Operation.ADDITION);
+    public static AttributeModifier APPEAR_SPEED_MODIFIER = new AttributeModifier(com.mongoose.clanginghowl.ClangingHowl.location("entity.clanginghowl.bloody_copy.immobile"), -1.0D, AttributeModifier.Operation.ADD_VALUE);
     public static String IDLE = "idle";
     public static String ATTACK = "attack";
     public static String APPEAR = "appear";
@@ -92,9 +92,9 @@ public class BloodyCopy extends TFleshMonster {
                 .add(Attributes.ATTACK_KNOCKBACK, 0.3D);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANIM_STATE, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ANIM_STATE, 0);
     }
 
     @Override
@@ -211,8 +211,8 @@ public class BloodyCopy extends TFleshMonster {
         return animationStates;
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.hasPose(Pose.EMERGING) ? 1 : 0);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, serverEntity, this.hasPose(Pose.EMERGING) ? 1 : 0);
     }
 
     public void recreateFromPacket(ClientboundAddEntityPacket p_219420_) {
@@ -224,11 +224,11 @@ public class BloodyCopy extends TFleshMonster {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
         if (pReason == MobSpawnType.MOB_SUMMONED) {
             this.setPose(Pose.EMERGING);
         }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
     @Override
@@ -293,7 +293,7 @@ public class BloodyCopy extends TFleshMonster {
                 }
             } else {
                 if (modifiableattributeinstance != null) {
-                    if (modifiableattributeinstance.hasModifier(APPEAR_SPEED_MODIFIER)) {
+                    if (modifiableattributeinstance.hasModifier(APPEAR_SPEED_MODIFIER.id())) {
                         modifiableattributeinstance.removeModifier(APPEAR_SPEED_MODIFIER);
                     }
                 }

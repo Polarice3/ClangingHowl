@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "clanginghowl:fireproof_steel_block"
+  },
+  "result": {
+    "count": 2,
+    "id": "clanginghowl:carved_fireproof_steel_slab"
+  }
+}

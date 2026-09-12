@@ -1,6 +1,6 @@
 package com.mongoose.clanginghowl.compat.curios;
 
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
 public enum CuriosLoaded {
     CURIOS("curios");

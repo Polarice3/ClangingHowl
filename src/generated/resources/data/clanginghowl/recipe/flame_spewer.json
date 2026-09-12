@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "clanginghowl:blaze_fuel_cylinder"
+    },
+    "G": {
+      "item": "clanginghowl:extraterrestrial_steel_grate"
+    },
+    "P": {
+      "item": "clanginghowl:fireproof_steel_coating"
+    },
+    "S": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    }
+  },
+  "pattern": [
+    "SGS",
+    "PCP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:flame_spewer"
+  },
+  "show_notification": false
+}

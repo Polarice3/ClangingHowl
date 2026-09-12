@@ -10,15 +10,15 @@ import net.minecraft.world.level.Level;
 
 public class EffectsUtil {
 
-    public static boolean amplifyEffect(LivingEntity infected, MobEffect effect, int duration){
+    public static boolean amplifyEffect(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int duration){
         return amplifyEffect(infected, effect, duration, 4);
     }
 
-    public static boolean amplifyEffect(LivingEntity infected, MobEffect effect, int duration, int maxAmp){
+    public static boolean amplifyEffect(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int duration, int maxAmp){
         return amplifyEffect(infected, effect, duration, maxAmp, false, true);
     }
 
-    public static boolean amplifyEffect(LivingEntity infected, MobEffect effect, int duration, int maxAmp, boolean pAmbient, boolean pVisible){
+    public static boolean amplifyEffect(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int duration, int maxAmp, boolean pAmbient, boolean pVisible){
         MobEffectInstance MobEffectInstance1 = infected.getEffect(effect);
         int i = 1;
         if (MobEffectInstance1 != null) {
@@ -33,11 +33,11 @@ public class EffectsUtil {
         return infected.addEffect(MobEffectInstance);
     }
 
-    public static void resetDuration(LivingEntity infected, MobEffect effect, int duration){
+    public static void resetDuration(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int duration){
         resetDuration(infected, effect, duration, false, true);
     }
 
-    public static void resetDuration(LivingEntity infected, MobEffect effect, int duration, boolean pAmbient, boolean pVisible){
+    public static void resetDuration(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int duration, boolean pAmbient, boolean pVisible){
         MobEffectInstance MobEffectInstance1 = infected.getEffect(effect);
         int a = 0;
         if (MobEffectInstance1 != null) {
@@ -48,7 +48,7 @@ public class EffectsUtil {
         infected.addEffect(MobEffectInstance);
     }
 
-    public static void increaseDuration(LivingEntity infected, MobEffect effect, int duration){
+    public static void increaseDuration(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int duration){
         MobEffectInstance MobEffectInstance1 = infected.getEffect(effect);
         int i = duration;
         int a = 0;
@@ -61,7 +61,7 @@ public class EffectsUtil {
         infected.addEffect(MobEffectInstance);
     }
 
-    public static void decreaseDuration(LivingEntity infected, MobEffect effect, float duration, boolean pAmbient, boolean pVisible){
+    public static void decreaseDuration(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, float duration, boolean pAmbient, boolean pVisible){
         MobEffectInstance MobEffectInstance1 = infected.getEffect(effect);
         float i = duration;
         int a = 0;
@@ -74,15 +74,15 @@ public class EffectsUtil {
         infected.addEffect(MobEffectInstance);
     }
 
-    public static void deamplifyEffect(LivingEntity infected, MobEffect effect, int duration){
+    public static void deamplifyEffect(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int duration){
         deamplifyEffect(infected, effect, 1, duration, false, true);
     }
 
-    public static void deamplifyEffect(LivingEntity infected, MobEffect effect, int deamp, int duration){
+    public static void deamplifyEffect(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int deamp, int duration){
         deamplifyEffect(infected, effect, deamp, duration, false, true);
     }
 
-    public static void deamplifyEffect(LivingEntity infected, MobEffect effect, int deamp, int duration, boolean pAmbient, boolean pVisible){
+    public static void deamplifyEffect(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int deamp, int duration, boolean pAmbient, boolean pVisible){
         MobEffectInstance MobEffectInstance1 = infected.getEffect(effect);
         int i = 0;
         if (MobEffectInstance1 != null) {
@@ -96,11 +96,11 @@ public class EffectsUtil {
         infected.addEffect(MobEffectInstance);
     }
 
-    public static void halveDuration(LivingEntity infected, MobEffect effect, int duration){
+    public static void halveDuration(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int duration){
         halveDuration(infected, effect, duration, false, true);
     }
 
-    public static void halveDuration(LivingEntity infected, MobEffect effect, int duration, boolean pAmbient, boolean pVisible){
+    public static void halveDuration(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int duration, boolean pAmbient, boolean pVisible){
         MobEffectInstance MobEffectInstance1 = infected.getEffect(effect);
         int a = 0;
         if (MobEffectInstance1 != null) {
@@ -111,7 +111,7 @@ public class EffectsUtil {
         infected.addEffect(MobEffectInstance);
     }
 
-    public static int getAmplifier(LivingEntity infected, MobEffect effect){
+    public static int getAmplifier(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect){
         MobEffectInstance MobEffectInstance1 = infected.getEffect(effect);
         if (MobEffectInstance1 != null){
             return MobEffectInstance1.getAmplifier();
@@ -119,7 +119,7 @@ public class EffectsUtil {
         return 0;
     }
 
-    public static int getAmplifierPlus(LivingEntity infected, MobEffect effect){
+    public static int getAmplifierPlus(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect){
         MobEffectInstance MobEffectInstance1 = infected.getEffect(effect);
         if (MobEffectInstance1 != null){
             return MobEffectInstance1.getAmplifier() + 1;
@@ -139,7 +139,7 @@ public class EffectsUtil {
         return -1;
     }
 
-    public static void increaseEffect(LivingEntity infected, MobEffect effect, int maxAmp, boolean pAmbient, boolean pVisible){
+    public static void increaseEffect(LivingEntity infected, net.minecraft.core.Holder<MobEffect> effect, int maxAmp, boolean pAmbient, boolean pVisible){
         MobEffectInstance instance = infected.getEffect(effect);
         int i = 1;
         int d = MathHelper.secondsToTicks(1);

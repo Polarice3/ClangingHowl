@@ -1,0 +1,21 @@
+{
+  "description": {
+    "translate": "enchantment.clanginghowl.napalm_stream"
+  },
+  "supported_items": "#clanginghowl:enchantable/fuel",
+  "weight": 5,
+  "max_level": 3,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 20
+  },
+  "max_cost": {
+    "base": 61,
+    "per_level_above_first": 10
+  },
+  "anvil_cost": 2,
+  "slots": [
+    "mainhand"
+  ],
+  "effects": {}
+}

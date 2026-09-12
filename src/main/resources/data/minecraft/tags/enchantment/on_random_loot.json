@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "clanginghowl:energy_efficiency",
+    "clanginghowl:fuel_saving",
+    "clanginghowl:napalm_stream",
+    "clanginghowl:chain_burn",
+    "clanginghowl:fuel_burst",
+    "clanginghowl:soul_burner"
+  ]
+}

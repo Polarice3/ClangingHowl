@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.data;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.mongoose.clanginghowl.common.blocks.BlazeFuelCylinderBlock;
 import com.mongoose.clanginghowl.common.blocks.CHBlocks;
 import com.mongoose.clanginghowl.common.blocks.ExEnergyClusterBlock;
@@ -30,8 +31,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,18 +42,19 @@ import java.util.function.BiConsumer;
  * Based on @klikli-dev's Block Loot Generator
  */
 public class CHBlockLootProvider extends BlockLootSubProvider {
-    private static final LootItemCondition.Builder HAS_SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
     private static final LootItemCondition.Builder HAS_SHEARS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS));
-    private static final LootItemCondition.Builder HAS_SHEARS_OR_SILK_TOUCH = HAS_SHEARS.or(HAS_SILK_TOUCH);
-    private static final LootItemCondition.Builder HAS_NO_SHEARS_OR_SILK_TOUCH = HAS_SHEARS_OR_SILK_TOUCH.invert();
+    private final LootItemCondition.Builder HAS_SHEARS_OR_SILK_TOUCH;
+    private final LootItemCondition.Builder HAS_NO_SHEARS_OR_SILK_TOUCH;
     private static final float[] NORMAL_LEAVES_SAPLING_CHANCES = new float[]{0.05F, 0.0625F, 0.083333336F, 0.1F};
 
-    public CHBlockLootProvider() {
-        super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+    public CHBlockLootProvider(net.minecraft.core.HolderLookup.Provider registries) {
+        super(Set.of(), FeatureFlags.REGISTRY.allFlags(), registries);
+        HAS_SHEARS_OR_SILK_TOUCH = HAS_SHEARS.or(this.hasSilkTouch());
+        HAS_NO_SHEARS_OR_SILK_TOUCH = HAS_SHEARS_OR_SILK_TOUCH.invert();
     }
 
     @Override
-    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
+    public void generate(BiConsumer<net.minecraft.resources.ResourceKey<LootTable>, LootTable.Builder> consumer) {
         this.generate();
         this.map.forEach(consumer::accept);
     }
@@ -62,9 +62,9 @@ public class CHBlockLootProvider extends BlockLootSubProvider {
     @Override
     protected void generate() {
         Collection<Block> blocks = new ArrayList<>();
-        CHBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(block ->
+        CHBlocks.BLOCKS.getEntries().stream().map(net.neoforged.neoforge.registries.DeferredHolder::get).forEach(block ->
         {
-            CHBlocks.BlockLootSetting setting = CHBlocks.BLOCK_LOOT.get(ForgeRegistries.BLOCKS.getKey(block));
+            CHBlocks.BlockLootSetting setting = CHBlocks.BLOCK_LOOT.get(BuiltInRegistries.BLOCK.getKey(block));
             if (setting.lootTableType == CHBlocks.LootTableType.DROP){
                 blocks.add(block);
             }
@@ -96,21 +96,21 @@ public class CHBlockLootProvider extends BlockLootSubProvider {
         this.add(CHBlocks.EXTRATERRESTRIAL_ENERGY_CLUSTER.get(),
                 this.applyExplosionDecay(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get(),
                         LootTable.lootTable()
-                                .withPool(LootPool.lootPool().when(HAS_SILK_TOUCH)
+                                .withPool(LootPool.lootPool().when(this.hasSilkTouch())
                                         .when(lootitemcondition$builder0)
                                         .add(LootItem.lootTableItem(CHBlocks.SMALL_EX_ENERGY_CLUSTER.get())))
-                                .withPool(LootPool.lootPool().when(HAS_SILK_TOUCH)
+                                .withPool(LootPool.lootPool().when(this.hasSilkTouch())
                                         .when(lootitemcondition$builder)
                                         .add(LootItem.lootTableItem(CHBlocks.MEDIUM_EX_ENERGY_CLUSTER.get())))
-                                .withPool(LootPool.lootPool().when(HAS_SILK_TOUCH)
+                                .withPool(LootPool.lootPool().when(this.hasSilkTouch())
                                         .when(lootitemcondition$builder2)
                                         .add(LootItem.lootTableItem(CHBlocks.LARGE_EX_ENERGY_CLUSTER.get())))
-                                .withPool(LootPool.lootPool().when(HAS_SILK_TOUCH.invert())
+                                .withPool(LootPool.lootPool().when(this.hasSilkTouch().invert())
                                         .add(LootItem.lootTableItem(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get())))
-                                .withPool(LootPool.lootPool().when(HAS_SILK_TOUCH.invert())
+                                .withPool(LootPool.lootPool().when(this.hasSilkTouch().invert())
                                         .when(lootitemcondition$builder)
                                         .add(LootItem.lootTableItem(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get())))
-                                .withPool(LootPool.lootPool().when(HAS_SILK_TOUCH.invert())
+                                .withPool(LootPool.lootPool().when(this.hasSilkTouch().invert())
                                         .when(lootitemcondition$builder2)
                                         .add(LootItem.lootTableItem(CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get())))));
         this.add(CHBlocks.HUGE_EXTRATERRESTRIAL_ENERGY_CLUSTER.get(), this.createHugeExEnergyCluster());
@@ -187,10 +187,10 @@ public class CHBlockLootProvider extends BlockLootSubProvider {
     }
 
     protected LootTable.Builder createOreDrop(Block p_124140_, Item p_124141_, int min, int max) {
-        return createSilkTouchDispatchTable(p_124140_, applyExplosionDecay(p_124140_, LootItem.lootTableItem(p_124141_).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max))).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))));
+        return createSilkTouchDispatchTable(p_124140_, applyExplosionDecay(p_124140_, LootItem.lootTableItem(p_124141_).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max))).apply(ApplyBonusCount.addOreBonusCount(this.registries.lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE)))));
     }
 
     protected LootTable.Builder createOreDrop(Block p_124140_, Item p_124141_) {
-        return createSilkTouchDispatchTable(p_124140_, applyExplosionDecay(p_124140_, LootItem.lootTableItem(p_124141_).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))));
+        return createSilkTouchDispatchTable(p_124140_, applyExplosionDecay(p_124140_, LootItem.lootTableItem(p_124141_).apply(ApplyBonusCount.addOreBonusCount(this.registries.lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE)))));
     }
 }

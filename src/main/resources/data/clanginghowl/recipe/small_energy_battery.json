@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "type": "neoforge:components",
+      "items": "clanginghowl:energy_battery",
+      "components": {
+        "minecraft:custom_data": {
+          "Energy": 2000,
+          "Max Energy": 2000
+        }
+      },
+      "strict": true
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "clanginghowl:small_energy_battery"
+  }
+}

@@ -55,7 +55,7 @@ public record WearRenderer(ResourceLocation texture,
     }
 
     public boolean hasCape(AbstractClientPlayer p_116618_){
-        return p_116618_.isCapeLoaded() && !p_116618_.isInvisible() && p_116618_.isModelPartShown(PlayerModelPart.CAPE) && p_116618_.getCloakTextureLocation() != null;
+        return p_116618_.getSkin().capeTexture() != null && !p_116618_.isInvisible() && p_116618_.isModelPartShown(PlayerModelPart.CAPE) && p_116618_.getSkin().capeTexture() != null;
     }
 
     @Override
@@ -72,39 +72,39 @@ public record WearRenderer(ResourceLocation texture,
     private void render(LivingEntity livingEntity, ItemStack stack, PoseStack matrixStack, MultiBufferSource buffer, int light) {
         RenderType renderType = this.getModel().renderType(getTexture(livingEntity, stack));
         VertexConsumer vertexBuilder = buffer.getBuffer(renderType);
-        this.getModel().renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+        this.getModel().renderToBuffer(matrixStack, vertexBuilder, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
         if (stack.is(CHItems.X_RAY_GOGGLES.get())) {
             if (XRayGoggles.isActivated(stack)) {
                 VertexConsumer vertexBuilder2 = buffer.getBuffer(RenderType.eyes(CuriosRenderer.render("x_ray_goggles_emissive.png")));
-                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
         if (stack.is(CHItems.ENERGY_BARRIER_GENERATOR.get())) {
             if (!IEnergyItem.isEmpty(stack)) {
                 VertexConsumer vertexBuilder2 = buffer.getBuffer(RenderType.eyes(CuriosRenderer.render("energy_barrier_generator_emissive.png")));
-                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
         if (stack.is(CHItems.TENDON_STRENGTHENER.get())) {
             if (!IEnergyItem.isEmpty(stack)) {
                 VertexConsumer vertexBuilder2 = buffer.getBuffer(RenderType.eyes(CuriosRenderer.render("tendon_strengthener_emissive.png")));
-                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
         if (stack.is(CHItems.ENERGY_GLOVE.get())) {
             if (!IEnergyItem.isEmpty(stack)) {
                 VertexConsumer vertexBuilder2 = buffer.getBuffer(RenderType.eyes(CuriosRenderer.render("energy_glove_emissive.png")));
-                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 0.15F);
+                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 0x26FFFFFF);
             }
         }
         if (stack.is(CHItems.BLOODY_BATTERY.get())) {
             VertexConsumer vertexBuilder2 = buffer.getBuffer(RenderType.eyes(CuriosRenderer.render("bloody_battery_emissive.png")));
-            this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 0.15F);
+            this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 0x26FFFFFF);
         }
         if (stack.is(CHItems.REANIMATOR.get())) {
             if (IEnergyItem.isFull(stack)) {
                 VertexConsumer vertexBuilder2 = buffer.getBuffer(RenderType.eyes(CuriosRenderer.render("reanimator_emissive.png")));
-                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+                this.getModel().renderToBuffer(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
     }
@@ -134,7 +134,7 @@ public record WearRenderer(ResourceLocation texture,
         arm.render(matrixStack, builder, light, OverlayTexture.NO_OVERLAY);
         if (!IEnergyItem.isEmpty(itemStack)) {
             VertexConsumer vertexBuilder2 = buffer.getBuffer(RenderType.eyes(CuriosRenderer.render("energy_glove_emissive.png")));
-            arm.render(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 0.15F);
+            arm.render(matrixStack, vertexBuilder2, light, OverlayTexture.NO_OVERLAY, 0x26FFFFFF);
         }
     }
 }

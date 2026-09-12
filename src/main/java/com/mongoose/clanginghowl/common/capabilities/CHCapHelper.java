@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 public class CHCapHelper {
 
     public static ICHCap getCapability(LivingEntity player) {
-        return player.getCapability(CHCapProvider.CAPABILITY).orElse(new CHCapImp());
+        return player.getData(CHAttachments.STATE);
     }
 
     public static int getMiningProgress(Player player){
@@ -160,7 +160,7 @@ public class CHCapHelper {
                     DamageSource damageSource = CHDamageSource.fireStream(owner, owner);
                     if (livingEntity.hurt(damageSource, 2.5F)) {
                         int fireSeconds = 10;
-                        livingEntity.setSecondsOnFire(fireSeconds);
+                        livingEntity.igniteForSeconds(fireSeconds);
                     }
                 }
             }
@@ -203,48 +203,10 @@ public class CHCapHelper {
     }
 
     public static CompoundTag save(CompoundTag tag, ICHCap cap) {
-        if (cap.getMiningPos() != null) {
-            tag.putInt("miningPosX", cap.getMiningPos().getX());
-            tag.putInt("miningPosY", cap.getMiningPos().getY());
-            tag.putInt("miningPosZ", cap.getMiningPos().getZ());
-        }
-        if (cap.getMiningProgress() > 0) {
-            tag.putInt("miningProgress", cap.getMiningProgress());
-        }
-        tag.putInt("shakeTime", cap.getShakeTime());
-        tag.putBoolean("isMoving", cap.isMoving());
-        if (cap.technoResist() > 0.0F) {
-            tag.putFloat("technoResist", cap.technoResist());
-        }
-        tag.putInt("enlightenedTick", cap.getEnlightenedTick());
-        tag.putInt("airTick", cap.getTicksInAir());
-        tag.putInt("flashTick", cap.getFlashTick());
-        return tag;
+        return CHCapSerialization.save(tag, cap);
     }
 
     public static ICHCap load(CompoundTag tag, ICHCap cap) {
-        if (tag.contains("miningPosX") && tag.contains("miningPosY") && tag.contains("miningPosZ")) {
-            cap.setMiningPos(new BlockPos(tag.getInt("miningPosX"), tag.getInt("miningPosY"), tag.getInt("miningPosZ")));
-        }
-        if (tag.contains("miningProgress")) {
-            cap.setMiningProgress(tag.getInt("miningProgress"));
-        }
-        if (tag.contains("shakeTime")){
-            cap.setShakeTime(tag.getInt("shakeTime"));
-        }
-        if (tag.contains("isMoving")){
-            cap.setMoving(tag.getBoolean("isMoving"));
-        }
-        if (tag.contains("technoResist")){
-            cap.setTechnoResist(tag.getFloat("technoResist"));
-        }
-        if (tag.contains("enlightenedTick")){
-            cap.setEnlightenedTick(tag.getInt("enlightenedTick"));
-        }
-        cap.setTicksInAir(tag.getInt("airTick"));
-        if (tag.contains("flashTick")) {
-            cap.setFlashTick(tag.getInt("flashTick"));
-        }
-        return cap;
+        return CHCapSerialization.load(tag, cap);
     }
 }

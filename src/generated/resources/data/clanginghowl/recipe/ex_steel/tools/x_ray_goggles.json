@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "clanginghowl:advanced_electronics"
+    },
+    "B": {
+      "item": "clanginghowl:energy_battery"
+    },
+    "E": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    },
+    "P": {
+      "item": "clanginghowl:techno_optics"
+    },
+    "T": {
+      "tag": "c:glass_blocks/tinted"
+    }
+  },
+  "pattern": [
+    "EBE",
+    "PAP",
+    "TTT"
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:x_ray_goggles"
+  },
+  "show_notification": false
+}

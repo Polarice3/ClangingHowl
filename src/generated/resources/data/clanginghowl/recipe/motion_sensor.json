@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "O": {
+      "item": "clanginghowl:techno_optics"
+    },
+    "S": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    }
+  },
+  "pattern": [
+    "SOS"
+  ],
+  "result": {
+    "count": 2,
+    "id": "clanginghowl:motion_sensor"
+  },
+  "show_notification": false
+}

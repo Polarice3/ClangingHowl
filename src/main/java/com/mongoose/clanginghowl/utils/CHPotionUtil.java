@@ -3,9 +3,11 @@ package com.mongoose.clanginghowl.utils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.brewing.BrewingRecipe;
+import net.neoforged.neoforge.common.brewing.BrewingRecipe;
 
 public class CHPotionUtil extends BrewingRecipe {
 
@@ -18,18 +20,18 @@ public class CHPotionUtil extends BrewingRecipe {
 
     @Override
     public boolean isInput(ItemStack stack) {
-        return super.isInput(stack) && PotionUtils.getPotion(stack) == PotionUtils.getPotion(inputStack);
+        return super.isInput(stack) && stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).equals(inputStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY));
     }
 
-    public static ItemStack setPotion(Potion pPotion) {
-        return PotionUtils.setPotion(new ItemStack(Items.POTION), pPotion);
+    public static ItemStack setPotion(Holder<Potion> pPotion) {
+        return PotionContents.createItemStack(Items.POTION, pPotion);
     }
 
-    public static ItemStack setSplashPotion(Potion pPotion) {
-        return PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), pPotion);
+    public static ItemStack setSplashPotion(Holder<Potion> pPotion) {
+        return PotionContents.createItemStack(Items.SPLASH_POTION, pPotion);
     }
 
-    public static ItemStack setLingeringPotion(Potion pPotion) {
-        return PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), pPotion);
+    public static ItemStack setLingeringPotion(Holder<Potion> pPotion) {
+        return PotionContents.createItemStack(Items.LINGERING_POTION, pPotion);
     }
 }

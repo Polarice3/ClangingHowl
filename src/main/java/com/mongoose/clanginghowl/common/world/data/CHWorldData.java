@@ -225,7 +225,7 @@ public class CHWorldData extends SavedData {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    public CompoundTag save(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
         compound.putBoolean("StartMeteorShower", this.startMeteorShower);
         compound.putBoolean("MeteorShower", this.isMeteorShower);
         compound.putBoolean("MeteorFlash", this.isMeteorFlash);

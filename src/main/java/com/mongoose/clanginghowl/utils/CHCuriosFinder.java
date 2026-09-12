@@ -8,7 +8,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.LazyOptional;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
@@ -96,9 +95,9 @@ public class CHCuriosFinder {
         if (livingEntity != null) {
             if (CuriosLoaded.CURIOS.isLoaded()) {
                 if (CuriosApi.getCuriosInventory(livingEntity).isPresent()) {
-                    LazyOptional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(livingEntity);
+                    Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(livingEntity);
                     if (optional.isPresent()) {
-                        Optional<ICuriosItemHandler> optional1 = optional.resolve();
+                        Optional<ICuriosItemHandler> optional1 = optional;
                         if (optional1.isPresent()) {
                             for (int i = 0; i < optional1.get().getSlots(); ++i) {
                                 ItemStack itemStack = optional1.get().getEquippedCurios().getStackInSlot(i);

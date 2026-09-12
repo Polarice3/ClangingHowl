@@ -11,12 +11,6 @@
     },
     "consummate_nest_state=inactive": {
       "model": "clanginghowl:block/consummate_nest"
-    },
-    "consummate_nest_state=waiting_for_players": {
-      "model": "clanginghowl:block/consummate_nest_active"
-    },
-    "consummate_nest_state=waiting_for_reward_ejection": {
-      "model": "clanginghowl:block/consummate_nest_active"
     }
   }
 }

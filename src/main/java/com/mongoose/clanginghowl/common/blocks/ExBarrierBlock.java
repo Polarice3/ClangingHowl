@@ -17,12 +17,21 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jetbrains.annotations.Nullable;
 
 public class ExBarrierBlock extends HorizontalDirectionalBlock implements EntityBlock {
+    public static final com.mojang.serialization.MapCodec<ExBarrierBlock> CODEC = simpleCodec(ExBarrierBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<ExBarrierBlock> codec() { return CODEC; }
+
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
 
     public ExBarrierBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .strength(4.0F, 9.0F)
                 .sound(SoundType.COPPER));
+    }
+
+    public ExBarrierBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(ENABLED, true).setValue(FACING, Direction.NORTH));
     }
 

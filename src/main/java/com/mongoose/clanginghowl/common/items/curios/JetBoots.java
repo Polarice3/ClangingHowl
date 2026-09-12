@@ -52,18 +52,18 @@ public class JetBoots extends CuriosFuelItem {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext,
-                                                                        UUID uuid, ItemStack stack) {
-        Multimap<Attribute, AttributeModifier> map = HashMultimap.create();
-        map.put(Attributes.ARMOR, new AttributeModifier(CHUUIDUtil.createUUID("item.clanginghowl.jet_boots"), "Jet Boots Boost", 1.0F, AttributeModifier.Operation.ADDITION));
+    public Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext,
+                                                                        net.minecraft.resources.ResourceLocation id, ItemStack stack) {
+        Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> map = HashMultimap.create();
+        map.put(Attributes.ARMOR, new AttributeModifier(com.mongoose.clanginghowl.ClangingHowl.location("item.clanginghowl.jet_boots"), 1.0F, AttributeModifier.Operation.ADD_VALUE));
         return map;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, tooltipContext, tooltip, flagIn);
         ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
-        this.addFuelText(stack, worldIn, tooltip, flagIn);
+        this.addFuelText(stack, tooltipContext, tooltip, flagIn);
     }
 
     public void addInformationAfterShift(List<Component> tooltip) {

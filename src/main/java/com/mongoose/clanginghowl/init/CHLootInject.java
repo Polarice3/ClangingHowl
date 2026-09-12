@@ -1,16 +1,17 @@
 package com.mongoose.clanginghowl.init;
 
+import net.neoforged.fml.common.EventBusSubscriber;
 import com.mongoose.clanginghowl.ClangingHowl;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
-import net.minecraftforge.event.LootTableLoadEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.neoforged.neoforge.event.LootTableLoadEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = ClangingHowl.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = ClangingHowl.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class CHLootInject {
 
     private static final List<String> CHEST_TABLES = List.of("bastion_bridge", "bastion_treasure", "bastion_other", "nether_bridge");
@@ -31,6 +32,6 @@ public class CHLootInject {
     }
 
     private static LootPoolEntryContainer.Builder<?> getInjectEntry(String name) {
-        return LootTableReference.lootTableReference(ClangingHowl.location("inject/" + name));
+        return NestedLootTable.lootTableReference(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ClangingHowl.location("inject/" + name)));
     }
 }

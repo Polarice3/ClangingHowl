@@ -15,7 +15,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 
 /**
  * Ripped from @BobMowzie's codes:<a href="https://github.com/BobMowzie/MowziesMobs/blob/1.19.2/src/main/java/com/bobmowzie/mowziesmobs/server/entity/effects/EntityCameraShake.java">...</a>
@@ -40,11 +39,11 @@ public class CameraShake extends Entity {
     }
 
     @Override
-    protected void defineSynchedData() {
-        getEntityData().define(RADIUS, 10.0F);
-        getEntityData().define(MAGNITUDE, 1.0F);
-        getEntityData().define(DURATION, 0);
-        getEntityData().define(FADE_DURATION, 5);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        builder.define(RADIUS, 10.0F);
+        builder.define(MAGNITUDE, 1.0F);
+        builder.define(DURATION, 0);
+        builder.define(FADE_DURATION, 5);
     }
 
     @Override
@@ -156,7 +155,7 @@ public class CameraShake extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return super.getAddEntityPacket(serverEntity);
     }
 }

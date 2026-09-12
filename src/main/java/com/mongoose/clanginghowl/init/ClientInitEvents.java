@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.init;
 
+import net.neoforged.fml.common.EventBusSubscriber;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.client.gui.overlay.OverheatOverlay;
 import com.mongoose.clanginghowl.client.gui.overlay.XRayOverlay;
@@ -19,38 +20,43 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod.EventBusSubscriber(modid = ClangingHowl.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = ClangingHowl.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientInitEvents {
+
+    @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(CHMenuTypes.PORTABLE_CHARGER.get(), PortableChargerScreen::new);
+    }
 
     @SubscribeEvent
     public static void clientInit(FMLClientSetupEvent event){
         CuriosRenderer.register();
         CHKeybindings.init();
-        MenuScreens.register(CHMenuTypes.PORTABLE_CHARGER.get(), PortableChargerScreen::new);
         event.enqueueWork(() -> {
-            ItemProperties.register(CHItems.ADVANCED_ENERGY_BATTERY.get(), new ResourceLocation("active")
+            ItemProperties.register(CHItems.ADVANCED_ENERGY_BATTERY.get(), ResourceLocation.parse("active")
                     , (stack, world, living, seed) -> !IEnergyItem.isEmpty(stack) ? 1.0F : 0.0F);
-            ItemProperties.register(CHItems.ADVANCED_CHAINSWORD.get(), new ResourceLocation("active")
+            ItemProperties.register(CHItems.ADVANCED_CHAINSWORD.get(), ResourceLocation.parse("active")
                     , (stack, world, living, seed) -> !IEnergyItem.isEmpty(stack) ? 1.0F : 0.0F);
-            ItemProperties.register(CHItems.PORTABLE_CHARGER.get(), new ResourceLocation("active")
+            ItemProperties.register(CHItems.PORTABLE_CHARGER.get(), ResourceLocation.parse("active")
                     , (stack, world, living, seed) -> PortableChargerItem.hasBatteries(stack) ? 1.0F : 0.0F);
-            ItemProperties.register(CHItems.X_RAY_GOGGLES.get(), new ResourceLocation("active")
+            ItemProperties.register(CHItems.X_RAY_GOGGLES.get(), ResourceLocation.parse("active")
                     , (stack, world, living, seed) -> XRayGoggles.isActivated(stack) ? 1.0F : 0.0F);
         });
     }
 
     @SubscribeEvent
-    public static void registerGUI(final RegisterGuiOverlaysEvent event){
-        event.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "overheat_overlay", OverheatOverlay.OVERLAY);
-        event.registerAbove(VanillaGuiOverlay.PLAYER_LIST.id(), "x_ray_overlay", XRayOverlay.OVERLAY);
+    public static void registerGUI(final RegisterGuiLayersEvent event){
+        event.registerAbove(VanillaGuiLayers.EXPERIENCE_BAR, ClangingHowl.location("overheat_overlay"), OverheatOverlay.OVERLAY);
+        event.registerAbove(VanillaGuiLayers.TAB_LIST, ClangingHowl.location("x_ray_overlay"), XRayOverlay.OVERLAY);
     }
 
     @SubscribeEvent

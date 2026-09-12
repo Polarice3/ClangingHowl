@@ -2,59 +2,59 @@ package com.mongoose.clanginghowl.config;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.electronwill.nightconfig.core.io.WritingMode;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 import java.io.File;
 
 public class CHConfig {
 
-    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec SPEC;
+    public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    public static final ModConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.ConfigValue<Boolean> TechnoFleshBuff;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> TechnoFleshBuffDayTime;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MeteorShower;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> MeteorShowerFlash;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> CameraShake;
+    public static final ModConfigSpec.ConfigValue<Boolean> TechnoFleshBuff;
+    public static final ModConfigSpec.ConfigValue<Boolean> TechnoFleshBuffDayTime;
+    public static final ModConfigSpec.ConfigValue<Boolean> MeteorShower;
+    public static final ModConfigSpec.ConfigValue<Boolean> MeteorShowerFlash;
+    public static final ModConfigSpec.ConfigValue<Boolean> CameraShake;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> FixedAdaptationStage;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MeteorShowerDays;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MeteorShowerDuration;
+    public static final ModConfigSpec.ConfigValue<Integer> FixedAdaptationStage;
+    public static final ModConfigSpec.ConfigValue<Integer> MeteorShowerDays;
+    public static final ModConfigSpec.ConfigValue<Integer> MeteorShowerDuration;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> HoDSpawnWeight;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HoDSpawnMinCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HoDSpawnMaxCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HoDDaySpawn;
+    public static final ModConfigSpec.ConfigValue<Integer> HoDSpawnWeight;
+    public static final ModConfigSpec.ConfigValue<Integer> HoDSpawnMinCount;
+    public static final ModConfigSpec.ConfigValue<Integer> HoDSpawnMaxCount;
+    public static final ModConfigSpec.ConfigValue<Integer> HoDDaySpawn;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> ExReaperSpawnWeight;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ExReaperSpawnMinCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ExReaperSpawnMaxCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ExReaperDaySpawn;
+    public static final ModConfigSpec.ConfigValue<Integer> ExReaperSpawnWeight;
+    public static final ModConfigSpec.ConfigValue<Integer> ExReaperSpawnMinCount;
+    public static final ModConfigSpec.ConfigValue<Integer> ExReaperSpawnMaxCount;
+    public static final ModConfigSpec.ConfigValue<Integer> ExReaperDaySpawn;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> FleshMaidenSpawnWeight;
-    public static final ForgeConfigSpec.ConfigValue<Integer> FleshMaidenSpawnMinCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> FleshMaidenSpawnMaxCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> FleshMaidenDaySpawn;
+    public static final ModConfigSpec.ConfigValue<Integer> FleshMaidenSpawnWeight;
+    public static final ModConfigSpec.ConfigValue<Integer> FleshMaidenSpawnMinCount;
+    public static final ModConfigSpec.ConfigValue<Integer> FleshMaidenSpawnMaxCount;
+    public static final ModConfigSpec.ConfigValue<Integer> FleshMaidenDaySpawn;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> HematomaSpawnWeight;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HematomaSpawnMinCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HematomaSpawnMaxCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> HematomaDaySpawn;
+    public static final ModConfigSpec.ConfigValue<Integer> HematomaSpawnWeight;
+    public static final ModConfigSpec.ConfigValue<Integer> HematomaSpawnMinCount;
+    public static final ModConfigSpec.ConfigValue<Integer> HematomaSpawnMaxCount;
+    public static final ModConfigSpec.ConfigValue<Integer> HematomaDaySpawn;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> BloodSpreaderSpawnWeight;
-    public static final ForgeConfigSpec.ConfigValue<Integer> BloodSpreaderSpawnMinCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> BloodSpreaderSpawnMaxCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> BloodSpreaderDaySpawn;
+    public static final ModConfigSpec.ConfigValue<Integer> BloodSpreaderSpawnWeight;
+    public static final ModConfigSpec.ConfigValue<Integer> BloodSpreaderSpawnMinCount;
+    public static final ModConfigSpec.ConfigValue<Integer> BloodSpreaderSpawnMaxCount;
+    public static final ModConfigSpec.ConfigValue<Integer> BloodSpreaderDaySpawn;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> ProwlerSpawnWeight;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ProwlerSpawnMinCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ProwlerSpawnMaxCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> ProwlerDaySpawn;
+    public static final ModConfigSpec.ConfigValue<Integer> ProwlerSpawnWeight;
+    public static final ModConfigSpec.ConfigValue<Integer> ProwlerSpawnMinCount;
+    public static final ModConfigSpec.ConfigValue<Integer> ProwlerSpawnMaxCount;
+    public static final ModConfigSpec.ConfigValue<Integer> ProwlerDaySpawn;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> CarcassSpawnWeight;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CarcassSpawnMinCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CarcassSpawnMaxCount;
-    public static final ForgeConfigSpec.ConfigValue<Integer> CarcassDaySpawn;
+    public static final ModConfigSpec.ConfigValue<Integer> CarcassSpawnWeight;
+    public static final ModConfigSpec.ConfigValue<Integer> CarcassSpawnMinCount;
+    public static final ModConfigSpec.ConfigValue<Integer> CarcassSpawnMaxCount;
+    public static final ModConfigSpec.ConfigValue<Integer> CarcassDaySpawn;
 
     static {
         BUILDER.push("General");
@@ -150,13 +150,5 @@ public class CHConfig {
         SPEC = BUILDER.build();
     }
 
-    public static void loadConfig(ForgeConfigSpec config, String path) {
-        final CommentedFileConfig file = CommentedFileConfig.builder(new File(path))
-                .sync()
-                .autosave()
-                .writingMode(WritingMode.REPLACE)
-                .build();
-        file.load();
-        config.setConfig(file);
-    }
+
 }

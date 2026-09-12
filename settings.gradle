@@ -5,19 +5,8 @@ pluginManagement {
             name = 'NeoForged'
             url = 'https://maven.neoforged.net/releases'
         }
-        maven {
-            url = "https://repo.spongepowered.org/repository/maven-public/"
-        }
-    }
-    resolutionStrategy {
-        eachPlugin {
-            if (it.requested.id.namespace == 'org.spongepowered') {
-                it.useModule('org.spongepowered:mixingradle:0.7-SNAPSHOT')
-            }
-        }
     }
 }
 
-plugins {
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
-}
+// An installed JDK 21 is required; no implicit JDK download during the port.
+rootProject.name = 'ClangingHowl'

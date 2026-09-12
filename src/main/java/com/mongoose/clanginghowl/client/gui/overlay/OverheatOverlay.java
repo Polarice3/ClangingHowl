@@ -8,15 +8,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import net.minecraft.client.gui.LayeredDraw;
+import net.minecraft.client.DeltaTracker;
 
 public class OverheatOverlay {
-    public static final IGuiOverlay OVERLAY = OverheatOverlay::drawOverlay;
-    protected static final ResourceLocation GUI_ICONS_LOCATION = new ResourceLocation("textures/gui/icons.png");
+    public static final LayeredDraw.Layer OVERLAY = OverheatOverlay::drawOverlay;
+    protected static final ResourceLocation GUI_ICONS_LOCATION = ResourceLocation.parse("textures/gui/icons.png");
     private static final Minecraft minecraft = Minecraft.getInstance();
 
-    public static void drawOverlay(ForgeGui gui, GuiGraphics ms, float partialTicks, int screenWidth, int screenHeight) {
+    public static void drawOverlay(GuiGraphics ms, DeltaTracker partialTick) {
         if (minecraft.player != null){
             Player player = minecraft.player;
             if (player.isHolding(CHItems.ADVANCED_CHAINSAW.get())) {
@@ -24,7 +24,7 @@ public class OverheatOverlay {
                 if (!itemStack.is(CHItems.ADVANCED_CHAINSAW.get())) {
                     itemStack = player.getOffhandItem();
                 }
-                if (itemStack.getEnchantmentLevel(CHEnchantments.FULL_POWER.get()) > 0) {
+                if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.FULL_POWER) > 0) {
                     renderOverheatBar(ms, ChainsawItem.getOverheat(itemStack), 200);
                 }
             }
@@ -36,9 +36,9 @@ public class OverheatOverlay {
         int i = gui.guiWidth() / 2 - 91;
         int j = (int)(f * 183.0F);
         int k = gui.guiHeight() - 32 + 3;
-        gui.blit(GUI_ICONS_LOCATION, i, k, 0, 84, 182, 5);
+        gui.blitSprite(ResourceLocation.withDefaultNamespace("hud/experience_bar_background"), i, k, 182, 5);
         if (j > 0) {
-            gui.blit(GUI_ICONS_LOCATION, i, k, 0, 89, j, 5);
+            gui.blitSprite(ResourceLocation.withDefaultNamespace("hud/experience_bar_progress"), 182, 5, 0, 0, i, k, Math.min(j, 182), 5);
         }
     }
 }

@@ -3,7 +3,7 @@ package com.mongoose.clanginghowl.utils;
 import com.mongoose.clanginghowl.ClangingHowl;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageSource;
@@ -68,7 +68,7 @@ public class CHDamageSource extends DamageSource {
         return "clanginghowl." + source;
     }
 
-    public static void bootstrap(BootstapContext<DamageType> context) {
+    public static void bootstrap(BootstrapContext<DamageType> context) {
         context.register(LIGHTNING, new DamageType("clanginghowl.lightning", 0.0F));
         context.register(FIRE_STREAM, new DamageType("clanginghowl.fire_stream", 0.0F, DamageEffects.BURNING));
         context.register(NEUROTOXIN, new DamageType("clanginghowl.neurotoxin", 0.0F));

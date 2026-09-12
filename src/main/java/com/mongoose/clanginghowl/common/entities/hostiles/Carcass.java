@@ -54,7 +54,7 @@ import java.util.function.BiConsumer;
 public class Carcass extends TFleshMonster {
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(Carcass.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> ID_SIZE = SynchedEntityData.defineId(Carcass.class, EntityDataSerializers.INT);
-    public static AttributeModifier SPECIAL_SPEED_MODIFIER = new AttributeModifier(CHUUIDUtil.createUUID("entity.clanginghowl.carcass.special_attack"), "Special Attack speed penalty", -1.0D, AttributeModifier.Operation.ADDITION);
+    public static AttributeModifier SPECIAL_SPEED_MODIFIER = new AttributeModifier(com.mongoose.clanginghowl.ClangingHowl.location("entity.clanginghowl.carcass.special_attack"), -1.0D, AttributeModifier.Operation.ADD_VALUE);
     private final DynamicGameEventListener<GameEventListener> gameEventListener;
     public static String IDLE = "idle";
     public static String ATTACK = "attack";
@@ -77,7 +77,7 @@ public class Carcass extends TFleshMonster {
     public Carcass(EntityType<? extends Monster> p_33002_, Level p_33003_) {
         super(p_33002_, p_33003_);
         this.xpReward = 24;
-        this.setMaxUpStep(1.6F);
+        this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.6D);
         this.gameEventListener = new DynamicGameEventListener<>(new GameEventListener() {
             public PositionSource getListenerSource() {
                 return new BlockPositionSource(Carcass.this.blockPosition());
@@ -91,7 +91,7 @@ public class Carcass extends TFleshMonster {
                 return GameEventListener.DeliveryMode.BY_DISTANCE;
             }
 
-            public boolean handleGameEvent(ServerLevel serverLevel, GameEvent p_282184_, GameEvent.Context p_283014_, Vec3 p_282350_) {
+            public boolean handleGameEvent(ServerLevel serverLevel, net.minecraft.core.Holder<GameEvent> p_282184_, GameEvent.Context p_283014_, Vec3 p_282350_) {
                 if (!Carcass.this.isRemoved()) {
                     if (p_282184_ == GameEvent.ENTITY_DIE) {
                         Entity sourceEntity = p_283014_.sourceEntity();
@@ -143,10 +143,10 @@ public class Carcass extends TFleshMonster {
                 .add(Attributes.ARMOR, 6.0D);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANIM_STATE, 0);
-        this.entityData.define(ID_SIZE, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ANIM_STATE, 0);
+        builder.define(ID_SIZE, 0);
     }
 
     @Override
@@ -190,9 +190,9 @@ public class Carcass extends TFleshMonster {
         return this.entityData.get(ID_SIZE);
     }
 
-    public EntityDimensions getDimensions(Pose p_33113_) {
+    public EntityDimensions getDefaultDimensions(Pose p_33113_) {
         int i = this.getCarcassSize();
-        EntityDimensions entitydimensions = super.getDimensions(p_33113_);
+        EntityDimensions entitydimensions = super.getDefaultDimensions(p_33113_);
         return entitydimensions.scale((0.1F * i) + 0.9F);
     }
 
@@ -318,8 +318,8 @@ public class Carcass extends TFleshMonster {
         return animationStates;
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.hasPose(Pose.EMERGING) ? 1 : 0);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, serverEntity, this.hasPose(Pose.EMERGING) ? 1 : 0);
     }
 
     public void recreateFromPacket(ClientboundAddEntityPacket p_219420_) {
@@ -332,9 +332,9 @@ public class Carcass extends TFleshMonster {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
         this.setPose(Pose.EMERGING);
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
     public boolean isAppearing() {
@@ -404,7 +404,7 @@ public class Carcass extends TFleshMonster {
                 }
             } else {
                 if (modifiableattributeinstance != null) {
-                    if (modifiableattributeinstance.hasModifier(SPECIAL_SPEED_MODIFIER)) {
+                    if (modifiableattributeinstance.hasModifier(SPECIAL_SPEED_MODIFIER.id())) {
                         modifiableattributeinstance.removeModifier(SPECIAL_SPEED_MODIFIER);
                     }
                 }

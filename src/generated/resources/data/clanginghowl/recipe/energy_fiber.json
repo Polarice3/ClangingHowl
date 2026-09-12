@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "clanginghowl:extraterrestrial_energy_crystal"
+    },
+    "P": {
+      "item": "minecraft:phantom_membrane"
+    }
+  },
+  "pattern": [
+    " C",
+    "CP",
+    "P "
+  ],
+  "result": {
+    "count": 3,
+    "id": "clanginghowl:energy_fiber"
+  },
+  "show_notification": false
+}

@@ -43,6 +43,11 @@ public enum CHTiers implements Tier {
         return this.damage;
     }
 
+    @Override
+    public net.minecraft.tags.TagKey<net.minecraft.world.level.block.Block> getIncorrectBlocksForDrops() {
+        return net.minecraft.tags.BlockTags.INCORRECT_FOR_NETHERITE_TOOL;
+    }
+
     public int getLevel() {
         return this.level;
     }

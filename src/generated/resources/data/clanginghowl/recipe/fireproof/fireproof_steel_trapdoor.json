@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "clanginghowl:fireproof_steel_coating"
+    }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "id": "clanginghowl:fireproof_steel_trapdoor"
+  },
+  "show_notification": false
+}

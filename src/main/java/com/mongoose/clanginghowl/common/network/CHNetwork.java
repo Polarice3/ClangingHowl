@@ -9,67 +9,92 @@ import com.mongoose.clanginghowl.common.network.server.SInstaLookPacket;
 import com.mongoose.clanginghowl.common.network.server.SPlayWorldSoundPacket;
 import com.mongoose.clanginghowl.common.network.server.SReanimatorDeathPacket;
 import com.mongoose.clanginghowl.common.network.server.SSendCHWorldData;
+import java.util.Objects;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.HandlerThread;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
-public class CHNetwork {
-    public static SimpleChannel INSTANCE;
-    private static int id = 0;
+@EventBusSubscriber(modid = ClangingHowl.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+public final class CHNetwork {
+    // Bump whenever a payload layout or interpretation changes incompatibly.
+    private static final String PROTOCOL_VERSION = "1.21.1-1";
 
-    public static int nextID() {
-        return id++;
+    private CHNetwork() {
     }
 
-    public static void init() {
-        INSTANCE = NetworkRegistry.newSimpleChannel(ClangingHowl.location("channel"), () -> "1.0", s -> true, s -> true);
-
-        INSTANCE.registerMessage(nextID(), CIsMovingPacket.class, CIsMovingPacket::encode, CIsMovingPacket::decode, CIsMovingPacket::consume);
-        INSTANCE.registerMessage(nextID(), CActivateCurioKeyPacket.class, CActivateCurioKeyPacket::encode, CActivateCurioKeyPacket::decode, CActivateCurioKeyPacket::consume);
-        INSTANCE.registerMessage(nextID(), CJetBootsJumpPacket.class, CJetBootsJumpPacket::encode, CJetBootsJumpPacket::decode, CJetBootsJumpPacket::consume);
-        INSTANCE.registerMessage(nextID(), SInstaLookPacket.class, SInstaLookPacket::encode, SInstaLookPacket::decode, SInstaLookPacket::consume);
-        INSTANCE.registerMessage(nextID(), SPlayWorldSoundPacket.class, SPlayWorldSoundPacket::encode, SPlayWorldSoundPacket::decode, SPlayWorldSoundPacket::consume);
-        INSTANCE.registerMessage(nextID(), SSendCHWorldData.class, SSendCHWorldData::encode, SSendCHWorldData::decode, SSendCHWorldData::consume);
-        INSTANCE.registerMessage(nextID(), SReanimatorDeathPacket.class, SReanimatorDeathPacket::encode, SReanimatorDeathPacket::decode, SReanimatorDeathPacket::consume);
-        INSTANCE.registerMessage(nextID(), CHCapUpdatePacket.class, CHCapUpdatePacket::encode, CHCapUpdatePacket::decode, CHCapUpdatePacket::consume);
+    @SubscribeEvent
+    public static void register(RegisterPayloadHandlersEvent event) {
+        // The default registrar is mandatory. Do not accept arbitrary peer versions.
+        PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION).executesOn(HandlerThread.MAIN);
+        registrar.playToServer(CIsMovingPacket.TYPE, CIsMovingPacket.STREAM_CODEC, CIsMovingPacket::consume);
+        registrar.playToServer(CActivateCurioKeyPacket.TYPE, CActivateCurioKeyPacket.STREAM_CODEC, CActivateCurioKeyPacket::consume);
+        registrar.playToServer(CJetBootsJumpPacket.TYPE, CJetBootsJumpPacket.STREAM_CODEC, CJetBootsJumpPacket::consume);
+        registrar.playToClient(SInstaLookPacket.TYPE, SInstaLookPacket.STREAM_CODEC, SInstaLookPacket::consume);
+        registrar.playToClient(SPlayWorldSoundPacket.TYPE, SPlayWorldSoundPacket.STREAM_CODEC, SPlayWorldSoundPacket::consume);
+        registrar.playToClient(SSendCHWorldData.TYPE, SSendCHWorldData.STREAM_CODEC, SSendCHWorldData::consume);
+        registrar.playToClient(SReanimatorDeathPacket.TYPE, SReanimatorDeathPacket.STREAM_CODEC, SReanimatorDeathPacket::consume);
+        registrar.playToClient(CHCapUpdatePacket.TYPE, CHCapUpdatePacket.STREAM_CODEC, CHCapUpdatePacket::consume);
     }
 
-    public static <MSG> void sendTo(Player player, MSG msg) {
-        CHNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), msg);
+    public static <MSG extends CustomPacketPayload> void sendTo(Player player, MSG msg) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            throw new IllegalArgumentException("Clientbound payload requires a server player");
+        }
+        PacketDistributor.sendToPlayer(serverPlayer, msg);
     }
 
-    public static <MSG> void sendToServer(MSG msg) {
-        CHNetwork.INSTANCE.sendToServer(msg);
+    public static <MSG extends CustomPacketPayload> void sendToServer(MSG msg) {
+        if (msg instanceof CIsMovingPacket movement) {
+            Player player = ClangingHowl.PROXY.getPlayer();
+            if (player == null || movement.entityID() != player.getId()) {
+                return;
+            }
+        }
+        PacketDistributor.sendToServer(msg);
     }
 
-    public static <MSG> void sentToTrackingChunk(LevelChunk chunk, MSG msg) {
-        CHNetwork.INSTANCE.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), msg);
+    public static <MSG extends CustomPacketPayload> void sentToTrackingChunk(LevelChunk chunk, MSG msg) {
+        if (!(chunk.getLevel() instanceof ServerLevel level)) {
+            throw new IllegalArgumentException("Clientbound payload requires a server chunk");
+        }
+        PacketDistributor.sendToPlayersTrackingChunk(level, chunk.getPos(), msg);
     }
 
-    public static <MSG> void sentToTrackingEntity(Entity entity, MSG msg) {
-        CHNetwork.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), msg);
+    public static <MSG extends CustomPacketPayload> void sentToTrackingEntity(Entity entity, MSG msg) {
+        PacketDistributor.sendToPlayersTrackingEntity(entity, msg);
     }
 
-    public static <MSG> void sentToTrackingEntityAndPlayer(Entity entity, MSG msg) {
-        CHNetwork.INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), msg);
+    public static <MSG extends CustomPacketPayload> void sentToTrackingEntityAndPlayer(Entity entity, MSG msg) {
+        PacketDistributor.sendToPlayersTrackingEntityAndSelf(entity, msg);
     }
 
-    public static <MSG> void sendToALL(MSG msg) {
-        CHNetwork.INSTANCE.send(PacketDistributor.ALL.noArg(), msg);
+    public static <MSG extends CustomPacketPayload> void sendToALL(MSG msg) {
+        PacketDistributor.sendToAllPlayers(msg);
     }
 
-    public static <MSG> void sendToClient(ServerPlayer player, MSG msg) {
-        CHNetwork.INSTANCE.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+    public static <MSG extends CustomPacketPayload> void sendToClient(ServerPlayer player, MSG msg) {
+        PacketDistributor.sendToPlayer(player, msg);
     }
 
-    public static <MSG> void sendToClientLevel(MSG message, ResourceKey<Level> levelResourceKey) {
-        CHNetwork.INSTANCE.send(PacketDistributor.DIMENSION.with(() -> levelResourceKey), message);
+    public static <MSG extends CustomPacketPayload> void sendToClientLevel(MSG message, ResourceKey<Level> dimension) {
+        MinecraftServer server = Objects.requireNonNull(ServerLifecycleHooks.getCurrentServer(),
+                "Clientbound payload requires a running server");
+        ServerLevel level = server.getLevel(dimension);
+        if (level != null) {
+            PacketDistributor.sendToPlayersInDimension(level, message);
+        }
     }
 }

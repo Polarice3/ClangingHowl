@@ -1,6 +1,6 @@
 {
     "parent": "block/block",
-    "loader": "forge:composite",
+    "loader": "neoforge:composite",
     "textures": {
         "particle": "clanginghowl:block/barrier_of_extraterrestrial_activity_side"
     },
@@ -40,7 +40,7 @@
                             "uv": [ 0, 0, 16, 16 ],
                             "texture": "#top",
                             "cullface": "up",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             },
@@ -49,7 +49,7 @@
                             "uv": [ 0, 0, 16, 16 ],
                             "texture": "#front",
                             "cullface": "north",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }

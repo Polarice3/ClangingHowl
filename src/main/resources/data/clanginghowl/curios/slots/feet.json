@@ -1,4 +1,5 @@
 {
   "replace": false,
-  "icon": "clanginghowl:slot/empty_feet_slot"
+  "icon": "clanginghowl:slot/empty_feet_slot",
+  "size": 1
 }

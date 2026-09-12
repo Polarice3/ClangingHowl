@@ -35,7 +35,7 @@ public class AttractionDevice extends Item {
             if (player.level() instanceof ServerLevel serverLevel) {
                 ParticleUtil.attractionCloud(serverLevel, player);
             }
-            player.addEffect(new MobEffectInstance(CHEffects.ATTRACTION.get(), 500, 0));
+            player.addEffect(new MobEffectInstance(CHEffects.ATTRACTION, 500, 0));
             player.getCooldowns().addCooldown(this, 200);
             ItemHelper.hurtAndBreak(itemStack, 1, player);
             return InteractionResultHolder.consume(itemStack);
@@ -44,7 +44,7 @@ public class AttractionDevice extends Item {
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable net.minecraft.world.item.Item.TooltipContext worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         tooltip.add(Component.translatable("info.clanginghowl.item.attraction_device"));
     }

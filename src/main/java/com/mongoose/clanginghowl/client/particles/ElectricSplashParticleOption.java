@@ -3,6 +3,8 @@ package com.mongoose.clanginghowl.client.particles;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.network.codec.StreamCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -12,23 +14,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.util.Locale;
 
 public class ElectricSplashParticleOption implements ParticleOptions {
-   public static final Codec<ElectricSplashParticleOption> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+   public static final MapCodec<ElectricSplashParticleOption> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
            Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
            Codec.INT.fieldOf("speed").forGetter(d -> d.speed)
    ).apply(instance, ElectricSplashParticleOption::new));
-   public static final Deserializer<ElectricSplashParticleOption> DESERIALIZER = new Deserializer<>() {
-      public ElectricSplashParticleOption fromCommand(ParticleType<ElectricSplashParticleOption> p_235961_, StringReader p_235962_) throws CommandSyntaxException {
-         p_235962_.expect(' ');
-         float s = p_235962_.readFloat();
-         p_235962_.expect(' ');
-         int s2 = p_235962_.readInt();
-         return new ElectricSplashParticleOption(s, s2);
-      }
-
-      public ElectricSplashParticleOption fromNetwork(ParticleType<ElectricSplashParticleOption> p_235964_, FriendlyByteBuf p_235965_) {
-         return new ElectricSplashParticleOption(p_235965_.readFloat(), p_235965_.readInt());
-      }
-   };
+   public static final StreamCodec<FriendlyByteBuf, ElectricSplashParticleOption> STREAM_CODEC = StreamCodec.of(
+           (buffer, option) -> option.writeToNetwork(buffer),
+           buffer -> new ElectricSplashParticleOption(buffer.readFloat(), buffer.readInt()));
    private final float size;
    private final int speed;
 

@@ -1,6 +1,6 @@
 {
     "parent": "block/block",
-    "loader": "forge:composite",
+    "loader": "neoforge:composite",
     "textures": {
         "particle": "clanginghowl:block/motion_sensor"
     },
@@ -30,32 +30,32 @@
                     "rotation": {"angle": 0, "axis": "y", "origin": [6, 0, 6]},
                     "faces": {
                         "north": {"uv": [6, 1.5, 9, 2], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "east": {"uv": [6, 2, 9, 2.5], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "south": {"uv": [6, 2.5, 9, 3], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "west": {"uv": [3, 6, 6, 6.5], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "up": {"uv": [6, 3, 3, 0], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "down": {"uv": [6, 3, 3, 6], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }}
@@ -67,32 +67,32 @@
                     "rotation": {"angle": 0, "axis": "y", "origin": [6, 0, 6]},
                     "faces": {
                         "north": {"uv": [0, 6, 3, 6.5], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "east": {"uv": [6, 0, 9, 0.5], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "south": {"uv": [6, 0.5, 9, 1], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "west": {"uv": [6, 1, 9, 1.5], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "up": {"uv": [3, 3, 0, 0], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }},
                         "down": {"uv": [3, 3, 0, 6], "texture": "#0",
-                            "forge_data": {
+                            "neoforge_data": {
                                 "block_light": 15,
                                 "sky_light": 15
                             }}

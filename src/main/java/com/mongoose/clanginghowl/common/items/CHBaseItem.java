@@ -16,7 +16,7 @@ public class CHBaseItem extends Item {
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable net.minecraft.world.item.Item.TooltipContext worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
         if (stack.is(CHItems.HEMATOMA_LUMP.get())){
             tooltip.add(Component.translatable("info.clanginghowl.item.hematoma_lump"));

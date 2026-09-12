@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.init;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.mongoose.clanginghowl.ClangingHowl;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -7,7 +8,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.core.registries.Registries;
 
 public class CHTags {
 
@@ -46,7 +47,7 @@ public class CHTags {
         }
 
         private static TagKey<EntityType<?>> create(ResourceLocation p_215874_) {
-            return TagKey.create(ForgeRegistries.ENTITY_TYPES.getRegistryKey(), p_215874_);
+            return TagKey.create(Registries.ENTITY_TYPE, p_215874_);
         }
     }
 
@@ -65,7 +66,7 @@ public class CHTags {
         }
 
         private static TagKey<Biome> create(ResourceLocation p_215874_) {
-            return TagKey.create(ForgeRegistries.BIOMES.getRegistryKey(), p_215874_);
+            return TagKey.create(Registries.BIOME, p_215874_);
         }
     }
 }

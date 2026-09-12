@@ -45,13 +45,13 @@ public class SmallMeteoriteRenderer extends EntityRenderer<SmallMeteorite> {
       float f1 = Mth.lerp(p_116486_, p_116484_.xRotO, p_116484_.getXRot());
       VertexConsumer vertexconsumer = p_116488_.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(p_116484_)));
       this.model.setupAnim(0.0F, f, f1);
-      this.model.renderToBuffer(p_116487_, vertexconsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.5F);
+      this.model.renderToBuffer(p_116487_, vertexconsumer, 15728640, OverlayTexture.NO_OVERLAY, 0x80FFFFFF);
       VertexConsumer vertexconsumer2 = p_116488_.getBuffer(RenderType.eyes(GLOW));
       this.model.setupAnim(0.0F, f, f1);
-      this.model.renderToBuffer(p_116487_, vertexconsumer2, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.5F);
+      this.model.renderToBuffer(p_116487_, vertexconsumer2, 15728640, OverlayTexture.NO_OVERLAY, 0x80FFFFFF);
       VertexConsumer vertexconsumer3 = p_116488_.getBuffer(RenderType.eyes(OUTLINE));
       this.model.setupAnim(0.0F, f, f1);
-      this.model.renderToBuffer(p_116487_, vertexconsumer3, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.15F);
+      this.model.renderToBuffer(p_116487_, vertexconsumer3, 15728640, OverlayTexture.NO_OVERLAY, 0x26FFFFFF);
       p_116487_.popPose();
 
       ColorUtil colorUtil = new ColorUtil(0xffb52a);

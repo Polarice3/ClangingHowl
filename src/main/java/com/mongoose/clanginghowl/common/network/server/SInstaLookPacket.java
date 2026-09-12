@@ -1,18 +1,26 @@
 package com.mongoose.clanginghowl.common.network.server;
 
 import com.mongoose.clanginghowl.ClangingHowl;
-import com.mongoose.clanginghowl.utils.MobUtil;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import com.mongoose.clanginghowl.client.network.CHClientPayloadHandlers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
+public class SInstaLookPacket implements CustomPacketPayload {
+    public static final Type<SInstaLookPacket> TYPE = new Type<>(
+            ResourceLocation.fromNamespaceAndPath(ClangingHowl.MOD_ID, "insta_look"));
+    public static final StreamCodec<FriendlyByteBuf, SInstaLookPacket> STREAM_CODEC = StreamCodec.of(
+            (buffer, packet) -> encode(packet, buffer), SInstaLookPacket::decode);
 
-public class SInstaLookPacket {
+    @Override
+    public Type<SInstaLookPacket> type() {
+        return TYPE;
+    }
+
     public int looker;
     public int target;
 
@@ -37,19 +45,7 @@ public class SInstaLookPacket {
                 buffer.readInt());
     }
 
-    public static void consume(SInstaLookPacket packet, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-                Level level = ClangingHowl.PROXY.getLevel();
-                if (level instanceof ClientLevel clientWorld) {
-                    Entity looker = clientWorld.getEntity(packet.looker);
-                    Entity target = clientWorld.getEntity(packet.target);
-                    if (looker instanceof Mob mob && target != null) {
-                        MobUtil.instaLook(mob, target);
-                    }
-                }
-            }
-        });
-        ctx.get().setPacketHandled(true);
+    public static void consume(SInstaLookPacket packet, IPayloadContext context) {
+        CHClientPayloadHandlers.handle(packet);
     }
 }

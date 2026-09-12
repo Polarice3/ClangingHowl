@@ -16,7 +16,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class FleshNestBlockEntity extends BlockEntity {
         List<Direction> directions = new ArrayList<>();
         for (Direction direction : Direction.values()) {
             BlockPos blockPos = this.worldPosition.relative(direction);
-            if (serverLevel.noCollision(CHEntityType.HEART_OF_DECAY.get().getAABB(blockPos.getX() + 0.5F, blockPos.getY(), blockPos.getZ() + 0.5F))) {
+            if (serverLevel.noCollision(CHEntityType.HEART_OF_DECAY.get().getDimensions().makeBoundingBox(blockPos.getX() + 0.5F, blockPos.getY(), blockPos.getZ() + 0.5F))) {
                 directions.add(direction);
             }
         }
@@ -64,7 +64,7 @@ public class FleshNestBlockEntity extends BlockEntity {
                 double d2 = serverLevel.getRandom().nextGaussian() * 0.02D;
                 serverLevel.sendParticles(CHParticleTypes.CRIMSON_POOF.get(), hod.getRandomX(1.0D), hod.getRandomY(), hod.getRandomZ(1.0D), 0, d0, d1, d2, 1.0D);
             }
-            ForgeEventFactory.onFinalizeSpawn(hod, serverLevel, serverLevel.getCurrentDifficultyAt(this.worldPosition), MobSpawnType.SPAWNER, null, null);
+            EventHooks.finalizeMobSpawn(hod, serverLevel, serverLevel.getCurrentDifficultyAt(this.worldPosition), MobSpawnType.SPAWNER, null);
             if (serverLevel.addFreshEntity(hod)) {
                 serverLevel.playSound(null, hod.getX(), hod.getY(), hod.getZ(), CHSounds.FLESH_TEAR.get(), hod.getSoundSource(), 1.0F, 1.0F);
             }
@@ -77,18 +77,18 @@ public class FleshNestBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.writeNetwork(super.getUpdateTag());
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries) {
+        return this.writeNetwork(super.getUpdateTag(registries));
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, net.minecraft.core.HolderLookup.Provider registries) {
         this.readNetwork(pkt.getTag());
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        super.load(tag);
+    public void handleUpdateTag(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         this.readNetwork(tag);
     }
 
@@ -109,15 +109,15 @@ public class FleshNestBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
         this.readNetwork(compound);
-        super.load(compound);
+        super.loadAdditional(compound, registries);
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
+    public void saveAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
         this.writeNetwork(compound);
-        super.saveAdditional(compound);
+        super.saveAdditional(compound, registries);
     }
 
     @Override

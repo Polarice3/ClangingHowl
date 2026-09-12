@@ -1,0 +1,58 @@
+{
+  "entries": [
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "CLANGINGHOWL_CHAINSAW",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/mongoose/clanginghowl/client/render/CHArmPoseParameters",
+        "field": "CHAINSAW"
+      }
+    },
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "CLANGINGHOWL_IDLE_SAW",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/mongoose/clanginghowl/client/render/CHArmPoseParameters",
+        "field": "IDLE_SAW"
+      }
+    },
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "CLANGINGHOWL_DRILL",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/mongoose/clanginghowl/client/render/CHArmPoseParameters",
+        "field": "DRILL"
+      }
+    },
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "CLANGINGHOWL_IDLE_DRILL",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/mongoose/clanginghowl/client/render/CHArmPoseParameters",
+        "field": "IDLE_DRILL"
+      }
+    },
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "CLANGINGHOWL_FLAME",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/mongoose/clanginghowl/client/render/CHArmPoseParameters",
+        "field": "FLAME"
+      }
+    },
+    {
+      "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+      "name": "CLANGINGHOWL_IDLE_FLAME",
+      "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+      "parameters": {
+        "class": "com/mongoose/clanginghowl/client/render/CHArmPoseParameters",
+        "field": "IDLE_FLAME"
+      }
+    }
+  ]
+}

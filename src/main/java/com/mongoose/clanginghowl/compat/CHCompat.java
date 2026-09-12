@@ -3,8 +3,8 @@ package com.mongoose.clanginghowl.compat;
 import com.google.common.collect.ImmutableMap;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.compat.curios.CuriosIntegration;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.HashMap;
 import java.util.Map;

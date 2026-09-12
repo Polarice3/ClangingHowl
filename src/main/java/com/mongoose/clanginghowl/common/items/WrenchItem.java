@@ -41,14 +41,14 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class WrenchItem extends Item {
-    private final Multimap<Attribute, AttributeModifier> wrenchAttributes;
+    private final Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> wrenchAttributes;
 
     public WrenchItem() {
         super(new Properties()
                 .durability(1200));
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 6.0D, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.6F, AttributeModifier.Operation.ADDITION));
+        ImmutableMultimap.Builder<net.minecraft.core.Holder<Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 6.0D, AttributeModifier.Operation.ADD_VALUE));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.6F, AttributeModifier.Operation.ADD_VALUE));
         this.wrenchAttributes = builder.build();
     }
 
@@ -150,13 +150,14 @@ public class WrenchItem extends Item {
         return super.interactLivingEntity(itemStack, player, target, hand);
     }
 
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, ItemStack itemStack) {
-        return equipmentSlot == EquipmentSlot.MAINHAND ? this.wrenchAttributes : super.getAttributeModifiers(equipmentSlot, itemStack);
+    @Override
+    public net.minecraft.world.item.component.ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack itemStack) {
+        return com.mongoose.clanginghowl.utils.ItemHelper.mainHandAttributes(this.wrenchAttributes);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, tooltipContext, tooltip, flagIn);
         ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
     }
 

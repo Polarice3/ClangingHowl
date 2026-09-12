@@ -1,24 +1,33 @@
 package com.mongoose.clanginghowl.common.network.server;
 
 import com.mongoose.clanginghowl.ClangingHowl;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import com.mongoose.clanginghowl.client.network.CHClientPayloadHandlers;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
+public class SPlayWorldSoundPacket implements CustomPacketPayload {
+    public static final Type<SPlayWorldSoundPacket> TYPE = new Type<>(
+            ResourceLocation.fromNamespaceAndPath(ClangingHowl.MOD_ID, "play_world_sound"));
+    public static final StreamCodec<FriendlyByteBuf, SPlayWorldSoundPacket> STREAM_CODEC = StreamCodec.of(
+            (buffer, packet) -> encode(packet, buffer), SPlayWorldSoundPacket::decode);
 
-public class SPlayWorldSoundPacket {
-    private BlockPos blockPos;
-    private SoundEvent soundEvent;
-    private float volume;
-    private float pitch;
+    @Override
+    public Type<SPlayWorldSoundPacket> type() {
+        return TYPE;
+    }
+
+    private final BlockPos blockPos;
+    private final SoundEvent soundEvent;
+    private final float volume;
+    private final float pitch;
 
     public SPlayWorldSoundPacket(BlockPos blockPos, SoundEvent soundEvent, float volume, float pitch){
-        this.blockPos = blockPos;
+        this.blockPos = blockPos.immutable();
         this.soundEvent = soundEvent;
         this.volume = volume;
         this.pitch = pitch;
@@ -35,13 +44,23 @@ public class SPlayWorldSoundPacket {
         return new SPlayWorldSoundPacket(buffer.readBlockPos(), SoundEvent.createVariableRangeEvent(buffer.readResourceLocation()), buffer.readFloat(), buffer.readFloat());
     }
 
-    public static void consume(SPlayWorldSoundPacket packet, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            Level level = ClangingHowl.PROXY.getLevel();
-            if (level instanceof ClientLevel clientWorld) {
-                clientWorld.playLocalSound(packet.blockPos, packet.soundEvent, SoundSource.NEUTRAL, packet.volume, packet.pitch, false);
-            }
-        });
-        ctx.get().setPacketHandled(true);
+    public BlockPos blockPos() {
+        return blockPos;
+    }
+
+    public SoundEvent soundEvent() {
+        return soundEvent;
+    }
+
+    public float volume() {
+        return volume;
+    }
+
+    public float pitch() {
+        return pitch;
+    }
+
+    public static void consume(SPlayWorldSoundPacket packet, IPayloadContext context) {
+        CHClientPayloadHandlers.handle(packet);
     }
 }

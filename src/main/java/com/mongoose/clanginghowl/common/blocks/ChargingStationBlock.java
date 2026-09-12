@@ -25,20 +25,28 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class ChargingStationBlock extends HorizontalDirectionalBlock implements EntityBlock {
+    public static final com.mojang.serialization.MapCodec<ChargingStationBlock> CODEC = simpleCodec(ChargingStationBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<ChargingStationBlock> codec() { return CODEC; }
+
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
     public ChargingStationBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .strength(4.0F, 9.0F)
                 .sound(SoundType.COPPER)
                 .noOcclusion());
+    }
+
+    public ChargingStationBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, Boolean.FALSE).setValue(OCCUPIED, Boolean.FALSE));
     }
 
@@ -47,13 +55,29 @@ public class ChargingStationBlock extends HorizontalDirectionalBlock implements 
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player,
+    protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        return switch (interact(state, level, pos, player, hand, hit)) {
+            case SUCCESS, SUCCESS_NO_ITEM_USED -> net.minecraft.world.ItemInteractionResult.SUCCESS;
+            case CONSUME -> net.minecraft.world.ItemInteractionResult.CONSUME;
+            case CONSUME_PARTIAL -> net.minecraft.world.ItemInteractionResult.CONSUME_PARTIAL;
+            case FAIL -> net.minecraft.world.ItemInteractionResult.FAIL;
+            case PASS -> net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        };
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        return interact(state, level, pos, player, InteractionHand.MAIN_HAND, hit);
+    }
+
+    private InteractionResult interact(BlockState state, Level world, BlockPos pos, Player player,
                                  InteractionHand hand, BlockHitResult hit) {
         if (!world.isClientSide) {
             ItemStack heldItem = player.getItemInHand(hand);
             ChargingStationBlockEntity pedestal = (ChargingStationBlockEntity) world.getBlockEntity(pos);
             if (pedestal != null) {
-                pedestal.getCapability(ForgeCapabilities.ITEM_HANDLER, hit.getDirection()).ifPresent(handler -> {
+                {
+                    IItemHandler handler = pedestal.itemStackHandler;
                     ItemStack itemStack = handler.getStackInSlot(0);
                     if (itemStack.isEmpty() && heldItem.getItem() instanceof IEnergyItem item && item.canCharge()) {
                         player.setItemInHand(hand, handler.insertItem(0, heldItem, false));
@@ -67,7 +91,7 @@ public class ChargingStationBlock extends HorizontalDirectionalBlock implements 
                         world.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1, 1);
                     }
                     pedestal.setChanged();
-                });
+                }
             }
         }
         return InteractionResult.SUCCESS;
@@ -76,10 +100,8 @@ public class ChargingStationBlock extends HorizontalDirectionalBlock implements 
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (!pState.is(pNewState.getBlock())) {
             BlockEntity tileentity = pLevel.getBlockEntity(pPos);
-            if (tileentity instanceof ChargingStationBlockEntity) {
-                tileentity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-                    dropInventoryItems(tileentity.getLevel(), tileentity.getBlockPos(), handler);
-                });
+            if (tileentity instanceof ChargingStationBlockEntity station) {
+                dropInventoryItems(pLevel, pPos, station.itemStackHandler);
             }
 
             super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);

@@ -19,13 +19,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class LivingEntityMixin extends Entity {
 
     @Shadow
-    public abstract boolean hasEffect(MobEffect p_21024_);
+    public abstract boolean hasEffect(net.minecraft.core.Holder<MobEffect> p_21024_);
 
     public LivingEntityMixin(EntityType<?> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
     }
 
-    @Inject(method = "getJumpPower", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getJumpPower()F", at = @At("RETURN"), cancellable = true)
     protected void getJumpPower(CallbackInfoReturnable<Float> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         if (CHCuriosFinder.hasCurio(livingEntity, CHItems.TENDON_STRENGTHENER.get())) {

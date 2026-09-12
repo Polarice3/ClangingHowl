@@ -50,8 +50,9 @@ public abstract class ServerLevelMixin extends Level implements ICHWorldData {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void clanginghowl_worldinit(MinecraftServer p_214999_, Executor p_215000_, LevelStorageSource.LevelStorageAccess p_215001_, ServerLevelData p_215002_, ResourceKey p_215003_, LevelStem p_215004_, ChunkProgressListener p_215005_, boolean p_215006_, long p_215007_, List p_215008_, boolean p_215009_, RandomSequences p_288977_, CallbackInfo ci) {
         this.clangingHowl$chWorldData = this.getDataStorage().computeIfAbsent(
-                (compoundTag) -> new CHWorldData((ServerLevel) (Object) this, compoundTag),
-                () -> new CHWorldData((ServerLevel) (Object) this),
+                new net.minecraft.world.level.saveddata.SavedData.Factory<>(
+                        () -> new CHWorldData((ServerLevel) (Object) this),
+                        (compoundTag, registries) -> new CHWorldData((ServerLevel) (Object) this, compoundTag), null),
                 CHWorldData.IDENTIFIER);
     }
 

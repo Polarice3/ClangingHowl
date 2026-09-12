@@ -43,12 +43,27 @@ public class IcicleBlock extends Block implements Fallable, SimpleWaterloggedBlo
     protected static final VoxelShape SHAPE = Block.box(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
 
     public IcicleBlock() {
-        super(Properties.copy(Blocks.PACKED_ICE));
+        super(Properties.ofFullCopy(Blocks.PACKED_ICE));
         this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, Boolean.FALSE));
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+    protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        return switch (interact(state, level, pos, player, hand, hit)) {
+            case SUCCESS, SUCCESS_NO_ITEM_USED -> net.minecraft.world.ItemInteractionResult.SUCCESS;
+            case CONSUME -> net.minecraft.world.ItemInteractionResult.CONSUME;
+            case CONSUME_PARTIAL -> net.minecraft.world.ItemInteractionResult.CONSUME_PARTIAL;
+            case FAIL -> net.minecraft.world.ItemInteractionResult.FAIL;
+            case PASS -> net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        };
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        return interact(state, level, pos, player, InteractionHand.MAIN_HAND, hit);
+    }
+
+    private InteractionResult interact(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (itemstack.is(CHBlocks.CRYOGENIC_ICICLE.get().asItem()) && pState.is(CHBlocks.CRYOGENIC_ICICLE.get())) {
             BlockState blockState = CHBlocks.BIG_CRYOGENIC_ICICLE.get().defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, pState.getValue(BlockStateProperties.WATERLOGGED));
@@ -116,7 +131,7 @@ public class IcicleBlock extends Block implements Fallable, SimpleWaterloggedBlo
     }
 
     public void animateTick(BlockState p_221870_, Level p_221871_, BlockPos p_221872_, RandomSource p_221873_) {
-        if (p_221871_.getBiome(p_221872_).get().getBaseTemperature() > 0.5F && isTip(p_221870_)) {
+        if (p_221871_.getBiome(p_221872_).value().getBaseTemperature() > 0.5F && isTip(p_221870_)) {
             float f = p_221873_.nextFloat();
             if (!(f > 0.12F)) {
                 spawnDripParticle(p_221871_, p_221872_, p_221870_);

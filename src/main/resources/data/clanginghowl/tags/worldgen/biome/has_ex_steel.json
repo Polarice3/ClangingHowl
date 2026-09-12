@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#forge:is_cold/overworld",
-    "#forge:is_snowy"
+    "#c:is_cold/overworld",
+    "#c:is_snowy"
   ]
 }

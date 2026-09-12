@@ -46,7 +46,7 @@ import java.util.Objects;
 
 public class Prowler extends TFleshMonster {
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(Prowler.class, EntityDataSerializers.INT);
-    public static AttributeModifier INVISIBLE_SPEED_MODIFIER = new AttributeModifier(CHUUIDUtil.createUUID("entity.clanginghowl.prowler.invisible"), "Invisible speed bonus", 0.15D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+    public static AttributeModifier INVISIBLE_SPEED_MODIFIER = new AttributeModifier(com.mongoose.clanginghowl.ClangingHowl.location("entity.clanginghowl.prowler.invisible"), 0.15D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
     public static String IDLE = "idle";
     public static String ATTACK = "attack";
     public static String APPEAR = "appear";
@@ -75,7 +75,7 @@ public class Prowler extends TFleshMonster {
                 return Prowler.this.retreatTick > 0 && Prowler.this.retaliateTick <= 0 && super.canUse();
             }
         });
-        this.goalSelector.addGoal(4, new MeleeAttackGoal(this, 1.1F, true) {
+        this.goalSelector.addGoal(4, new com.mongoose.clanginghowl.common.entities.ai.ModMeleeAttackGoal(this, 1.1F, true) {
             @Override
             protected void checkAndPerformAttack(LivingEntity p_25557_, double p_25558_) {
                 if (this.mob instanceof Prowler prowler) {
@@ -118,9 +118,9 @@ public class Prowler extends TFleshMonster {
                 .add(Attributes.ATTACK_KNOCKBACK, 0.8D);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANIM_STATE, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ANIM_STATE, 0);
     }
 
     @Override
@@ -244,8 +244,8 @@ public class Prowler extends TFleshMonster {
         return animationStates;
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.hasPose(Pose.EMERGING) ? 1 : 0);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, serverEntity, this.hasPose(Pose.EMERGING) ? 1 : 0);
     }
 
     public void recreateFromPacket(ClientboundAddEntityPacket p_219420_) {
@@ -257,9 +257,9 @@ public class Prowler extends TFleshMonster {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
         this.setPose(Pose.EMERGING);
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
     @Override
@@ -285,7 +285,7 @@ public class Prowler extends TFleshMonster {
                 if (flag) {
                     if (this.weakenDefense > 0) {
                         this.playSound(CHSounds.TECHNO_FLESH_ATTACK.get(), 2.0F, this.getVoicePitch());
-                        target.addEffect(new MobEffectInstance(CHEffects.WEAKENED_DEFENSE.get(), 500));
+                        target.addEffect(new MobEffectInstance(CHEffects.WEAKENED_DEFENSE, 500));
                         this.weakenDefense = 0;
                     }
                     int amp = 0;
@@ -294,11 +294,11 @@ public class Prowler extends TFleshMonster {
                             amp = 1;
                         }
                     }
-                    target.addEffect(new MobEffectInstance(CHEffects.NEUROTOXIN.get(), 200, amp));
+                    target.addEffect(new MobEffectInstance(CHEffects.NEUROTOXIN, 200, amp));
                 } else if (target.isBlocking()) {
                     if (this.weakenDefense > 0) {
                         if (target instanceof Player player) {
-                            player.disableShield(true);
+                            player.disableShield();
                             this.weakenDefense = 0;
                         }
                     }
@@ -386,7 +386,7 @@ public class Prowler extends TFleshMonster {
                     modifiableattributeinstance.removeModifier(INVISIBLE_SPEED_MODIFIER);
                     modifiableattributeinstance.addTransientModifier(INVISIBLE_SPEED_MODIFIER);
                 } else {
-                    if (modifiableattributeinstance.hasModifier(INVISIBLE_SPEED_MODIFIER)) {
+                    if (modifiableattributeinstance.hasModifier(INVISIBLE_SPEED_MODIFIER.id())) {
                         modifiableattributeinstance.removeModifier(INVISIBLE_SPEED_MODIFIER);
                     }
                 }

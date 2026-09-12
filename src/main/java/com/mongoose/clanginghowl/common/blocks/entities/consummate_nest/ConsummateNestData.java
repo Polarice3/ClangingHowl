@@ -83,7 +83,7 @@ public class ConsummateNestData {
             this.livingMobs.add(mobList.getCompound(i).getUUID("UUID"));
         }
         this.ejectingLootTable = tag.contains("EjectingLootTable")
-                ? Optional.of(new ResourceLocation(tag.getString("EjectingLootTable")))
+                ? Optional.of(ResourceLocation.parse(tag.getString("EjectingLootTable")))
                 : Optional.empty();
     }
 }

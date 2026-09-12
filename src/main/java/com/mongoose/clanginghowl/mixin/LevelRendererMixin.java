@@ -42,7 +42,9 @@ public abstract class LevelRendererMixin {
     private static final float FLASH_SCALE = 60.0F;
 
     @Inject(method = "renderSky", at = @At("RETURN"))
-    private void clanginghowl$renderMeteorFlash(PoseStack poseStack, Matrix4f p_254034_, float p_202426_, Camera p_202427_, boolean p_202428_, Runnable p_202429_, CallbackInfo ci) {
+    private void clanginghowl$renderMeteorFlash(Matrix4f modelViewMatrix, Matrix4f p_254034_, float p_202426_, Camera p_202427_, boolean p_202428_, Runnable p_202429_, CallbackInfo ci) {
+        PoseStack poseStack = new PoseStack();
+        poseStack.mulPose(modelViewMatrix);
         ClientLevel level = this.minecraft.level;
         if (level == null) {
             return;
@@ -100,15 +102,15 @@ public abstract class LevelRendererMixin {
                 RenderSystem.setShaderTexture(0, FLASH_LOCATION);
 
                 Tesselator tesselator = Tesselator.getInstance();
-                BufferBuilder bufferbuilder = tesselator.getBuilder();
+                BufferBuilder bufferbuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-                bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-                bufferbuilder.vertex(matrix4f, -1.0F, 0.0F, -1.0F).uv(0.0F, 0.0F).color(intensity, intensity, intensity, intensity).endVertex();
-                bufferbuilder.vertex(matrix4f, 1.0F, 0.0F, -1.0F).uv(1.0F, 0.0F).color(intensity, intensity, intensity, intensity).endVertex();
-                bufferbuilder.vertex(matrix4f, 1.0F, 0.0F, 1.0F).uv(1.0F, 1.0F).color(intensity, intensity, intensity, intensity).endVertex();
-                bufferbuilder.vertex(matrix4f, -1.0F, 0.0F, 1.0F).uv(0.0F, 1.0F).color(intensity, intensity, intensity, intensity).endVertex();
 
-                tesselator.end();
+                bufferbuilder.addVertex(matrix4f, -1.0F, 0.0F, -1.0F).setUv(0.0F, 0.0F).setColor(intensity, intensity, intensity, intensity);
+                bufferbuilder.addVertex(matrix4f, 1.0F, 0.0F, -1.0F).setUv(1.0F, 0.0F).setColor(intensity, intensity, intensity, intensity);
+                bufferbuilder.addVertex(matrix4f, 1.0F, 0.0F, 1.0F).setUv(1.0F, 1.0F).setColor(intensity, intensity, intensity, intensity);
+                bufferbuilder.addVertex(matrix4f, -1.0F, 0.0F, 1.0F).setUv(0.0F, 1.0F).setColor(intensity, intensity, intensity, intensity);
+
+                com.mojang.blaze3d.vertex.BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
 
                 RenderSystem.depthMask(true);
                 RenderSystem.defaultBlendFunc();

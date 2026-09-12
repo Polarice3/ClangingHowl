@@ -36,9 +36,9 @@ public class SpitProjectileRenderer<T extends Projectile> extends EntityRenderer
         pPoseStack.mulPose(Axis.YP.rotationDegrees(yRot));
         pPoseStack.mulPose(Axis.XP.rotationDegrees(xRot));
         VertexConsumer consumer1 = pBuffer.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(pEntity)));
-        this.model.renderToBuffer(pPoseStack, consumer1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.5F);
+        this.model.renderToBuffer(pPoseStack, consumer1, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0x80FFFFFF);
         VertexConsumer consumer = pBuffer.getBuffer(RenderType.eyes(getTextureLocation(pEntity)));
-        this.model.renderToBuffer(pPoseStack, consumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.5F);
+        this.model.renderToBuffer(pPoseStack, consumer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, 0x80FFFFFF);
         pPoseStack.popPose();
 
         super.render(pEntity, pYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);

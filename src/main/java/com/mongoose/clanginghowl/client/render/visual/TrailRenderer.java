@@ -79,11 +79,11 @@ public class TrailRenderer {
 
     private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, Vec3 pos, float u, float v, float r, float g, float b, float alpha, int light, boolean particleFormat) {
         if (particleFormat) {
-            consumer.vertex(pose.pose(), (float) pos.x(), (float) pos.y(), (float) pos.z())
-                    .uv(u, v).color(r, g, b, alpha).uv2(light).endVertex();
+            consumer.addVertex(pose.pose(), (float) pos.x(), (float) pos.y(), (float) pos.z())
+                    .setUv(u, v).setColor(r, g, b, alpha).setLight(light);
         } else {
-            consumer.vertex(pose.pose(), (float) pos.x(), (float) pos.y(), (float) pos.z())
-                    .color(r, g, b, alpha).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(pose.normal(), 0, 1, 0).endVertex();
+            consumer.addVertex(pose.pose(), (float) pos.x(), (float) pos.y(), (float) pos.z())
+                    .setColor(r, g, b, alpha).setUv(u, v).setOverlay(OverlayTexture.NO_OVERLAY).setLight(light).setNormal(pose, 0, 1, 0);
         }
     }
 }

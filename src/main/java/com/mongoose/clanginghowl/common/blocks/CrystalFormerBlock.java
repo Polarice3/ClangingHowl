@@ -21,12 +21,21 @@ import net.minecraft.world.level.material.Fluids;
 import javax.annotation.Nullable;
 
 public class CrystalFormerBlock extends BaseEntityBlock {
+    public static final com.mojang.serialization.MapCodec<CrystalFormerBlock> CODEC = simpleCodec(CrystalFormerBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<CrystalFormerBlock> codec() { return CODEC; }
+
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
 
     public CrystalFormerBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .strength(4.0F, 9.0F)
                 .sound(SoundType.COPPER));
+    }
+
+    public CrystalFormerBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(ENABLED, true));
     }
 

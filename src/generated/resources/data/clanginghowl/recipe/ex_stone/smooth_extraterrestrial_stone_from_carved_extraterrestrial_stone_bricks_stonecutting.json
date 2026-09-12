@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "clanginghowl:smooth_extraterrestrial_stone"
+  },
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:carved_extraterrestrial_stone_bricks"
+  }
+}

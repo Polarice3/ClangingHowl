@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "clanginghowl:energy_intensive_battery"
+    },
+    "C": {
+      "tag": "c:ingots/copper"
+    },
+    "D": {
+      "item": "clanginghowl:diamond_diode"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    },
+    "R": {
+      "item": "clanginghowl:redstone_wire"
+    }
+  },
+  "pattern": [
+    "RCR",
+    "BDB",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:portable_charger"
+  },
+  "show_notification": false
+}

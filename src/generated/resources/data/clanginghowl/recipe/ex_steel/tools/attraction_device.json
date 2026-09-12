@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": {
+      "item": "clanginghowl:hematoma_lump"
+    },
+    "N": {
+      "item": "clanginghowl:extraterrestrial_steel_nugget"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    },
+    "W": {
+      "item": "clanginghowl:redstone_wire"
+    }
+  },
+  "pattern": [
+    "PN",
+    "WL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:attraction_device"
+  },
+  "show_notification": false
+}

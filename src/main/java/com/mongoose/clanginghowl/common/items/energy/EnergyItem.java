@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.common.items.energy;
 
+import com.mongoose.clanginghowl.utils.CHItemData;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
 import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import com.mongoose.clanginghowl.init.CHSounds;
@@ -29,14 +30,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.TierSortingRegistry;
-import net.minecraftforge.event.level.BlockEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 
 import java.util.List;
 
@@ -66,9 +66,9 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
     }
 
     public float amountColor(ItemStack stack){
-        if (stack.getTag() != null) {
-            int energy = stack.getTag().getInt(ENERGY_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_ENERGY_AMOUNT);
+        if (CHItemData.hasData(stack)) {
+            int energy = CHItemData.getInt(stack, ENERGY_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_ENERGY_AMOUNT);
             return 1.0F - ((float) energy / maxEnergy);
         } else {
             return 1.0F;
@@ -77,14 +77,14 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return stack.getTag() != null && !IEnergyItem.isFull(stack);
+        return CHItemData.hasData(stack) && !IEnergyItem.isFull(stack);
     }
 
     @Override
     public int getBarWidth(ItemStack stack){
-        if (stack.getTag() != null) {
-            int energy = stack.getTag().getInt(ENERGY_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_ENERGY_AMOUNT);
+        if (CHItemData.hasData(stack)) {
+            int energy = CHItemData.getInt(stack, ENERGY_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_ENERGY_AMOUNT);
             return Math.round((energy * 13.0F / maxEnergy));
         } else {
             return 0;
@@ -102,7 +102,7 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
     public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         this.setTagTick(stack);
         if (!worldIn.isClientSide) {
-            if (stack.getEnchantmentLevel(CHEnchantments.ECOLOGICAL_ENERGY.get()) > 0) {
+            if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(stack, CHEnchantments.ECOLOGICAL_ENERGY) > 0) {
                 if (MobUtil.isInSunlight(entityIn)) {
                     if (entityIn.tickCount % 20 == 0) {
                         IEnergyItem.powerItem(stack, 2);
@@ -129,7 +129,7 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
 
     public float getDestroySpeed(BlockState blockState, float toolSpeed, BlockGetter blockGetter, BlockPos blockPos) {
         float f = blockState.getDestroySpeed(blockGetter, blockPos);
-        int i = TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState) ? 30 : 100;
+        int i = !blockState.is(Tiers.DIAMOND.getIncorrectBlocksForDrops()) ? 30 : 100;
         return toolSpeed / f / (float)i;
     }
 
@@ -164,7 +164,7 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
             return false;
         }
 
-        return this.isValid(pos, world) && !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player));
+        return this.isValid(pos, world) && !NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player)).isCanceled();
     }
 
     public boolean isValid(BlockPos pos, Level world) {
@@ -197,7 +197,7 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
         BlockState state = world.getBlockState(blockPos);
 
         if (player instanceof Player player1) {
-            toolSpeed = net.minecraftforge.event.ForgeEventFactory.getBreakSpeed(player1, state, toolSpeed, blockPos);
+            toolSpeed = net.neoforged.neoforge.event.EventHooks.getBreakSpeed(player1, state, toolSpeed, blockPos);
         }
 
         return toolSpeed;
@@ -205,9 +205,7 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
 
     public BlockEvent.BreakEvent fixForgeEventBreakBlock(BlockState state, Player player, Level world, BlockPos pos, int silk, int fortune) {
         BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(world, pos, state, player);
-        if (state != null) {
-            event.setExpToDrop(state.getExpDrop(world, world.random, pos, fortune, silk));
-        }
+        // Experience is dropped by Block.dropResources using the enchanted tool in 1.21.1.
 
         return event;
     }
@@ -250,11 +248,11 @@ public abstract class EnergyItem extends Item implements IEnergyItem {
         return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && slotChanged;
     }
 
-    public void addEnergyText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        if (stack.getTag() != null) {
+    public void addEnergyText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        if (CHItemData.hasData(stack)) {
             tooltip.add(Component.empty());
-            int energy = stack.getTag().getInt(ENERGY_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_ENERGY_AMOUNT);
+            int energy = CHItemData.getInt(stack, ENERGY_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_ENERGY_AMOUNT);
             if (stack.getItem() instanceof BatteryItem) {
                 tooltip.add(Component.translatable("info.clanginghowl.battery.amount").append(Component.literal(" ")).append(Component.translatable("info.clanginghowl.battery.number", energy, maxEnergy).withStyle(ChatFormatting.GRAY)));
             } else {

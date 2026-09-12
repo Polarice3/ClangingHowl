@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": {
+      "item": "clanginghowl:netherrack_shavings"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    }
+  },
+  "pattern": [
+    " N ",
+    "NPN",
+    " N "
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:fireproof_steel_coating"
+  },
+  "show_notification": false
+}

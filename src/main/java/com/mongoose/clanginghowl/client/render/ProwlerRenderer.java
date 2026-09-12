@@ -77,7 +77,7 @@ public class ProwlerRenderer<T extends Prowler> extends MobRenderer<T, ProwlerMo
                 }
             }
             float f7 = this.getBob(p_115308_, p_115310_);
-            this.setupRotations(p_115308_, p_115311_, f7, f, p_115310_);
+            this.setupRotations(p_115308_, p_115311_, f7, f, p_115310_, p_115308_.getScale());
             p_115311_.scale(-1.0F, -1.0F, 1.0F);
             this.scale(p_115308_, p_115311_, p_115310_);
             p_115311_.translate(0.0F, -1.501F, 0.0F);
@@ -100,10 +100,10 @@ public class ProwlerRenderer<T extends Prowler> extends MobRenderer<T, ProwlerMo
             float alpha = 1.0F - ((float) p_115308_.becomeInvisible / p_115308_.invisibleTime());
             VertexConsumer vertexconsumer = p_115312_.getBuffer(RenderType.itemEntityTranslucentCull(this.getTextureLocation(p_115308_)));
             int i = getOverlayCoords(p_115308_, this.getWhiteOverlayProgress(p_115308_, p_115310_));
-            this.model.renderToBuffer(p_115311_, vertexconsumer, p_115313_, i, 1.0F, 1.0F, 1.0F, alpha);
+            this.model.renderToBuffer(p_115311_, vertexconsumer, p_115313_, i, net.minecraft.util.FastColor.ARGB32.colorFromFloat(alpha, 1.0F, 1.0F, 1.0F));
             if (p_115308_.isCurrentlyGlowing()) {
                 VertexConsumer vertexconsumer2 = p_115312_.getBuffer(RenderType.outline(this.getTextureLocation(p_115308_)));
-                this.model.renderToBuffer(p_115311_, vertexconsumer2, p_115313_, i, 1.0F, 1.0F, 1.0F, 1.0F);
+                this.model.renderToBuffer(p_115311_, vertexconsumer2, p_115313_, i, 0xFFFFFFFF);
             }
             p_115311_.popPose();
         } else {
@@ -161,7 +161,7 @@ public class ProwlerRenderer<T extends Prowler> extends MobRenderer<T, ProwlerMo
         public void render(PoseStack p_116983_, MultiBufferSource p_116984_, int p_116985_, T p_116986_, float p_116987_, float p_116988_, float p_116989_, float p_116990_, float p_116991_, float p_116992_) {
             if (!p_116986_.isInvisible()) {
                 VertexConsumer vertexconsumer = p_116984_.getBuffer(this.renderType());
-                this.getParentModel().renderToBuffer(p_116983_, vertexconsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.15F);
+                this.getParentModel().renderToBuffer(p_116983_, vertexconsumer, 15728640, OverlayTexture.NO_OVERLAY, 0x26FFFFFF);
             }
         }
 

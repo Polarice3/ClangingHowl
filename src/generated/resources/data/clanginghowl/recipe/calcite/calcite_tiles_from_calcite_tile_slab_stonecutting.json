@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "clanginghowl:calcite_tiles"
+  },
+  "result": {
+    "count": 2,
+    "id": "clanginghowl:calcite_tile_slab"
+  }
+}

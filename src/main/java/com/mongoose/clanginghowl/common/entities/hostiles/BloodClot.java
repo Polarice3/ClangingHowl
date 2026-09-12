@@ -14,7 +14,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class BloodClot extends TFleshMonster {
@@ -109,7 +109,7 @@ public class BloodClot extends TFleshMonster {
     public void spawnBloodyCopy(@Nullable LivingEntity target) {
         if (this.level() instanceof ServerLevel serverLevel) {
             BloodyCopy bloodyCopy = new BloodyCopy(CHEntityType.BLOODY_COPY.get(), this.level());
-            ForgeEventFactory.onFinalizeSpawn(bloodyCopy, serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null, null);
+            EventHooks.finalizeMobSpawn(bloodyCopy, serverLevel, serverLevel.getCurrentDifficultyAt(this.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
             bloodyCopy.setPos(this.position());
             bloodyCopy.setHealth(bloodyCopy.getMaxHealth() / 2.0F);
             if (target != null) {

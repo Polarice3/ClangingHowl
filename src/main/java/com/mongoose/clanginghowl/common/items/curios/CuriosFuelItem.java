@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.common.items.curios;
 
+import com.mongoose.clanginghowl.utils.CHItemData;
 import com.mongoose.clanginghowl.common.items.fuel.IFuel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -36,9 +37,9 @@ public abstract class CuriosFuelItem extends CHCurioItem implements IFuel {
     }
 
     public float amountColor(ItemStack stack){
-        if (stack.getTag() != null) {
-            int energy = stack.getTag().getInt(FUEL_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_FUEL_AMOUNT);
+        if (CHItemData.hasData(stack)) {
+            int energy = CHItemData.getInt(stack, FUEL_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_FUEL_AMOUNT);
             return 1.0F - ((float) energy / maxEnergy);
         } else {
             return 1.0F;
@@ -47,14 +48,14 @@ public abstract class CuriosFuelItem extends CHCurioItem implements IFuel {
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return stack.getTag() != null && !IFuel.isFull(stack);
+        return CHItemData.hasData(stack) && !IFuel.isFull(stack);
     }
 
     @Override
     public int getBarWidth(ItemStack stack){
-        if (stack.getTag() != null) {
-            int energy = stack.getTag().getInt(FUEL_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_FUEL_AMOUNT);
+        if (CHItemData.hasData(stack)) {
+            int energy = CHItemData.getInt(stack, FUEL_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_FUEL_AMOUNT);
             return Math.round((energy * 13.0F / maxEnergy));
         } else {
             return 0;

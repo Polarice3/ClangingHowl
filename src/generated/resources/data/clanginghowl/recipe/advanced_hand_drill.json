@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "clanginghowl:battery_panel"
+    },
+    "C": {
+      "tag": "c:ingots/copper"
+    },
+    "D": {
+      "item": "clanginghowl:drill_bit"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_ingot"
+    }
+  },
+  "pattern": [
+    " CP",
+    "CBP",
+    "D  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:advanced_hand_drill"
+  },
+  "show_notification": false
+}

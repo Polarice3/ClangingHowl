@@ -8,13 +8,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class CHCreativeTab {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ClangingHowl.MOD_ID);
 
-    public static final RegistryObject<CreativeModeTab> TAB = CREATIVE_MODE_TABS.register(ClangingHowl.MOD_ID, () -> CreativeModeTab.builder()
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register(ClangingHowl.MOD_ID, () -> CreativeModeTab.builder()
             .icon(() -> CHItems.EXTRATERRESTRIAL_ENERGY_CRYSTAL.get().getDefaultInstance())
             .title(Component.translatable("itemGroup.clanginghowl"))
             .displayItems((parameters, output) -> {
@@ -45,17 +45,17 @@ public class CHCreativeTab {
                 output.accept(CHItems.REANIMATOR.get().getPowerlessItem());
                 output.accept(CHItems.REANIMATOR.get().getPoweredItem());
                 CHItems.ITEMS.getEntries().forEach(i -> {
-                    if (i.isPresent()) {
+                    if (i.isBound()) {
                         if (!CHItems.shouldSkipCreativeModTab(i.get())) {
                             output.accept(i.get());
                         }
                     }
                 });
-                CHEnchantments.ENCHANTMENTS.getEntries().forEach(i -> {
-                    if (i.isPresent()) {
-                        for (int j = i.get().getMinLevel(); j <= i.get().getMaxLevel(); ++j) {
-                            output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(i.get(), j)));
-                        }
+                var enchantments = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
+                CHEnchantments.ALL.forEach(key -> {
+                    var holder = enchantments.getOrThrow(key);
+                    for (int level = holder.value().getMinLevel(); level <= holder.value().getMaxLevel(); ++level) {
+                        output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(holder, level)));
                     }
                 });
             }).build());

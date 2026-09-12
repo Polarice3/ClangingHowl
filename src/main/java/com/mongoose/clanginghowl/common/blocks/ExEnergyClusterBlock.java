@@ -50,7 +50,7 @@ public class ExEnergyClusterBlock extends Block implements SimpleWaterloggedBloc
     }
 
     public ExEnergyClusterBlock() {
-        super(Properties.copy(Blocks.AMETHYST_CLUSTER)
+        super(Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER)
                 .strength(1.5F, 10.0F)
                 .sound(SoundType.SMALL_AMETHYST_BUD)
                 .mapColor(MapColor.COLOR_LIGHT_BLUE)
@@ -183,7 +183,7 @@ public class ExEnergyClusterBlock extends Block implements SimpleWaterloggedBloc
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, net.minecraft.world.level.LevelReader level, BlockPos pos, Player player) {
         if (state.getValue(AGE) == 1) {
             return new ItemStack(CHBlocks.MEDIUM_EX_ENERGY_CLUSTER.get());
         } else if (state.getValue(AGE) == 2) {

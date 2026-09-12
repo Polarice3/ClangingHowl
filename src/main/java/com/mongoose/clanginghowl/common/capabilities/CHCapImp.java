@@ -1,9 +1,12 @@
 package com.mongoose.clanginghowl.common.capabilities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.Nullable;
 
-public class CHCapImp implements ICHCap {
+public class CHCapImp implements ICHCap, INBTSerializable<CompoundTag> {
     private int miningProgress = 0;
     @Nullable
     private BlockPos miningPos = null;
@@ -30,8 +33,8 @@ public class CHCapImp implements ICHCap {
     }
 
     @Override
-    public void setMiningPos(BlockPos blockPos) {
-        this.miningPos = blockPos;
+    public void setMiningPos(@Nullable BlockPos blockPos) {
+        this.miningPos = blockPos == null ? null : blockPos.immutable();
     }
 
     @Override
@@ -92,5 +95,15 @@ public class CHCapImp implements ICHCap {
     @Override
     public void setFlashTick(int tick) {
         this.flash = tick;
+    }
+
+    @Override
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        return CHCapSerialization.save(new CompoundTag(), this);
+    }
+
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag tag) {
+        CHCapSerialization.load(tag, this);
     }
 }

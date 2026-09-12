@@ -20,12 +20,21 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import javax.annotation.Nullable;
 
 public class BrokenCrystalFormerBlock extends BaseEntityBlock {
+    public static final com.mojang.serialization.MapCodec<BrokenCrystalFormerBlock> CODEC = simpleCodec(BrokenCrystalFormerBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<BrokenCrystalFormerBlock> codec() { return CODEC; }
+
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
 
     public BrokenCrystalFormerBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .strength(4.0F, 9.0F)
                 .sound(SoundType.COPPER));
+    }
+
+    public BrokenCrystalFormerBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(ENABLED, true));
     }
 

@@ -12,11 +12,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MobEffectInstance.class)
 public abstract class MobEffectInstanceMixin {
 
-    @Shadow public abstract MobEffect getEffect();
+    @Shadow public abstract net.minecraft.core.Holder<MobEffect> getEffect();
 
     @Inject(method = "endsWithin(I)Z", at = @At("HEAD"), cancellable = true)
     public void endsWithin(int p_268088_, CallbackInfoReturnable<Boolean> cir){
-        if (this.getEffect() == CHEffects.OVERDRIVE.get()) {
+        if (this.getEffect().value() == CHEffects.OVERDRIVE.get()) {
             cir.setReturnValue(false);
         }
     }

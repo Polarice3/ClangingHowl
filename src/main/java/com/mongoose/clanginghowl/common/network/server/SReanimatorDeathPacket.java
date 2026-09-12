@@ -1,17 +1,23 @@
 package com.mongoose.clanginghowl.common.network.server;
 
 import com.mongoose.clanginghowl.ClangingHowl;
-import com.mongoose.clanginghowl.common.items.CHItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import com.mongoose.clanginghowl.client.network.CHClientPayloadHandlers;
 
-import java.util.function.Supplier;
+public class SReanimatorDeathPacket implements CustomPacketPayload {
+    public static final Type<SReanimatorDeathPacket> TYPE = new Type<>(
+            ResourceLocation.fromNamespaceAndPath(ClangingHowl.MOD_ID, "reanimator_death"));
+    public static final StreamCodec<FriendlyByteBuf, SReanimatorDeathPacket> STREAM_CODEC = StreamCodec.of(
+            (buffer, packet) -> encode(packet, buffer), SReanimatorDeathPacket::decode);
 
-public class SReanimatorDeathPacket {
+    @Override
+    public Type<SReanimatorDeathPacket> type() {
+        return TYPE;
+    }
 
     public SReanimatorDeathPacket() {
     }
@@ -23,16 +29,7 @@ public class SReanimatorDeathPacket {
         return new SReanimatorDeathPacket();
     }
 
-    public static void consume(SReanimatorDeathPacket packet, Supplier<NetworkEvent.Context> ctx) {
-
-        ctx.get().enqueueWork(() -> {
-            Player playerEntity = ClangingHowl.PROXY.getPlayer();
-
-            if (playerEntity != null) {
-                playerEntity.level().playLocalSound(playerEntity.getX(), playerEntity.getY(), playerEntity.getZ(), SoundEvents.TOTEM_USE, playerEntity.getSoundSource(), 0.25F, 1.0F, false);
-                Minecraft.getInstance().gameRenderer.displayItemActivation(new ItemStack(CHItems.REANIMATION.get()));
-            }
-        });
-        ctx.get().setPacketHandled(true);
+    public static void consume(SReanimatorDeathPacket packet, IPayloadContext context) {
+        CHClientPayloadHandlers.handle(packet);
     }
 }

@@ -114,18 +114,18 @@ public class BrokenCrystalFormerBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.writeNetwork(super.getUpdateTag());
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries) {
+        return this.writeNetwork(super.getUpdateTag(registries));
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, net.minecraft.core.HolderLookup.Provider registries) {
         this.readNetwork(pkt.getTag());
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        super.load(tag);
+    public void handleUpdateTag(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         this.readNetwork(tag);
     }
 
@@ -146,15 +146,15 @@ public class BrokenCrystalFormerBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
         this.readNetwork(compound);
-        super.load(compound);
+        super.loadAdditional(compound, registries);
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
+    public void saveAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
         this.writeNetwork(compound);
-        super.saveAdditional(compound);
+        super.saveAdditional(compound, registries);
     }
 
     @Override

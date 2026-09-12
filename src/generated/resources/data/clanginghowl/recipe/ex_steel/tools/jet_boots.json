@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "clanginghowl:advanced_electronics"
+    },
+    "C": {
+      "item": "clanginghowl:blaze_fuel_cylinder"
+    },
+    "P": {
+      "item": "clanginghowl:fireproof_steel_coating"
+    }
+  },
+  "pattern": [
+    "CAC",
+    "P P"
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:jet_boots"
+  },
+  "show_notification": false
+}

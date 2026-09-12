@@ -9,7 +9,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.enchantment.ProtectionEnchantment;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -39,6 +38,13 @@ public class FakeExplosion {
         level.gameEvent(source, GameEvent.EXPLODE, new Vec3(x, y, z));
         this.collectBlocksToBlow(level, x, y, z, radius);
 
+        // Descriptor for entity-specific immunity hooks; it is never exploded a second time.
+        net.minecraft.world.level.Explosion descriptor = new net.minecraft.world.level.Explosion(
+                level, source, damageSource, null, x, y, z, radius, false,
+                net.minecraft.world.level.Explosion.BlockInteraction.DESTROY,
+                net.minecraft.core.particles.ParticleTypes.EXPLOSION,
+                net.minecraft.core.particles.ParticleTypes.EXPLOSION_EMITTER,
+                net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE);
         Vec3 vec3 = new Vec3(x, y, z);
         for (Entity entity : explosionRangeEntities(level, source, x, y, z, radius)) {
             double d12 = Math.sqrt(entity.distanceToSqr(vec3)) / (double) radius;
@@ -58,7 +64,7 @@ public class FakeExplosion {
                     boolean hurt = true;
                     if (entity instanceof ItemEntity) {
                         hurt = false;
-                    } else if (damageSource.is(DamageTypeTags.IS_EXPLOSION) && entity.ignoreExplosion()){
+                    } else if (damageSource.is(DamageTypeTags.IS_EXPLOSION) && entity.ignoreExplosion(descriptor)){
                         hurt = false;
                     } else if (damageSource.getEntity() != null){
                         trueSource = damageSource.getEntity();
@@ -138,7 +144,7 @@ public class FakeExplosion {
         target.hurt(damageSource, actualDamage);
         double d11 = seen;
         if (target instanceof LivingEntity) {
-            d11 = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity) target, seen);
+            d11 = (seen * (1.0D - ((LivingEntity) target).getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.EXPLOSION_KNOCKBACK_RESISTANCE)));
         }
 
         if (target instanceof LivingEntity) {

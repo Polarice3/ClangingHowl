@@ -19,11 +19,16 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
 public class CryoFrostBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
+    public static final com.mojang.serialization.MapCodec<CryoFrostBlock> CODEC = simpleCodec(CryoFrostBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<CryoFrostBlock> codec() { return CODEC; }
+
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
     public CryoFrostBlock() {
-        super(BlockBehaviour.Properties.of()
+        this(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.SNOW)
                 .replaceable()
                 .forceSolidOff()
@@ -33,6 +38,10 @@ public class CryoFrostBlock extends MultifaceBlock implements SimpleWaterloggedB
                 .sound(SoundType.SNOW)
                 .noOcclusion()
                 .pushReaction(PushReaction.DESTROY));
+    }
+
+    public CryoFrostBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(false)));
     }
 

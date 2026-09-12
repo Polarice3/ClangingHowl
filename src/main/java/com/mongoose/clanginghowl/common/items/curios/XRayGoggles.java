@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.common.items.curios;
 
+import com.mongoose.clanginghowl.utils.CHItemData;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
@@ -75,7 +76,7 @@ public class XRayGoggles extends CuriosEnergyItem implements IActivatable {
                     if (!worldIn.isClientSide) {
                         wearer.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 2, 0, false, false));
                         for (LivingEntity livingEntity : worldIn.getEntitiesOfClass(LivingEntity.class, entityIn.getBoundingBox().inflate(20.0D), livingEntity -> livingEntity != wearer && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity))) {
-                            livingEntity.addEffect(new MobEffectInstance(CHEffects.ENLIGHTENED.get(), 200, 0, false, false));
+                            livingEntity.addEffect(new MobEffectInstance(CHEffects.ENLIGHTENED, 200, 0, false, false));
                         }
                     }
                 } else {
@@ -110,17 +111,17 @@ public class XRayGoggles extends CuriosEnergyItem implements IActivatable {
     }
 
     public static void setActivated(ItemStack stack, boolean activated){
-        if (stack.getTag() != null) {
-            stack.getTag().putBoolean(ACTIVATED, activated);
+        if (CHItemData.hasData(stack)) {
+            CHItemData.putBoolean(stack, ACTIVATED, activated);
         } else {
-            CompoundTag compound = stack.getOrCreateTag();
-            compound.putBoolean(ACTIVATED, activated);
+
+            CHItemData.putBoolean(stack, ACTIVATED, activated);
         }
     }
 
     public static boolean isActivated(ItemStack stack) {
-        if (stack.getTag() != null) {
-            return stack.getTag().getBoolean(ACTIVATED);
+        if (CHItemData.hasData(stack)) {
+            return CHItemData.getBoolean(stack, ACTIVATED);
         } else {
             return false;
         }
@@ -132,18 +133,18 @@ public class XRayGoggles extends CuriosEnergyItem implements IActivatable {
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext,
-                                                                        UUID uuid, ItemStack stack) {
-        Multimap<Attribute, AttributeModifier> map = HashMultimap.create();
-        map.put(Attributes.ARMOR, new AttributeModifier(CHUUIDUtil.createUUID("item.clanginghowl.x_ray_goggles.armor"), "X-Ray Armor Addition", 1.0F, AttributeModifier.Operation.ADDITION));
+    public Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext,
+                                                                        net.minecraft.resources.ResourceLocation id, ItemStack stack) {
+        Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> map = HashMultimap.create();
+        map.put(Attributes.ARMOR, new AttributeModifier(com.mongoose.clanginghowl.ClangingHowl.location("item.clanginghowl.x_ray_goggles.armor"), 1.0F, AttributeModifier.Operation.ADD_VALUE));
         return map;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, tooltipContext, tooltip, flagIn);
         ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
-        this.addEnergyText(stack, worldIn, tooltip, flagIn);
+        this.addEnergyText(stack, tooltipContext, tooltip, flagIn);
     }
 
     public void addInformationAfterShift(List<Component> tooltip) {

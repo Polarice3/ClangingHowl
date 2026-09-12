@@ -20,15 +20,24 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ExPebbleBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+    public static final com.mojang.serialization.MapCodec<ExPebbleBlock> CODEC = simpleCodec(ExPebbleBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<ExPebbleBlock> codec() { return CODEC; }
+
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 5.0D, 14.0D);
 
     public ExPebbleBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .mapColor(MapColor.DEEPSLATE)
                 .strength(1.0F, 5.0F)
                 .noOcclusion()
                 .sound(SoundType.DEEPSLATE));
+    }
+
+    public ExPebbleBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, Boolean.FALSE));
     }
 

@@ -1,0 +1,25 @@
+{
+  "description": {
+    "translate": "enchantment.clanginghowl.fuel_burst"
+  },
+  "supported_items": "#clanginghowl:enchantable/fuel",
+  "weight": 1,
+  "max_level": 1,
+  "min_cost": {
+    "base": 25,
+    "per_level_above_first": 25
+  },
+  "max_cost": {
+    "base": 75,
+    "per_level_above_first": 25
+  },
+  "anvil_cost": 8,
+  "slots": [
+    "mainhand"
+  ],
+  "effects": {},
+  "exclusive_set": [
+    "clanginghowl:chain_burn",
+    "clanginghowl:soul_burner"
+  ]
+}

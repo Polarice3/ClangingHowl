@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "#forge:is_plains",
-    "#forge:is_cold/overworld",
-    "#forge:is_snowy"
+    "#c:is_plains",
+    "#c:is_cold/overworld",
+    "#c:is_snowy"
   ]
 }

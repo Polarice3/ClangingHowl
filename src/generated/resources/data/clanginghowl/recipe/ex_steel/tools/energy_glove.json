@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "clanginghowl:advanced_electronics"
+    },
+    "B": {
+      "item": "clanginghowl:energy_intensive_battery"
+    },
+    "E": {
+      "item": "clanginghowl:energy_fiber"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    }
+  },
+  "pattern": [
+    " PB",
+    "EAP",
+    "EE "
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:energy_glove"
+  },
+  "show_notification": false
+}

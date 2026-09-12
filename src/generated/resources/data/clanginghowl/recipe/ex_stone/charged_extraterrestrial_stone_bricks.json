@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "clanginghowl:extraterrestrial_stone_bricks"
+    },
+    "C": {
+      "item": "clanginghowl:extraterrestrial_energy_crystal"
+    }
+  },
+  "pattern": [
+    "###",
+    "#C#",
+    "###"
+  ],
+  "result": {
+    "count": 8,
+    "id": "clanginghowl:charged_extraterrestrial_stone_bricks"
+  },
+  "show_notification": false
+}

@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.common.items.curios;
 
+import com.mongoose.clanginghowl.utils.CHItemData;
 import com.mongoose.clanginghowl.utils.CHCuriosFinder;
 import com.mongoose.clanginghowl.utils.ItemHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -46,44 +47,44 @@ public class EnergyBarrierGenerator extends CuriosEnergyItem {
     }
 
     public static void setDischarged(ItemStack stack, boolean discharged){
-        if (stack.getTag() != null) {
-            stack.getTag().putBoolean(DISCHARGED, discharged);
+        if (CHItemData.hasData(stack)) {
+            CHItemData.putBoolean(stack, DISCHARGED, discharged);
         } else {
-            CompoundTag compound = stack.getOrCreateTag();
-            compound.putBoolean(DISCHARGED, discharged);
+
+            CHItemData.putBoolean(stack, DISCHARGED, discharged);
         }
     }
 
     public static boolean isDischarged(ItemStack stack) {
-        if (stack.getTag() != null) {
-            return stack.getTag().getBoolean(DISCHARGED);
+        if (CHItemData.hasData(stack)) {
+            return CHItemData.getBoolean(stack, DISCHARGED);
         } else {
             return false;
         }
     }
 
     public static void setDischarging(ItemStack stack, int discharging){
-        if (stack.getTag() != null) {
-            stack.getTag().putInt(DISCHARGING, discharging);
+        if (CHItemData.hasData(stack)) {
+            CHItemData.putInt(stack, DISCHARGING, discharging);
         } else {
-            CompoundTag compound = stack.getOrCreateTag();
-            compound.putInt(DISCHARGING, discharging);
+
+            CHItemData.putInt(stack, DISCHARGING, discharging);
         }
     }
 
     public static int getDischarging(ItemStack stack) {
-        if (stack.getTag() != null) {
-            return stack.getTag().getInt(DISCHARGING);
+        if (CHItemData.hasData(stack)) {
+            return CHItemData.getInt(stack, DISCHARGING);
         } else {
             return 0;
         }
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, tooltipContext, tooltip, flagIn);
         ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
-        this.addEnergyText(stack, worldIn, tooltip, flagIn);
+        this.addEnergyText(stack, tooltipContext, tooltip, flagIn);
     }
 
     public void addInformationAfterShift(List<Component> tooltip) {

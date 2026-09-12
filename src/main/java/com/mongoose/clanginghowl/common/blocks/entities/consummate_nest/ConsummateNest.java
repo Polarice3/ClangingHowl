@@ -30,7 +30,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.event.EventHooks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,7 +166,7 @@ public class ConsummateNest {
             double x1 = blockPos.getX() + (random.nextDouble() - random.nextDouble()) * 4 + 0.5D;
             double y1 = blockPos.getY() + random.nextInt(3) - 1;
             double z1 = blockPos.getZ() + (random.nextDouble() - random.nextDouble()) * 4 + 0.5D;
-            if (i == 31 || (serverLevel.noCollision(type.getAABB(x1, y1, z1)) && inLineOfSight(serverLevel, blockPos.getCenter(), new Vec3(x1, y1, z1)))) {
+            if (i == 31 || (serverLevel.noCollision(type.getDimensions().makeBoundingBox(x1, y1, z1)) && inLineOfSight(serverLevel, blockPos.getCenter(), new Vec3(x1, y1, z1)))) {
                 x = x1;
                 y = y1;
                 z = z1;
@@ -197,7 +197,7 @@ public class ConsummateNest {
                     }
                 }
             }
-            ForgeEventFactory.onFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.SPAWNER, null, null);
+            EventHooks.finalizeMobSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.SPAWNER, null);
             mob.setPersistenceRequired();
             mob.restrictTo(blockPos, 16);
         }
@@ -215,7 +215,7 @@ public class ConsummateNest {
     }
 
     public void ejectReward(ServerLevel serverLevel, BlockPos blockPos, ResourceLocation lootTableId) {
-        LootTable table = serverLevel.getServer().getLootData().getLootTable(lootTableId);
+        LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, lootTableId));
         LootParams params = new LootParams.Builder(serverLevel).create(LootContextParamSets.EMPTY);
         ObjectArrayList<ItemStack> items = table.getRandomItems(params);
         if (!items.isEmpty()) {
@@ -278,7 +278,7 @@ public class ConsummateNest {
     }
 
     private static boolean inLineOfSight(Level level, Vec3 from, Vec3 to) {
-        BlockHitResult hit = level.clip(new ClipContext(to, from, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, null));
+        BlockHitResult hit = level.clip(new ClipContext(to, from, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, (net.minecraft.world.entity.Entity) null));
         return hit.getBlockPos().equals(BlockPos.containing(from)) || hit.getType() == HitResult.Type.MISS;
     }
 

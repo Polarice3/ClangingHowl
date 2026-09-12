@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "clanginghowl:extraterrestrial_stone"
+  },
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:burnished_extraterrestrial_stone"
+  }
+}

@@ -1,47 +1,24 @@
 package com.mongoose.clanginghowl.common.items.capabilities;
 
+import com.mongoose.clanginghowl.ClangingHowl;
+import com.mongoose.clanginghowl.common.blocks.entities.CHBlockEntities;
+import com.mongoose.clanginghowl.common.items.CHItems;
 import com.mongoose.clanginghowl.common.items.handler.PortableChargerHandler;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
-import javax.annotation.Nonnull;
+/** Expose the component inventory and charging station to automation. */
+@EventBusSubscriber(modid = ClangingHowl.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+public final class PortableChargerCapability {
+    private PortableChargerCapability() {}
 
-public class PortableChargerCapability implements ICapabilitySerializable<Tag> {
-    private final ItemStack stack;
-    private final LazyOptional<IItemHandler> holder = LazyOptional.of(this::getHandler);
-    private PortableChargerHandler handler;
-
-    public PortableChargerCapability(ItemStack stack) {
-        this.stack = stack;
-    }
-
-    @Nonnull
-    private PortableChargerHandler getHandler() {
-        if (handler == null) {
-            handler = new PortableChargerHandler(stack);
-        }
-        return handler;
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        return ForgeCapabilities.ITEM_HANDLER.orEmpty(cap, holder);
-    }
-
-    public Tag serializeNBT() {
-        return getHandler().serializeNBT();
-    }
-
-    public void deserializeNBT(Tag nbt) {
-        this.getHandler().deserializeNBT((CompoundTag) nbt);
+    @SubscribeEvent
+    public static void register(RegisterCapabilitiesEvent event) {
+        event.registerItem(Capabilities.ItemHandler.ITEM,
+                (stack, ignored) -> PortableChargerHandler.get(stack), CHItems.PORTABLE_CHARGER.get());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+                CHBlockEntities.STATIONARY_CHARGING_STATION.get(), (station, side) -> station.itemStackHandler);
     }
 }

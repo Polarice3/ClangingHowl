@@ -22,7 +22,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.enchantment.ProtectionEnchantment;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -46,6 +45,11 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class BlazeFuelCylinderBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+    public static final com.mojang.serialization.MapCodec<BlazeFuelCylinderBlock> CODEC = simpleCodec(BlazeFuelCylinderBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<BlazeFuelCylinderBlock> codec() { return CODEC; }
+
     public static final IntegerProperty CYLINDERS = IntegerProperty.create("cylinders", 1, 3);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
@@ -54,12 +58,16 @@ public class BlazeFuelCylinderBlock extends HorizontalDirectionalBlock implement
     protected static final VoxelShape THREE_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
     public BlazeFuelCylinderBlock() {
-        super(BlockBehaviour.Properties.of()
+        this(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_ORANGE)
                 .strength(3.0F, 0.0F)
                 .sound(SoundType.COPPER)
                 .noOcclusion()
                 .ignitedByLava());
+    }
+
+    public BlazeFuelCylinderBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(CYLINDERS, 1)
@@ -141,12 +149,12 @@ public class BlazeFuelCylinderBlock extends HorizontalDirectionalBlock implement
                 public void explodeHurt(Entity target, DamageSource damageSource, double x, double y, double z, double seen, float actualDamage) {
                     if (target.hurt(damageSource, actualDamage)) {
                         if (target instanceof LivingEntity livingEntity) {
-                            livingEntity.setSecondsOnFire(15);
+                            livingEntity.igniteForSeconds(15);
                         }
                     }
                     double d11 = seen;
                     if (target instanceof LivingEntity) {
-                        d11 = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity) target, seen);
+                        d11 = (seen * (1.0D - ((LivingEntity) target).getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.EXPLOSION_KNOCKBACK_RESISTANCE)));
                     }
 
                     if (target instanceof LivingEntity) {
@@ -191,21 +199,35 @@ public class BlazeFuelCylinderBlock extends HorizontalDirectionalBlock implement
 
     @Override
     public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
-        explode(level, pos, explosion.getExploder() instanceof LivingEntity livingEntity ? livingEntity : null);
+        explode(level, pos, explosion.getDirectSourceEntity() instanceof LivingEntity livingEntity ? livingEntity : null);
     }
 
-    public InteractionResult use(BlockState p_57450_, Level p_57451_, BlockPos p_57452_, Player p_57453_, InteractionHand p_57454_, BlockHitResult p_57455_) {
+    @Override
+    protected net.minecraft.world.ItemInteractionResult useItemOn(net.minecraft.world.item.ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        return switch (interact(state, level, pos, player, hand, hit)) {
+            case SUCCESS, SUCCESS_NO_ITEM_USED -> net.minecraft.world.ItemInteractionResult.SUCCESS;
+            case CONSUME -> net.minecraft.world.ItemInteractionResult.CONSUME;
+            case CONSUME_PARTIAL -> net.minecraft.world.ItemInteractionResult.CONSUME_PARTIAL;
+            case FAIL -> net.minecraft.world.ItemInteractionResult.FAIL;
+            case PASS -> net.minecraft.world.ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        };
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        return interact(state, level, pos, player, InteractionHand.MAIN_HAND, hit);
+    }
+
+    private InteractionResult interact(BlockState p_57450_, Level p_57451_, BlockPos p_57452_, Player p_57453_, InteractionHand p_57454_, BlockHitResult p_57455_) {
         ItemStack itemstack = p_57453_.getItemInHand(p_57454_);
         if (!itemstack.is(Items.FLINT_AND_STEEL) && !itemstack.is(Items.FIRE_CHARGE)) {
-            return super.use(p_57450_, p_57451_, p_57452_, p_57453_, p_57454_, p_57455_);
+            return InteractionResult.PASS;
         } else {
             onCaughtFire(p_57450_, p_57451_, p_57452_, p_57455_.getDirection(), p_57453_);
             Item item = itemstack.getItem();
             if (!p_57453_.isCreative()) {
                 if (itemstack.is(Items.FLINT_AND_STEEL)) {
-                    itemstack.hurtAndBreak(1, p_57453_, (p_57425_) -> {
-                        p_57425_.broadcastBreakEvent(p_57454_);
-                    });
+                    itemstack.hurtAndBreak(1, p_57453_, net.minecraft.world.entity.LivingEntity.getSlotForHand(p_57454_));
                 } else {
                     itemstack.shrink(1);
                 }

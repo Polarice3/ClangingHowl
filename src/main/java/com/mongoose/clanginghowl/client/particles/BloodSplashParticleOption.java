@@ -3,6 +3,8 @@ package com.mongoose.clanginghowl.client.particles;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import net.minecraft.network.codec.StreamCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -12,23 +14,13 @@ import net.minecraft.network.FriendlyByteBuf;
 import java.util.Locale;
 
 public class BloodSplashParticleOption implements ParticleOptions {
-   public static final Codec<BloodSplashParticleOption> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+   public static final MapCodec<BloodSplashParticleOption> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
            Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
            Codec.INT.fieldOf("speed").forGetter(d -> d.speed)
    ).apply(instance, BloodSplashParticleOption::new));
-   public static final Deserializer<BloodSplashParticleOption> DESERIALIZER = new Deserializer<>() {
-      public BloodSplashParticleOption fromCommand(ParticleType<BloodSplashParticleOption> p_235961_, StringReader p_235962_) throws CommandSyntaxException {
-         p_235962_.expect(' ');
-         float s = p_235962_.readFloat();
-         p_235962_.expect(' ');
-         int s2 = p_235962_.readInt();
-         return new BloodSplashParticleOption(s, s2);
-      }
-
-      public BloodSplashParticleOption fromNetwork(ParticleType<BloodSplashParticleOption> p_235964_, FriendlyByteBuf p_235965_) {
-         return new BloodSplashParticleOption(p_235965_.readFloat(), p_235965_.readInt());
-      }
-   };
+   public static final StreamCodec<FriendlyByteBuf, BloodSplashParticleOption> STREAM_CODEC = StreamCodec.of(
+           (buffer, option) -> option.writeToNetwork(buffer),
+           buffer -> new BloodSplashParticleOption(buffer.readFloat(), buffer.readInt()));
    private final float size;
    private final int speed;
 

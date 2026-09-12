@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -30,7 +30,7 @@ public class FollowAttractionGoal extends Goal {
         this.mob = mob;
         this.followPredicate = (livingEntity) -> {
             return livingEntity != null
-                    && livingEntity.hasEffect(CHEffects.ATTRACTION.get())
+                    && livingEntity.hasEffect(CHEffects.ATTRACTION)
                     && this.mob.distanceTo(livingEntity) <= areaSize;
         };
         this.speedModifier = speedModifier;
@@ -59,19 +59,19 @@ public class FollowAttractionGoal extends Goal {
     }
 
     public boolean canContinueToUse() {
-        return this.target != null && this.target.hasEffect(CHEffects.ATTRACTION.get()) && !this.navigation.isDone() && this.mob.distanceToSqr(this.target) > (double)(this.stopDistance * this.stopDistance);
+        return this.target != null && this.target.hasEffect(CHEffects.ATTRACTION) && !this.navigation.isDone() && this.mob.distanceToSqr(this.target) > (double)(this.stopDistance * this.stopDistance);
     }
 
     public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.mob.getPathfindingMalus(BlockPathTypes.WATER);
-        this.mob.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+        this.oldWaterCost = this.mob.getPathfindingMalus(PathType.WATER);
+        this.mob.setPathfindingMalus(PathType.WATER, 0.0F);
     }
 
     public void stop() {
         this.target = null;
         this.navigation.stop();
-        this.mob.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+        this.mob.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
     }
 
     public void tick() {

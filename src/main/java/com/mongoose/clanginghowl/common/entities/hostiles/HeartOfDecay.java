@@ -53,7 +53,7 @@ import java.util.function.Predicate;
 
 public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(HeartOfDecay.class, EntityDataSerializers.INT);
-    public static AttributeModifier SHOOT_SPEED_MODIFIER = new AttributeModifier(CHUUIDUtil.createUUID("entity.clanginghowl.heart_of_decay.immobile"), "Shooting speed penalty", -1.0D, AttributeModifier.Operation.ADDITION);
+    public static AttributeModifier SHOOT_SPEED_MODIFIER = new AttributeModifier(com.mongoose.clanginghowl.ClangingHowl.location("entity.clanginghowl.heart_of_decay.immobile"), -1.0D, AttributeModifier.Operation.ADD_VALUE);
     public static String IDLE = "idle";
     public static String ATTACK = "attack";
     public static String SPIT = "spit";
@@ -85,7 +85,7 @@ public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new HoDTargetGoal<>(this, Player.class));
-        this.targetSelector.addGoal(2, new HoDTargetGoal<>(this, LivingEntity.class, livingEntity -> MobUtil.isTechnoConvert(livingEntity) && livingEntity.getMaxHealth() <= 25.0D && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())));
+        this.targetSelector.addGoal(2, new HoDTargetGoal<>(this, LivingEntity.class, livingEntity -> MobUtil.isTechnoConvert(livingEntity) && livingEntity.getMaxHealth() <= 25.0D && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH)));
         this.targetSelector.addGoal(3, new HoDTargetGoal<>(this, IronGolem.class));
     }
 
@@ -97,9 +97,9 @@ public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
                 .add(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANIM_STATE, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ANIM_STATE, 0);
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
@@ -157,7 +157,7 @@ public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
 
     @Override
     public boolean canAttack(LivingEntity p_21171_) {
-        return super.canAttack(p_21171_) && !p_21171_.hasEffect(CHEffects.BEYOND_FLESH.get());
+        return super.canAttack(p_21171_) && !p_21171_.hasEffect(CHEffects.BEYOND_FLESH);
     }
 
     @Override
@@ -256,8 +256,8 @@ public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
         return animationStates;
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.hasPose(Pose.EMERGING) ? 1 : 0);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, serverEntity, this.hasPose(Pose.EMERGING) ? 1 : 0);
     }
 
     public void recreateFromPacket(ClientboundAddEntityPacket p_219420_) {
@@ -270,8 +270,8 @@ public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
-        SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
+        SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
         this.setPose(Pose.EMERGING);
         if (this.getFirstPassenger() instanceof AbstractSkeleton) {
             this.getFirstPassenger().discard();
@@ -280,8 +280,9 @@ public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose p_33799_, EntityDimensions p_33800_) {
-        return p_33800_.height * 0.85F;
+    public EntityDimensions getDefaultDimensions(Pose pose) {
+        EntityDimensions dimensions = super.getDefaultDimensions(pose);
+        return dimensions.withEyeHeight(dimensions.height() * 0.85F);
     }
 
     public boolean isMeleeAttacking() {
@@ -343,7 +344,7 @@ public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
                 }
             } else {
                 if (modifiableattributeinstance != null) {
-                    if (modifiableattributeinstance.hasModifier(SHOOT_SPEED_MODIFIER)) {
+                    if (modifiableattributeinstance.hasModifier(SHOOT_SPEED_MODIFIER.id())) {
                         modifiableattributeinstance.removeModifier(SHOOT_SPEED_MODIFIER);
                     }
                 }
@@ -387,7 +388,7 @@ public class HeartOfDecay extends Spider implements RangedAttackMob, ITFlesh {
                         } else if (livingEntity instanceof Animal) {
                             time *= 2;
                         }
-                        livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), time, 0, false, false));
+                        livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH, time, 0, false, false));
                         this.discard();
                     }
                 }

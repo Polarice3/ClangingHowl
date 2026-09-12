@@ -42,18 +42,17 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.TierSortingRegistry;
-import net.minecraftforge.event.level.BlockEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.util.RenderUtils;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.ClientUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -63,18 +62,19 @@ import java.util.function.Consumer;
 public class DrillItem extends EnergyItem implements GeoItem {
     private static final RawAnimation DRILLING = RawAnimation.begin().thenLoop("drilling");
     public AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
-    private final Multimap<Attribute, AttributeModifier> attributes;
+    private final Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> attributes;
 
     public DrillItem() {
         super(new Properties().stacksTo(1));
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 5.0D, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -(4.0F - 1.0F), AttributeModifier.Operation.ADDITION));
+        ImmutableMultimap.Builder<net.minecraft.core.Holder<Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 5.0D, AttributeModifier.Operation.ADD_VALUE));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -(4.0F - 1.0F), AttributeModifier.Operation.ADD_VALUE));
         this.attributes = builder.build();
     }
 
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot equipmentSlot, ItemStack itemStack) {
-        return equipmentSlot == EquipmentSlot.MAINHAND ? this.attributes : super.getAttributeModifiers(equipmentSlot, itemStack);
+    @Override
+    public net.minecraft.world.item.component.ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack itemStack) {
+        return com.mongoose.clanginghowl.utils.ItemHelper.mainHandAttributes(this.attributes);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
 
     @Override
     public int getConsumption(ItemStack itemStack) {
-        if (itemStack.getEnchantmentLevel(CHEnchantments.TUNNEL_DRILLER.get()) > 0) {
+        if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.TUNNEL_DRILLER) > 0) {
             return super.getConsumption(itemStack) + 5;
         }
         return super.getConsumption(itemStack);
@@ -99,13 +99,23 @@ public class DrillItem extends EnergyItem implements GeoItem {
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment == Enchantments.SILK_TOUCH
-            || enchantment == Enchantments.BLOCK_FORTUNE
-            || enchantment == Enchantments.BLOCK_EFFICIENCY) {
+    public boolean isPrimaryItemFor(ItemStack stack, net.minecraft.core.Holder<Enchantment> enchantment) {
+        if (enchantment.is(Enchantments.SILK_TOUCH)
+            || enchantment.is(Enchantments.FORTUNE)
+            || enchantment.is(Enchantments.EFFICIENCY)) {
             return true;
         }
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+        return super.isPrimaryItemFor(stack, enchantment);
+    }
+
+    @Override
+    public boolean supportsEnchantment(ItemStack stack, net.minecraft.core.Holder<Enchantment> enchantment) {
+        if (enchantment.is(Enchantments.SILK_TOUCH)
+            || enchantment.is(Enchantments.FORTUNE)
+            || enchantment.is(Enchantments.EFFICIENCY)) {
+            return true;
+        }
+        return super.supportsEnchantment(stack, enchantment);
     }
 
     @Override
@@ -150,30 +160,27 @@ public class DrillItem extends EnergyItem implements GeoItem {
                         if (hitting) {
                             float extraDamage = 0.0F;
                             if (entity instanceof Mob mob) {
-                                extraDamage = EnchantmentHelper.getDamageBonus(itemStack, mob.getMobType());
+                                extraDamage = EnchantmentHelper.modifyDamage(serverLevel, itemStack, mob, livingEntity.damageSources().mobAttack(livingEntity), 1.0F) - 1.0F;
                             }
                             if (entity.hurt(livingEntity.damageSources().mobAttack(livingEntity), 1.0F + extraDamage)) {
-                                int j = EnchantmentHelper.getFireAspect(livingEntity);
-                                if (j > 0 && !entity.isOnFire()) {
-                                    entity.setSecondsOnFire(j * 4);
-                                }
+                                EnchantmentHelper.doPostAttackEffectsWithItemSource(serverLevel, entity, livingEntity.damageSources().mobAttack(livingEntity), itemStack);
                             }
                         }
                     }
                 }
             }
             double range = 2.5D;
-            if (livingEntity.getAttribute(ForgeMod.BLOCK_REACH.get()) != null) {
-                range = livingEntity.getAttributeValue(ForgeMod.BLOCK_REACH.get());
+            if (livingEntity.getAttribute(Attributes.BLOCK_INTERACTION_RANGE) != null) {
+                range = livingEntity.getAttributeValue(Attributes.BLOCK_INTERACTION_RANGE);
             }
             BlockHitResult blockHitResult = this.blockResult(serverLevel, livingEntity, range);
             BlockPos blockPos = blockHitResult.getBlockPos();
             BlockState blockState = serverLevel.getBlockState(blockPos);
             if (!hitting) {
-                float toolSpeed = this.getBreakSpeed(blockPos, livingEntity, EnchantmentHelper.getBlockEfficiency(livingEntity));
+                float toolSpeed = this.getBreakSpeed(blockPos, livingEntity, com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, Enchantments.EFFICIENCY));
                 if (livingEntity instanceof Player player) {
                     if (this.canMineBlock(serverLevel, player, blockPos, blockState)) {
-                        if (toolSpeed > 0.0F && itemStack.getEnchantmentLevel(CHEnchantments.TUNNEL_DRILLER.get()) > 0) {
+                        if (toolSpeed > 0.0F && com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.TUNNEL_DRILLER) > 0) {
                             toolSpeed = Math.max(1.0F, toolSpeed - 2.0F);
                         }
                         if (!(blockState.is(BlockTags.MINEABLE_WITH_PICKAXE) || blockState.is(BlockTags.MINEABLE_WITH_SHOVEL))) {
@@ -203,16 +210,16 @@ public class DrillItem extends EnergyItem implements GeoItem {
                         }
                         if (progress >= 1.0F) {
                             ItemStack tempTool = new ItemStack(Items.DIAMOND_PICKAXE);
-                            int silk = itemStack.getEnchantmentLevel(Enchantments.SILK_TOUCH);
-                            int fortune = itemStack.getEnchantmentLevel(Enchantments.BLOCK_FORTUNE);
+                            int silk = com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, Enchantments.SILK_TOUCH);
+                            int fortune = com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, Enchantments.FORTUNE);
 
                             if (silk > 0) {
-                                tempTool.enchant(Enchantments.SILK_TOUCH, silk);
+                                tempTool.enchant(serverLevel.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH), silk);
                             } else if (fortune > 0) {
-                                tempTool.enchant(Enchantments.BLOCK_FORTUNE, fortune);
+                                tempTool.enchant(serverLevel.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE), fortune);
                             }
                             this.breakBlocks(serverLevel, blockState, blockPos, player, soundtype, silk, fortune, tempTool);
-                            if (!player.isCrouching() && itemStack.getEnchantmentLevel(CHEnchantments.TUNNEL_DRILLER.get()) > 0) {
+                            if (!player.isCrouching() && com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.TUNNEL_DRILLER) > 0) {
                                 for (BlockPos blockPos1 : CHBlockUtil.multiBlockBreak(player, blockPos, 1, 1, 1)) {
                                     if (!CHBlockUtil.areSamePos(blockPos, blockPos1)) {
                                         BlockState blockState1 = level.getBlockState(blockPos1);
@@ -241,14 +248,14 @@ public class DrillItem extends EnergyItem implements GeoItem {
 
     public void breakBlocks(ServerLevel serverLevel, BlockState blockState, BlockPos blockPos, Player player, SoundType soundtype, int silk, int fortune, ItemStack tempTool) {
         BlockEvent.BreakEvent breakEvent = this.fixForgeEventBreakBlock(blockState, player, serverLevel, blockPos, silk, fortune);
-        MinecraftForge.EVENT_BUS.post(breakEvent);
+        NeoForge.EVENT_BUS.post(breakEvent);
         if (breakEvent.isCanceled()) {
             return;
         }
 
         FluidState fluidstate = serverLevel.getFluidState(blockPos);
         BlockEntity blockEntity = serverLevel.getBlockEntity(blockPos);
-        boolean canHarvest = TierSortingRegistry.isCorrectTierForDrops(Tiers.DIAMOND, blockState);
+        boolean canHarvest = !blockState.is(Tiers.DIAMOND.getIncorrectBlocksForDrops());
         if (blockState.onDestroyedByPlayer(serverLevel, blockPos, player, canHarvest, fluidstate)) {
             player.awardStat(Stats.BLOCK_MINED.get(blockState.getBlock()));
             blockState.getBlock().destroy(serverLevel, blockPos, blockState);
@@ -284,14 +291,14 @@ public class DrillItem extends EnergyItem implements GeoItem {
 
     @Override
     public double getTick(Object itemStack) {
-        return RenderUtils.getCurrentTick();
+        return software.bernie.geckolib.util.RenderUtil.getCurrentTick();
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, tooltipContext, tooltip, flagIn);
         ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
-        this.addEnergyText(stack, worldIn, tooltip, flagIn);
+        this.addEnergyText(stack, tooltipContext, tooltip, flagIn);
     }
 
     public void addInformationAfterShift(List<Component> tooltip) {
@@ -308,39 +315,9 @@ public class DrillItem extends EnergyItem implements GeoItem {
     public static class DrillClient implements IClientItemExtensions{
         private AdvancedHandDrillRenderer renderer;
 
-        private static final HumanoidModel.ArmPose DRILL = HumanoidModel.ArmPose.create("CH_DRILL", false, (model, entity, arm) -> {
-            if (arm == HumanoidArm.RIGHT) {
-                model.rightArm.xRot = -MathHelper.modelDegrees(55);
-                model.rightArm.yRot = -0.1F + model.head.yRot;
-                model.leftArm.xRot = -MathHelper.modelDegrees(50);
-                model.leftArm.yRot = 0.1F + model.head.yRot + 0.4F;
-                model.leftArm.zRot = MathHelper.modelDegrees(30);
-            } else {
-                model.leftArm.xRot = -MathHelper.modelDegrees(55);
-                model.leftArm.yRot = 0.1F + model.head.yRot;
-                model.rightArm.xRot = -MathHelper.modelDegrees(50);
-                model.rightArm.yRot = -0.1F + model.head.yRot - 0.4F;
-                model.rightArm.zRot = -MathHelper.modelDegrees(30);
-            }
-        });
+        private static final HumanoidModel.ArmPose DRILL = com.mongoose.clanginghowl.client.render.CHArmPoseParameters.DRILL.getValue();
 
-        private static final HumanoidModel.ArmPose IDLE_DRILL = HumanoidModel.ArmPose.create("CH_IDLE_DRILL", false, (model, entity, arm) -> {
-            if (arm == HumanoidArm.RIGHT) {
-                model.rightArm.xRot = -MathHelper.modelDegrees(45);
-                model.rightArm.yRot = -0.1F + model.head.yRot;
-                model.rightArm.zRot = 0.0F;
-                model.leftArm.xRot = -MathHelper.modelDegrees(45);
-                model.leftArm.yRot = 0.1F + model.head.yRot + 0.4F;
-                model.leftArm.zRot = MathHelper.modelDegrees(30);
-            } else {
-                model.leftArm.xRot = -MathHelper.modelDegrees(45);
-                model.leftArm.yRot = 0.1F + model.head.yRot;
-                model.leftArm.zRot = 0.0F;
-                model.rightArm.xRot = -MathHelper.modelDegrees(45);
-                model.rightArm.yRot = -0.1F + model.head.yRot - 0.4F;
-                model.rightArm.zRot = -MathHelper.modelDegrees(30);
-            }
-        });
+        private static final HumanoidModel.ArmPose IDLE_DRILL = com.mongoose.clanginghowl.client.render.CHArmPoseParameters.IDLE_DRILL.getValue();
 
         @Override
         public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
@@ -370,7 +347,7 @@ public class DrillItem extends EnergyItem implements GeoItem {
                 poseStack.mulPose(Axis.XP.rotationDegrees(-13.935F));
                 poseStack.mulPose(Axis.YP.rotationDegrees((float)i * 35.3F));
                 poseStack.mulPose(Axis.ZP.rotationDegrees((float)i * -9.785F));
-                float f8 = (float)itemInHand.getUseDuration() - ((float)player.getUseItemRemainingTicks() - partialTick + 1.0F);
+                float f8 = (float)itemInHand.getUseDuration(player) - ((float)player.getUseItemRemainingTicks() - partialTick + 1.0F);
                 float f12 = f8 / 20.0F;
                 f12 = (f12 * f12 + f12 * 2.0F) / 3.0F;
                 if (f12 > 1.0F) {

@@ -9,8 +9,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -180,7 +180,7 @@ public class CHBlockTagsProvider extends IntrinsicHolderTagsProvider<Block> {
         this.tag(BlockTags.INFINIBURN_OVERWORLD)
                 .add(CHBlocks.INCANDESCENT_EXTRATERRESTRIAL_STONE.get())
                 .replace(false);
-        this.tag(Tags.Blocks.STONE)
+        this.tag(Tags.Blocks.STONES)
                 .add(CHBlocks.EXTRATERRESTRIAL_STONE.get())
                 .replace(false);
         this.tag(Tags.Blocks.ORES)

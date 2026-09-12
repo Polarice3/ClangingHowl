@@ -16,11 +16,16 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
 public class FleshMembraneBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
+    public static final com.mojang.serialization.MapCodec<FleshMembraneBlock> CODEC = simpleCodec(FleshMembraneBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<FleshMembraneBlock> codec() { return CODEC; }
+
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
     public FleshMembraneBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .mapColor(MapColor.COLOR_RED)
                 .strength(0.5F)
                 .forceSolidOn()
@@ -28,6 +33,10 @@ public class FleshMembraneBlock extends MultifaceBlock implements SimpleWaterlog
                 .ignitedByLava()
                 .sound(SoundType.HONEY_BLOCK)
                 .pushReaction(PushReaction.DESTROY));
+    }
+
+    public FleshMembraneBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, Boolean.valueOf(false)));
     }
 

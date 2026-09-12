@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,18 +28,18 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class ChainswordItem extends EnergyItem {
-    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
-    private final Multimap<Attribute, AttributeModifier> dischargedModifiers;
+    private final Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> defaultModifiers;
+    private final Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> dischargedModifiers;
 
     public ChainswordItem() {
         super(new Properties().stacksTo(1));
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 6.5F, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -(4.0F - 1.6F), AttributeModifier.Operation.ADDITION));
+        ImmutableMultimap.Builder<net.minecraft.core.Holder<Attribute>, AttributeModifier> builder = ImmutableMultimap.builder();
+        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 6.5F, AttributeModifier.Operation.ADD_VALUE));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -(4.0F - 1.6F), AttributeModifier.Operation.ADD_VALUE));
         this.defaultModifiers = builder.build();
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder2 = ImmutableMultimap.builder();
-        builder2.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", 6.5F * 0.2F, AttributeModifier.Operation.ADDITION));
-        builder2.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", -(4.0F - 1.6F), AttributeModifier.Operation.ADDITION));
+        ImmutableMultimap.Builder<net.minecraft.core.Holder<Attribute>, AttributeModifier> builder2 = ImmutableMultimap.builder();
+        builder2.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 6.5F * 0.2F, AttributeModifier.Operation.ADD_VALUE));
+        builder2.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, -(4.0F - 1.6F), AttributeModifier.Operation.ADD_VALUE));
         this.dischargedModifiers = builder2.build();
     }
 
@@ -84,11 +83,19 @@ public class ChainswordItem extends EnergyItem {
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment.category == EnchantmentCategory.WEAPON) {
+    public boolean isPrimaryItemFor(ItemStack stack, net.minecraft.core.Holder<Enchantment> enchantment) {
+        if (enchantment.value().isSupportedItem(net.minecraft.world.item.Items.IRON_SWORD.getDefaultInstance())) {
             return true;
         }
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+        return super.isPrimaryItemFor(stack, enchantment);
+    }
+
+    @Override
+    public boolean supportsEnchantment(ItemStack stack, net.minecraft.core.Holder<Enchantment> enchantment) {
+        if (enchantment.value().isSupportedItem(net.minecraft.world.item.Items.IRON_SWORD.getDefaultInstance())) {
+            return true;
+        }
+        return super.supportsEnchantment(stack, enchantment);
     }
 
     public boolean isCorrectToolForDrops(BlockState p_43298_) {
@@ -99,27 +106,21 @@ public class ChainswordItem extends EnergyItem {
         return Items.DIAMOND_SWORD.use(p_40672_, p_40673_, p_40674_);
     }
 
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-        if (slot == EquipmentSlot.MAINHAND) {
-            if (IEnergyItem.isEmpty(stack)) {
-                return this.dischargedModifiers;
-            } else {
-                return this.defaultModifiers;
-            }
-        }
-        return super.getAttributeModifiers(slot, stack);
+    @Override
+    public net.minecraft.world.item.component.ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        return ItemHelper.mainHandAttributes(IEnergyItem.isEmpty(stack) ? this.dischargedModifiers : this.defaultModifiers);
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, net.minecraftforge.common.ToolAction toolAction) {
-        return net.minecraftforge.common.ToolActions.DEFAULT_SWORD_ACTIONS.contains(toolAction);
+    public boolean canPerformAction(ItemStack stack, net.neoforged.neoforge.common.ItemAbility toolAction) {
+        return net.neoforged.neoforge.common.ItemAbilities.DEFAULT_SWORD_ACTIONS.contains(toolAction);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, tooltipContext, tooltip, flagIn);
         ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
-        this.addEnergyText(stack, worldIn, tooltip, flagIn);
+        this.addEnergyText(stack, tooltipContext, tooltip, flagIn);
     }
 
     public void addInformationAfterShift(List<Component> tooltip) {

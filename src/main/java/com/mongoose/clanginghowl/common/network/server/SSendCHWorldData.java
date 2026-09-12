@@ -1,17 +1,24 @@
 package com.mongoose.clanginghowl.common.network.server;
 
-import com.mongoose.clanginghowl.client.world.CHClientWorld;
-import com.mongoose.clanginghowl.client.world.ICHClientWorld;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
+import com.mongoose.clanginghowl.ClangingHowl;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import com.mongoose.clanginghowl.client.network.CHClientPayloadHandlers;
 
-import java.util.function.Supplier;
+public class SSendCHWorldData implements CustomPacketPayload {
+    public static final Type<SSendCHWorldData> TYPE = new Type<>(
+            ResourceLocation.fromNamespaceAndPath(ClangingHowl.MOD_ID, "world_data"));
+    public static final StreamCodec<FriendlyByteBuf, SSendCHWorldData> STREAM_CODEC = StreamCodec.of(
+            (buffer, packet) -> encode(packet, buffer), SSendCHWorldData::decode);
 
-public class SSendCHWorldData {
+    @Override
+    public Type<SSendCHWorldData> type() {
+        return TYPE;
+    }
+
     public boolean isMeteorShower;
     public boolean isMeteorFlash;
     public boolean playMeteorExplode;
@@ -47,23 +54,11 @@ public class SSendCHWorldData {
                 buffer.readInt());
     }
 
-    public static void consume(SSendCHWorldData packet, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() ->
-                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> handleSync(packet))
-        );
-        ctx.get().setPacketHandled(true);
+    public static void consume(SSendCHWorldData packet, IPayloadContext context) {
+        CHClientPayloadHandlers.handle(packet);
     }
 
     public static void handleSync(SSendCHWorldData packet) {
-        ClientLevel clientLevel = Minecraft.getInstance().level;
-        if (clientLevel != null) {
-            CHClientWorld chClientWorld = ((ICHClientWorld) clientLevel).getCHClientWorld();
-            chClientWorld.setMeteorShower(packet.isMeteorShower);
-            chClientWorld.setMeteorFlash(packet.isMeteorFlash);
-            chClientWorld.setPlayMeteorExplode(packet.playMeteorExplode);
-            chClientWorld.setPlayMeteorMusic(packet.playMeteorMusic);
-            chClientWorld.setMeteorMusicFullVolume(packet.isMeteorMusicFullVolume);
-            chClientWorld.setMeteorFlashTick(packet.meteorFlashTick);
-        }
+        CHClientPayloadHandlers.handle(packet);
     }
 }

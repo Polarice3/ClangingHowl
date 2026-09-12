@@ -20,8 +20,8 @@ public class ConsummateNestBlockEntity extends BlockEntity implements Consummate
     }
 
     @Override
-    public void load(CompoundTag compoundTag) {
-        super.load(compoundTag);
+    public void loadAdditional(CompoundTag compoundTag, net.minecraft.core.HolderLookup.Provider registries) {
+        super.loadAdditional(compoundTag, registries);
         this.consummateNest.load(compoundTag.getCompound("ConsummateNestData"));
         if (this.level != null) {
             this.markUpdated();
@@ -29,8 +29,8 @@ public class ConsummateNestBlockEntity extends BlockEntity implements Consummate
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compoundTag) {
-        super.saveAdditional(compoundTag);
+    protected void saveAdditional(CompoundTag compoundTag, net.minecraft.core.HolderLookup.Provider registries) {
+        super.saveAdditional(compoundTag, registries);
         compoundTag.put("ConsummateNestData", this.consummateNest.save());
     }
 
@@ -61,11 +61,11 @@ public class ConsummateNestBlockEntity extends BlockEntity implements Consummate
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, net.minecraft.core.HolderLookup.Provider registries) {
         if (pkt.getTag() != null) {
-            this.load(pkt.getTag());
+            this.loadAdditional(pkt.getTag(), registries);
         }
-        super.onDataPacket(net, pkt);
+        super.onDataPacket(net, pkt, registries);
     }
 
     @Override

@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ExHammerItem extends SwordItem {
     public ExHammerItem() {
-        super(CHTiers.EXTRATERRESTRIAL, 6, -3.1F, new Item.Properties().durability(1000));
+        super(CHTiers.EXTRATERRESTRIAL, new Item.Properties().durability(1000).attributes(SwordItem.createAttributes(CHTiers.EXTRATERRESTRIAL, 6, -3.1F)));
     }
 
     @Override
@@ -84,9 +84,7 @@ public class ExHammerItem extends SwordItem {
             level.gameEvent(GameEvent.BLOCK_CHANGE, blockpos, GameEvent.Context.of(player, result));
             ParticleUtils.spawnParticlesOnBlockFaces(level, blockpos, CHParticleTypes.BREAKDOWN_SMOKE.get(), UniformInt.of(1, 3));
             if (player != null) {
-                itemstack.hurtAndBreak(1, player, (p_150686_) -> {
-                    p_150686_.broadcastBreakEvent(p_40529_.getHand());
-                });
+                itemstack.hurtAndBreak(1, player, net.minecraft.world.entity.LivingEntity.getSlotForHand(p_40529_.getHand()));
                 player.swing(p_40529_.getHand());
             }
 
@@ -96,8 +94,8 @@ public class ExHammerItem extends SwordItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, tooltipContext, tooltip, flagIn);
         ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
     }
 

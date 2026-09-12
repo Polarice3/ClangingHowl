@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.common.items.fuel;
 
+import com.mongoose.clanginghowl.utils.CHItemData;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -40,7 +41,7 @@ import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -78,9 +79,9 @@ public class FlamethrowerItem extends Item implements IFuel{
     }
 
     public float amountColor(ItemStack stack){
-        if (stack.getTag() != null) {
-            int energy = stack.getTag().getInt(FUEL_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_FUEL_AMOUNT);
+        if (CHItemData.hasData(stack)) {
+            int energy = CHItemData.getInt(stack, FUEL_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_FUEL_AMOUNT);
             return 1.0F - ((float) energy / maxEnergy);
         } else {
             return 1.0F;
@@ -89,14 +90,14 @@ public class FlamethrowerItem extends Item implements IFuel{
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return stack.getTag() != null && !IFuel.isFull(stack);
+        return CHItemData.hasData(stack) && !IFuel.isFull(stack);
     }
 
     @Override
     public int getBarWidth(ItemStack stack){
-        if (stack.getTag() != null) {
-            int energy = stack.getTag().getInt(FUEL_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_FUEL_AMOUNT);
+        if (CHItemData.hasData(stack)) {
+            int energy = CHItemData.getInt(stack, FUEL_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_FUEL_AMOUNT);
             return Math.round((energy * 13.0F / maxEnergy));
         } else {
             return 0;
@@ -113,8 +114,8 @@ public class FlamethrowerItem extends Item implements IFuel{
     @Override
     public int getConsumption(ItemStack itemStack) {
         int increase = 0;
-        if (itemStack.getEnchantmentLevel(CHEnchantments.NAPALM_STREAM.get()) > 0) {
-            increase += itemStack.getEnchantmentLevel(CHEnchantments.NAPALM_STREAM.get());
+        if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.NAPALM_STREAM) > 0) {
+            increase += com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.NAPALM_STREAM);
         }
         if (this.isFuelBurst(itemStack)) {
             increase += 5;
@@ -147,7 +148,7 @@ public class FlamethrowerItem extends Item implements IFuel{
     }
 
     public boolean isFuelBurst(ItemStack stack) {
-        return stack.getEnchantmentLevel(CHEnchantments.FUEL_BURST.get()) > 0;
+        return com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(stack, CHEnchantments.FUEL_BURST) > 0;
     }
 
     @Override
@@ -181,23 +182,23 @@ public class FlamethrowerItem extends Item implements IFuel{
                 for (Entity target : getBreathTarget(livingEntity, range)) {
                     if (target != null && !target.isUnderWater()) {
                         DamageSource damageSource = CHDamageSource.fireStream(livingEntity, livingEntity);
-                        int enchantment = itemStack.getEnchantmentLevel(CHEnchantments.NAPALM_STREAM.get());
-                        if (itemStack.getEnchantmentLevel(CHEnchantments.SOUL_BURNER.get()) > 0) {
+                        int enchantment = com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.NAPALM_STREAM);
+                        if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.SOUL_BURNER) > 0) {
                             enchantment += 1;
                         }
                         if (target.hurt(damageSource, 2.5F + enchantment)){
                             if (target instanceof LivingEntity livingEntity1) {
-                                livingEntity1.addEffect(new MobEffectInstance(CHEffects.DEEP_BURN.get(), 500));
+                                livingEntity1.addEffect(new MobEffectInstance(CHEffects.DEEP_BURN, 500));
                             }
                             int fireSeconds = 10;
                             fireSeconds += enchantment * 5;
-                            target.setSecondsOnFire(fireSeconds);
-                            if (itemStack.getEnchantmentLevel(CHEnchantments.CHAIN_BURN.get()) > 0) {
+                            target.igniteForSeconds(fireSeconds);
+                            if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.CHAIN_BURN) > 0) {
                                 if (target instanceof LivingEntity livingEntity1) {
-                                    livingEntity1.addEffect(new MobEffectInstance(CHEffects.INTERNAL_HEAT.get(), 500));
+                                    livingEntity1.addEffect(new MobEffectInstance(CHEffects.INTERNAL_HEAT, 500));
                                 }
                             }
-                            if (itemStack.getEnchantmentLevel(CHEnchantments.SOUL_BURNER.get()) > 0) {
+                            if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.SOUL_BURNER) > 0) {
                                 if (target instanceof LivingEntity livingEntity1) {
                                     livingEntity1.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40));
                                 }
@@ -208,7 +209,7 @@ public class FlamethrowerItem extends Item implements IFuel{
             }
         }
         ParticleOptions particleOptions = CHParticleTypes.FLAMETHROWER_FLAME.get();
-        if (itemStack.getEnchantmentLevel(CHEnchantments.SOUL_BURNER.get()) > 0) {
+        if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.SOUL_BURNER) > 0) {
             particleOptions = CHParticleTypes.FLAMETHROWER_SOUL_FLAME.get();
         }
         this.dragonBreathAttack(particleOptions, livingEntity, ((double) range / 10) * 0.5D);
@@ -288,13 +289,13 @@ public class FlamethrowerItem extends Item implements IFuel{
                     for (Entity target : getBreathTarget(player, range, EntitySelector.NO_CREATIVE_OR_SPECTATOR.and(entity -> !MobUtil.areAllies(entity, player)))) {
                         if (target != null && !target.isUnderWater()) {
                             DamageSource damageSource = CHDamageSource.fireStream(player, player);
-                            int enchantment = itemStack.getEnchantmentLevel(CHEnchantments.NAPALM_STREAM.get());
+                            int enchantment = com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.NAPALM_STREAM);
                             if (target instanceof LivingEntity livingEntity1) {
                                 if (target.hurt(damageSource, 1.5F + enchantment)) {
-                                    livingEntity1.addEffect(new MobEffectInstance(CHEffects.DEEP_BURN.get(), 500));
+                                    livingEntity1.addEffect(new MobEffectInstance(CHEffects.DEEP_BURN, 500));
                                     int fireSeconds = 10;
                                     fireSeconds += enchantment * 5;
-                                    target.setSecondsOnFire(fireSeconds);
+                                    target.igniteForSeconds(fireSeconds);
                                 }
                             }
                             if (target instanceof Projectile projectile) {
@@ -332,10 +333,10 @@ public class FlamethrowerItem extends Item implements IFuel{
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
+        super.appendHoverText(stack, tooltipContext, tooltip, flagIn);
         ItemHelper.addOnShift(tooltip, () -> addInformationAfterShift(tooltip));
-        this.addFuelText(stack, worldIn, tooltip, flagIn);
+        this.addFuelText(stack, tooltipContext, tooltip, flagIn);
     }
 
     public void addInformationAfterShift(List<Component> tooltip) {
@@ -350,39 +351,9 @@ public class FlamethrowerItem extends Item implements IFuel{
     }
 
     public static class FlameClient implements IClientItemExtensions{
-        private static final HumanoidModel.ArmPose FLAME = HumanoidModel.ArmPose.create("CH_FLAME", false, (model, entity, arm) -> {
-            if (arm == HumanoidArm.RIGHT) {
-                model.rightArm.xRot = -MathHelper.modelDegrees(55) + model.head.xRot;
-                model.rightArm.yRot = -0.1F + model.head.yRot;
-                model.leftArm.xRot = -MathHelper.modelDegrees(50) + model.head.xRot;
-                model.leftArm.yRot = 0.1F + model.head.yRot + 0.4F;
-                model.leftArm.zRot = MathHelper.modelDegrees(30);
-            } else {
-                model.leftArm.xRot = -MathHelper.modelDegrees(55) + model.head.xRot;
-                model.leftArm.yRot = 0.1F + model.head.yRot;
-                model.rightArm.xRot = -MathHelper.modelDegrees(50) + model.head.xRot;
-                model.rightArm.yRot = -0.1F + model.head.yRot - 0.4F;
-                model.rightArm.zRot = -MathHelper.modelDegrees(30);
-            }
-        });
+        private static final HumanoidModel.ArmPose FLAME = com.mongoose.clanginghowl.client.render.CHArmPoseParameters.FLAME.getValue();
 
-        private static final HumanoidModel.ArmPose IDLE_FLAME = HumanoidModel.ArmPose.create("CH_IDLE_FLAME", false, (model, entity, arm) -> {
-            if (arm == HumanoidArm.RIGHT) {
-                model.rightArm.xRot = -MathHelper.modelDegrees(45) + model.head.xRot;
-                model.rightArm.yRot = -0.1F + model.head.yRot;
-                model.rightArm.zRot = 0.0F;
-                model.leftArm.xRot = -MathHelper.modelDegrees(45) + model.head.xRot;
-                model.leftArm.yRot = 0.1F + model.head.yRot + 0.4F;
-                model.leftArm.zRot = MathHelper.modelDegrees(30);
-            } else {
-                model.leftArm.xRot = -MathHelper.modelDegrees(45) + model.head.xRot;
-                model.leftArm.yRot = 0.1F + model.head.yRot;
-                model.leftArm.zRot = 0.0F;
-                model.rightArm.xRot = -MathHelper.modelDegrees(45) + model.head.xRot;
-                model.rightArm.yRot = -0.1F + model.head.yRot - 0.4F;
-                model.rightArm.zRot = -MathHelper.modelDegrees(30);
-            }
-        });
+        private static final HumanoidModel.ArmPose IDLE_FLAME = com.mongoose.clanginghowl.client.render.CHArmPoseParameters.IDLE_FLAME.getValue();
 
         @Override
         public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
@@ -404,7 +375,7 @@ public class FlamethrowerItem extends Item implements IFuel{
                 poseStack.mulPose(Axis.XP.rotationDegrees(1.0F));
                 poseStack.mulPose(Axis.YP.rotationDegrees((float)i * 35.3F));
                 poseStack.mulPose(Axis.ZP.rotationDegrees((float)i * -9.785F));
-                float f8 = (float)itemInHand.getUseDuration() - ((float)player.getUseItemRemainingTicks() - partialTick + 1.0F);
+                float f8 = (float)itemInHand.getUseDuration(player) - ((float)player.getUseItemRemainingTicks() - partialTick + 1.0F);
                 float f12 = f8 / 20.0F;
                 f12 = (f12 * f12 + f12 * 2.0F) / 3.0F;
                 if (f12 > 1.0F) {

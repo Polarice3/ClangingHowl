@@ -41,8 +41,8 @@ public class GasSurgeParticle extends TextureSheetParticle {
    }
 
    @Override
-   public boolean shouldCull() {
-      return false;
+   public net.minecraft.world.phys.AABB getRenderBoundingBox(float partialTick) {
+      return net.minecraft.world.phys.AABB.INFINITE;
    }
 
    public static class Provider implements ParticleProvider<SimpleParticleType> {

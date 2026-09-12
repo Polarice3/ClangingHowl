@@ -1,6 +1,6 @@
 {
   "parent": "block/block",
-  "loader": "forge:composite",
+  "loader": "neoforge:composite",
   "textures": {
     "particle": "clanginghowl:block/consummate_nest_active"
   },
@@ -43,7 +43,7 @@
               "uv": [ 0, 0, 16, 16 ],
               "texture": "#side",
               "cullface": "north",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               }
@@ -52,7 +52,7 @@
               "uv": [ 0, 0, 16, 16 ],
               "texture": "#side",
               "cullface": "south",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               }
@@ -61,7 +61,7 @@
               "uv": [ 0, 0, 16, 16 ],
               "texture": "#side",
               "cullface": "west",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               }
@@ -70,7 +70,7 @@
               "uv": [ 0, 0, 16, 16 ],
               "texture": "#side",
               "cullface": "east",
-              "forge_data": {
+              "neoforge_data": {
                 "block_light": 15,
                 "sky_light": 15
               }

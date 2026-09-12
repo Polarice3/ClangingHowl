@@ -1,15 +1,15 @@
 package com.mongoose.clanginghowl.data;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.common.blocks.CHBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class CHBlockStateProvider extends BlockStateProvider {
     public CHBlockStateProvider(PackOutput gen, ExistingFileHelper exFileHelper) {
@@ -72,7 +72,7 @@ public class CHBlockStateProvider extends BlockStateProvider {
         paneBlockWithItemAndRender(CHBlocks.EXTRATERRESTRIAL_STEEL_GRATE_PANEL.get(), ClangingHowl.location("block/extraterrestrial_steel_grate"), "translucent");
 
         trapdoorBlockWithItem((TrapDoorBlock) CHBlocks.STEEL_TRAPDOOR.get(), ClangingHowl.location("block/steel_trapdoor"), true);
-        trapdoorBlockWithItemAndRender((TrapDoorBlock) CHBlocks.FIREPROOF_STEEL_TRAPDOOR.get(), ClangingHowl.location("block/fireproof_steel_trapdoor"), true, new ResourceLocation("translucent"));
+        trapdoorBlockWithItemAndRender((TrapDoorBlock) CHBlocks.FIREPROOF_STEEL_TRAPDOOR.get(), ClangingHowl.location("block/fireproof_steel_trapdoor"), true, ResourceLocation.parse("translucent"));
     }
 
     public ModelFile cubeAllWithRender(Block block, String renderType) {
@@ -278,7 +278,7 @@ public class CHBlockStateProvider extends BlockStateProvider {
     }
 
     private ResourceLocation extend(ResourceLocation rl, String suffix) {
-        return new ResourceLocation(rl.getNamespace(), rl.getPath() + suffix);
+        return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath() + suffix);
     }
 
     private String name(Block block) {
@@ -286,7 +286,7 @@ public class CHBlockStateProvider extends BlockStateProvider {
     }
 
     private ResourceLocation key(Block block) {
-        return ForgeRegistries.BLOCKS.getKey(block);
+        return BuiltInRegistries.BLOCK.getKey(block);
     }
 
 }

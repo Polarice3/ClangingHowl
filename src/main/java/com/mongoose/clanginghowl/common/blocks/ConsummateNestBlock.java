@@ -23,10 +23,15 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
 public class ConsummateNestBlock extends BaseEntityBlock {
+    public static final com.mojang.serialization.MapCodec<ConsummateNestBlock> CODEC = simpleCodec(ConsummateNestBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<ConsummateNestBlock> codec() { return CODEC; }
+
     public static final EnumProperty<ConsummateNestState> STATE = CHBlockStates.CONSUMMATE_NEST_STATE;
 
     public ConsummateNestBlock() {
-        super(BlockBehaviour.Properties.of()
+        this(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_RED)
                 .instrument(NoteBlockInstrument.BASEDRUM)
                 .requiresCorrectToolForDrops()
@@ -34,6 +39,10 @@ public class ConsummateNestBlock extends BaseEntityBlock {
                 .strength(50.0F)
                 .sound(SoundType.METAL)
                 .noOcclusion());
+    }
+
+    public ConsummateNestBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(STATE, ConsummateNestState.INACTIVE));
     }
 
@@ -56,8 +65,8 @@ public class ConsummateNestBlock extends BaseEntityBlock {
     }
 
     @Override
-    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelReader world, net.minecraft.util.RandomSource randomSource, BlockPos pos, int fortune, int silktouch) {
-        return 15 + randomSource.nextInt(15) + randomSource.nextInt(15);
+    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelAccessor world, BlockPos pos, BlockEntity blockEntity, net.minecraft.world.entity.Entity breaker, net.minecraft.world.item.ItemStack tool) {
+        return 15 + world.getRandom().nextInt(15) + world.getRandom().nextInt(15);
     }
 
     @Nullable

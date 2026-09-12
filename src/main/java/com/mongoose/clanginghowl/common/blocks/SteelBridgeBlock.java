@@ -15,11 +15,20 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 public class SteelBridgeBlock extends HorizontalDirectionalBlock {
+    public static final com.mojang.serialization.MapCodec<SteelBridgeBlock> CODEC = simpleCodec(SteelBridgeBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<SteelBridgeBlock> codec() { return CODEC; }
+
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty ALTERNATE = CHBlockStates.ALTERNATE;
 
     public SteelBridgeBlock() {
-        super(CHBlocks.exSteelPlateProperties().noOcclusion());
+        this(CHBlocks.exSteelPlateProperties().noOcclusion());
+    }
+
+    public SteelBridgeBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ALTERNATE, false).setValue(WATERLOGGED, Boolean.FALSE));
     }
 

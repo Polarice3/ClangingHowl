@@ -21,3 +21,7 @@ build
 eclipse
 run
 run-data
+# Volatile datagen cache and isolated smoke-test worlds
+src/generated/resources/.cache/
+run-gametest/
+run-client-smoke/

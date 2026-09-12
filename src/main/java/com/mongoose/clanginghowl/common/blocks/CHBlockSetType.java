@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 public class CHBlockSetType {
     public static final BlockSetType EX_STEEL =
             BlockSetType.register(new BlockSetType(ClangingHowl.location("extraterrestrial_steel").toString(),
-                    true,
+                    true, true, false, BlockSetType.PressurePlateSensitivity.MOBS,
                     SoundType.METAL,
                     SoundEvents.IRON_DOOR_CLOSE,
                     SoundEvents.IRON_DOOR_OPEN,
@@ -20,7 +20,7 @@ public class CHBlockSetType {
                     SoundEvents.STONE_BUTTON_CLICK_ON));
     public static final BlockSetType FIREPROOF_STEEL =
             BlockSetType.register(new BlockSetType(ClangingHowl.location("fireproof_steel").toString(),
-                    false,
+                    false, false, false, BlockSetType.PressurePlateSensitivity.MOBS,
                     SoundType.METAL,
                     SoundEvents.IRON_DOOR_CLOSE,
                     SoundEvents.IRON_DOOR_OPEN,

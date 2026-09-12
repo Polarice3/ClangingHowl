@@ -1,10 +1,9 @@
 package com.mongoose.clanginghowl.common.events;
 
+import net.neoforged.fml.common.EventBusSubscriber;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.client.particles.*;
 import com.mongoose.clanginghowl.common.capabilities.CHCapHelper;
-import com.mongoose.clanginghowl.common.capabilities.CHCapProvider;
-import com.mongoose.clanginghowl.common.capabilities.ICHCap;
 import com.mongoose.clanginghowl.common.effects.CHEffects;
 import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import com.mongoose.clanginghowl.common.entities.CHEntityType;
@@ -49,38 +48,23 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
-import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.tick.EntityTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
+import net.neoforged.neoforge.event.entity.living.*;
+import net.neoforged.neoforge.event.entity.player.CriticalHitEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.CanPlayerSleepEvent;
+import net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent;
+import net.neoforged.bus.api.Event;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = ClangingHowl.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = ClangingHowl.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
 public class CHEvents {
-
-    @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        Player player = event.getEntity();
-        Player original = event.getOriginal();
-
-        original.reviveCaps();
-
-        ICHCap capability3 = CHCapHelper.getCapability(original);
-        player.getCapability(CHCapProvider.CAPABILITY)
-                .ifPresent(cap ->
-                        cap.setMiningProgress(0));
-        player.getCapability(CHCapProvider.CAPABILITY)
-                .ifPresent(cap ->
-                        cap.setMiningPos(null));
-    }
 
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinLevelEvent event) {
@@ -92,7 +76,7 @@ public class CHEvents {
                     mob.goalSelector.addGoal(0, new FollowAttractionGoal(mob, 1.0F, 3.0F, 20.0F));
                 }
                 if (mob instanceof Enemy && !(mob instanceof Creeper) && !mob.getType().is(CHTags.EntityTypes.TECHNO_FLESH)) {
-                    mob.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(mob, LivingEntity.class, true, (livingEntity -> livingEntity.hasEffect(CHEffects.ATTRACTION.get()))) {
+                    mob.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(mob, LivingEntity.class, true, (livingEntity -> livingEntity.hasEffect(CHEffects.ATTRACTION))) {
                         @Override
                         protected double getFollowDistance() {
                             return 20.0D;
@@ -104,8 +88,8 @@ public class CHEvents {
     }
 
     @SubscribeEvent
-    public static void TickEvent(LivingEvent.LivingTickEvent event) {
-        LivingEntity livingEntity = event.getEntity();
+    public static void TickEvent(EntityTickEvent.Post event) {
+        if (!(event.getEntity() instanceof LivingEntity livingEntity)) return;
         if (CHCapHelper.getShakeTime(livingEntity) > 0) {
             CHCapHelper.setShakeTime(livingEntity, CHCapHelper.getShakeTime(livingEntity) - 1);
         }
@@ -130,19 +114,19 @@ public class CHEvents {
         if (livingEntity.level().isClientSide) {
             CHNetwork.sendToServer(new CIsMovingPacket(livingEntity.getId(), MobUtil.isMoving(livingEntity)));
         } else {
-            if (livingEntity.hasEffect(CHEffects.ENLIGHTENED.get())) {
+            if (livingEntity.hasEffect(CHEffects.ENLIGHTENED)) {
                 CHCapHelper.setEnlightenedTick(livingEntity, 5);
             } else if (CHCapHelper.isEnlightened(livingEntity)) {
                 CHCapHelper.setEnlightenedTick(livingEntity, 0);
             }
         }
-        if (livingEntity.hasEffect(CHEffects.OVERDRIVE.get())) {
+        if (livingEntity.hasEffect(CHEffects.OVERDRIVE)) {
             if (MobUtil.isWalking(livingEntity)) {
                 livingEntity.level().addParticle(CHParticleTypes.OVERDRIVE_FIRE.get(), livingEntity.getX(), livingEntity.getY() + 0.25F, livingEntity.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }
-        if (livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())) {
-            MobEffectInstance instance = livingEntity.getEffect(CHEffects.BEYOND_FLESH.get());
+        if (livingEntity.hasEffect(CHEffects.BEYOND_FLESH)) {
+            MobEffectInstance instance = livingEntity.getEffect(CHEffects.BEYOND_FLESH);
             if (instance != null) {
                 int duration = instance.getDuration();
                 if (livingEntity.level() instanceof ServerLevel serverLevel) {
@@ -171,23 +155,23 @@ public class CHEvents {
         AttributeInstance movement = livingEntity.getAttribute(Attributes.MOVEMENT_SPEED);
         boolean hasTendon = CHCuriosFinder.hasCurio(livingEntity, CHItems.TENDON_STRENGTHENER.get());
 
-        AttributeModifier attributemodifier = new AttributeModifier(CHUUIDUtil.createUUID("item.tendon.movement_speed"), "Tendon Base Movement Buff", 0.1, AttributeModifier.Operation.MULTIPLY_TOTAL);
-        AttributeModifier attributemodifier2 = new AttributeModifier(CHUUIDUtil.createUUID("item.tendon.sprint_speed"), "Tendon Sprint Movement Buff", 0.15, AttributeModifier.Operation.MULTIPLY_TOTAL);
+        AttributeModifier attributemodifier = new AttributeModifier(com.mongoose.clanginghowl.ClangingHowl.location("item.tendon.movement_speed"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        AttributeModifier attributemodifier2 = new AttributeModifier(com.mongoose.clanginghowl.ClangingHowl.location("item.tendon.sprint_speed"), 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
         if (movement != null) {
             boolean removeModifier = false;
             if (hasTendon) {
                 ItemStack itemStack = CHCuriosFinder.findCurio(livingEntity, CHItems.TENDON_STRENGTHENER.get());
                 if (!itemStack.isEmpty() && !IEnergyItem.isEmpty(itemStack)) {
-                    if (!movement.hasModifier(attributemodifier)) {
+                    if (!movement.hasModifier(attributemodifier.id())) {
                         movement.addPermanentModifier(attributemodifier);
                     }
                     if (livingEntity.isSprinting()) {
-                        if (!movement.hasModifier(attributemodifier2)) {
+                        if (!movement.hasModifier(attributemodifier2.id())) {
                             movement.addPermanentModifier(attributemodifier2);
                         }
                     } else {
-                        if (movement.hasModifier(attributemodifier2)){
+                        if (movement.hasModifier(attributemodifier2.id())){
                             movement.removeModifier(attributemodifier2);
                         }
                     }
@@ -198,10 +182,10 @@ public class CHEvents {
                 removeModifier = true;
             }
             if (removeModifier) {
-                if (movement.hasModifier(attributemodifier)){
+                if (movement.hasModifier(attributemodifier.id())){
                     movement.removeModifier(attributemodifier);
                 }
-                if (movement.hasModifier(attributemodifier2)){
+                if (movement.hasModifier(attributemodifier2.id())){
                     movement.removeModifier(attributemodifier2);
                 }
             }
@@ -218,7 +202,7 @@ public class CHEvents {
     private static final String NO_KNOCKBACK_TAG = "clanginghowl:no_knockback";
 
     @SubscribeEvent
-    public static void AttackEvent(LivingAttackEvent event){
+    public static void AttackEvent(LivingIncomingDamageEvent event){
         LivingEntity victim = event.getEntity();
         if (event.getSource() instanceof NoKnockBackDamageSource){
             if (!victim.level().isClientSide) {
@@ -244,7 +228,7 @@ public class CHEvents {
     }
 
     @SubscribeEvent
-    public static void HurtEvent(LivingHurtEvent event){
+    public static void HurtEvent(LivingIncomingDamageEvent event){
         LivingEntity victim = event.getEntity();
         Entity directEntity = event.getSource().getDirectEntity();
         if (event.getAmount() > 0.0F) {
@@ -282,10 +266,10 @@ public class CHEvents {
             }
             if (directEntity instanceof LivingEntity livingAttacker) {
                 if (CHDamageSource.physicalAttacks(event.getSource())) {
-                    if (victim.hasEffect(CHEffects.ENLIGHTENED.get())) {
+                    if (victim.hasEffect(CHEffects.ENLIGHTENED)) {
                         ItemStack itemStack = CHCuriosFinder.findCurio(livingAttacker, CHItems.X_RAY_GOGGLES.get());
                         if (!itemStack.isEmpty() && XRayGoggles.isActivated(itemStack)) {
-                            MobEffectInstance instance = victim.getEffect(CHEffects.ENLIGHTENED.get());
+                            MobEffectInstance instance = victim.getEffect(CHEffects.ENLIGHTENED);
                             if (instance != null) {
                                 float amp = instance.getAmplifier() + 1;
                                 amp *= 1.3F;
@@ -301,7 +285,7 @@ public class CHEvents {
                     }
                     if (livingAttacker.getMainHandItem().getItem() instanceof TieredItem weapon) {
                         if (weapon.getTier() == CHTiers.EXTRATERRESTRIAL) {
-                            victim.addEffect(new MobEffectInstance(CHEffects.COSMIC_IRRADIATION.get(), 400));
+                            victim.addEffect(new MobEffectInstance(CHEffects.COSMIC_IRRADIATION, 400));
                             if (victim.getType().is(CHTags.EntityTypes.TECHNO_FLESH)) {
                                 event.setAmount(event.getAmount() + 4.0F);
                             }
@@ -314,8 +298,8 @@ public class CHEvents {
                     }
                 }
             }
-            if (victim.hasEffect(CHEffects.DEEP_BURN.get())) {
-                MobEffectInstance mobEffectInstance = victim.getEffect(CHEffects.DEEP_BURN.get());
+            if (victim.hasEffect(CHEffects.DEEP_BURN)) {
+                MobEffectInstance mobEffectInstance = victim.getEffect(CHEffects.DEEP_BURN);
                 if (mobEffectInstance != null){
                     if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
                         event.setAmount(event.getAmount() * 1.6F);
@@ -326,21 +310,21 @@ public class CHEvents {
     }
 
     @SubscribeEvent
-    public static void onDamage(LivingDamageEvent event) {
+    public static void onDamage(LivingDamageEvent.Pre event) {
         LivingEntity victim = event.getEntity();
         Entity directEntity = event.getSource().getDirectEntity();
-        if (event.getAmount() > 0.0F) {
+        if (event.getNewDamage() > 0.0F) {
             if (!victim.level().isClientSide) {
                 Player bloodEnergy = null;
                 if (victim instanceof Player player) {
                     if (CHCuriosFinder.hasCurio(player, CHItems.BLOODY_BATTERY.get())) {
                         ItemStack curio = CHCuriosFinder.findCurio(player, CHItems.BLOODY_BATTERY.get());
                         if (!curio.isEmpty()) {
-                            float amount = event.getAmount() * 1.15F;
+                            float amount = event.getNewDamage() * 1.15F;
                             amount = Math.min(amount, player.getHealth());
                             bloodEnergy = player;
                             EnergyUtil.chargeAllItems(player, Mth.floor(amount));
-                            event.setAmount(amount);
+                            event.setNewDamage(amount);
                         }
                     }
                 } else if (directEntity instanceof Player player) {
@@ -348,7 +332,7 @@ public class CHEvents {
                         ItemStack curio = CHCuriosFinder.findCurio(player, CHItems.BLOODY_BATTERY.get());
                         if (!curio.isEmpty()) {
                             bloodEnergy = player;
-                            EnergyUtil.chargeAllItems(player, Mth.floor(event.getAmount()));
+                            EnergyUtil.chargeAllItems(player, Mth.floor(event.getNewDamage()));
                         }
                     }
                 }
@@ -361,7 +345,7 @@ public class CHEvents {
                 }
                 if (victim instanceof Prowler prowler) {
                     if (event.getSource().getEntity() != null) {
-                        float amount = event.getAmount();
+                        float amount = event.getNewDamage();
                         if (prowler.retreatTick <= 0) {
                             prowler.accumulatedDamage += amount;
                             if (prowler.accumulatedDamage >= (prowler.getMaxHealth() * 0.2F)) {
@@ -379,7 +363,7 @@ public class CHEvents {
     }
 
     @SubscribeEvent
-    public static void onSpawn(MobSpawnEvent.FinalizeSpawn event) {
+    public static void onSpawn(FinalizeSpawnEvent event) {
         if (event.getEntity().getType().is(CHTags.EntityTypes.TECHNO_FLESH) && CHConfig.TechnoFleshBuff.get()) {
             MobUtil.buffTechnoFlesh(event.getLevel().getLevel(), event.getEntity());
         }
@@ -392,7 +376,7 @@ public class CHEvents {
         if (CHDamageSource.physicalAttacks(event.getSource())) {
             if (directEntity instanceof LivingEntity livingAttacker) {
                 if (CHDamageSource.physicalAttacks(event.getSource())) {
-                    if (livingAttacker.getMainHandItem().getEnchantmentLevel(CHEnchantments.KILLER_CHARGE.get()) > 0) {
+                    if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(livingAttacker.getMainHandItem(), CHEnchantments.KILLER_CHARGE) > 0) {
                         for (LivingEntity livingEntity : livingAttacker.level().getEntitiesOfClass(LivingEntity.class, victim.getBoundingBox().inflate(4.0D))) {
                             if (!MobUtil.areAllies(livingAttacker, livingEntity) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
                                 if (livingEntity.hurt(CHDamageSource.lightning(livingAttacker, livingAttacker), 7.0F)){
@@ -412,7 +396,7 @@ public class CHEvents {
                 }
             }
         }
-        if (victim.hasEffect(CHEffects.INTERNAL_HEAT.get())) {
+        if (victim.hasEffect(CHEffects.INTERNAL_HEAT)) {
             victim.level().playSound(null, victim.getX(), victim.getY(), victim.getZ(), SoundEvents.GENERIC_EXPLODE, victim.getSoundSource(), 1.0F, 1.0F);
             if (victim.level() instanceof ServerLevel serverLevel) {
                 serverLevel.sendParticles(new SmallFireSplashParticleOption(4.0F, 0), victim.getX(), victim.getY() + 1.0D, victim.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
@@ -424,8 +408,8 @@ public class CHEvents {
                         && !(livingEntity instanceof OwnableEntity ownable
                         && ownable.getOwner() instanceof Player)) {
                     if (livingEntity.hurt(victim.level().damageSources().inFire(), 5.0F)){
-                        livingEntity.addEffect(new MobEffectInstance(CHEffects.INTERNAL_HEAT.get(), 500));
-                        livingEntity.setSecondsOnFire(15);
+                        livingEntity.addEffect(new MobEffectInstance(CHEffects.INTERNAL_HEAT, 500));
+                        livingEntity.igniteForSeconds(15);
                     }
                 }
             }
@@ -455,14 +439,14 @@ public class CHEvents {
                     }
                 }
             }
-            if (victim.hasEffect(CHEffects.BEYOND_FLESH.get()) && !victim.isOnFire()) {
+            if (victim.hasEffect(CHEffects.BEYOND_FLESH) && !victim.isOnFire()) {
                 serverLevel.sendParticles(new BloodSplashParticleOption(1.0F, 0), victim.getX(), victim.getY() + 1.0D, victim.getZ(), 1, 0, 0, 0, 0);
                 for (int i = 0; i < serverLevel.getRandom().nextIntBetweenInclusive(4, 6); ++i) {
                     serverLevel.sendParticles(CHParticleTypes.BLOOD_STAIN.get(), victim.getRandomX(0.5D), victim.getY() + 0.1F, victim.getRandomZ(0.5D), 1, 0, 0, 0, 1);
                 }
                 HeartOfDecay heartOfDecay = new HeartOfDecay(CHEntityType.HEART_OF_DECAY.get(), victim.level());
                 heartOfDecay.setPos(victim.position().add(0.0D, 1.0D, 0.0D));
-                ForgeEventFactory.onFinalizeSpawn(heartOfDecay, serverLevel, serverLevel.getCurrentDifficultyAt(victim.blockPosition()), MobSpawnType.TRIGGERED, null, null);
+                EventHooks.finalizeMobSpawn(heartOfDecay, serverLevel, serverLevel.getCurrentDifficultyAt(victim.blockPosition()), MobSpawnType.TRIGGERED, null);
                 heartOfDecay.playSound(CHSounds.FLESH_TEAR.get(), 1.0F, 1.0F);
                 serverLevel.addFreshEntity(heartOfDecay);
             }
@@ -473,7 +457,7 @@ public class CHEvents {
                         itemStack = livingEntity.getOffhandItem();
                     }
                     if (itemStack.is(CHItems.FLAMETHROWER.get())) {
-                        if (itemStack.getEnchantmentLevel(CHEnchantments.SOUL_BURNER.get()) > 0) {
+                        if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.SOUL_BURNER) > 0) {
                             IFuel.fillUpItem(itemStack, 10);
                         }
                     }
@@ -487,19 +471,19 @@ public class CHEvents {
 
     @SubscribeEvent
     public static void onCritical(CriticalHitEvent event) {
-        if (event.isVanillaCritical() || event.getResult() == Event.Result.ALLOW) {
+        if (event.isCriticalHit()) {
             Player player = event.getEntity();
             if (event.getTarget() instanceof LivingEntity target) {
                 ItemStack itemStack = event.getEntity().getMainHandItem();
                 if (itemStack.getItem() instanceof ChainswordItem && !IEnergyItem.isEmpty(itemStack)) {
-                    if (!target.hasEffect(CHEffects.SAWING_UP_HEALTH.get())) {
-                        target.addEffect(new MobEffectInstance(CHEffects.SAWING_UP_HEALTH.get(), 500));
+                    if (!target.hasEffect(CHEffects.SAWING_UP_HEALTH)) {
+                        target.addEffect(new MobEffectInstance(CHEffects.SAWING_UP_HEALTH, 500));
                     } else {
                         int maxAmp = 4;
-                        if (itemStack.getEnchantmentLevel(CHEnchantments.EXCEEDING_THE_LIMIT.get()) > 0) {
+                        if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.EXCEEDING_THE_LIMIT) > 0) {
                             maxAmp = 9;
                         }
-                        EffectsUtil.amplifyEffect(target, CHEffects.SAWING_UP_HEALTH.get(), 500, maxAmp);
+                        EffectsUtil.amplifyEffect(target, CHEffects.SAWING_UP_HEALTH, 500, maxAmp);
                     }
                 }
                 if (CHCuriosFinder.hasCurio(player, CHItems.ENERGY_GLOVE.get())) {
@@ -530,16 +514,16 @@ public class CHEvents {
 
     @SubscribeEvent
     public static void onHeal(LivingHealEvent event) {
-        if (event.getEntity().hasEffect(CHEffects.SAWING_UP_HEALTH.get())) {
+        if (event.getEntity().hasEffect(CHEffects.SAWING_UP_HEALTH)) {
             event.setCanceled(true);
         }
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event){
-        Player player = event.player;
+    public static void onPlayerTick(PlayerTickEvent.Post event){
+        Player player = event.getEntity();
         Level world = player.level();
-        if (event.phase == TickEvent.Phase.END) {
+        if (!world.isClientSide) {
             if (!player.isUsingItem() || !(player.getUseItem().getItem() instanceof EnergyItem)) {
                 EnergyItem.resetMiningProgress(world, player);
             }
@@ -550,13 +534,13 @@ public class CHEvents {
     public static void onInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getLevel() instanceof ServerLevel) {
             if (event.getTarget() instanceof Mob mob && mob.isAlive() && !(mob instanceof Enemy)) {
-                if (mob.hasEffect(CHEffects.BEYOND_FLESH.get())) {
-                    MobEffectInstance instance = mob.getEffect(CHEffects.BEYOND_FLESH.get());
+                if (mob.hasEffect(CHEffects.BEYOND_FLESH)) {
+                    MobEffectInstance instance = mob.getEffect(CHEffects.BEYOND_FLESH);
                     if (instance != null) {
                         int duration = instance.getDuration();
                         if (duration > 100) {
-                            mob.removeEffect(CHEffects.BEYOND_FLESH.get());
-                            mob.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), 99, 0, false, false));
+                            mob.removeEffect(CHEffects.BEYOND_FLESH);
+                            mob.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH, 99, 0, false, false));
                         }
                     }
                 }
@@ -570,7 +554,7 @@ public class CHEvents {
             for (int i = 0; i < player.getInventory().getContainerSize(); ++i) {
                 ItemStack itemStack = player.getInventory().getItem(i);
                 if (itemStack.getItem() instanceof IEnergyItem) {
-                    if (itemStack.getEnchantmentLevel(CHEnchantments.ECOLOGICAL_ENERGY.get()) > 0) {
+                    if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(itemStack, CHEnchantments.ECOLOGICAL_ENERGY) > 0) {
                         IEnergyItem.powerItem(itemStack, 400);
                     }
                 }
@@ -592,16 +576,16 @@ public class CHEvents {
     public static void PotionApplyEvents(MobEffectEvent.Applicable event) {
         LivingEntity livingEntity = event.getEntity();
         MobEffectInstance instance = event.getEffectInstance();
-        if (instance.getEffect() == CHEffects.OVERDRIVE.get()) {
+        if (instance.getEffect() == CHEffects.OVERDRIVE) {
             if (livingEntity.level() instanceof ServerLevel serverLevel) {
-                if (livingEntity.isAlive() && !livingEntity.hasEffect(CHEffects.OVERDRIVE.get())) {
+                if (livingEntity.isAlive() && !livingEntity.hasEffect(CHEffects.OVERDRIVE)) {
                     serverLevel.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), CHSounds.CHAINSAW_OVERDRIVE.get(), livingEntity.getSoundSource(), 1.0F, 1.0F);
                 }
             }
         }
-        if (instance.getEffect() == CHEffects.BEYOND_FLESH.get()) {
+        if (instance.getEffect() == CHEffects.BEYOND_FLESH) {
             if (livingEntity.level() instanceof ServerLevel serverLevel) {
-                if (livingEntity.isAlive() && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())) {
+                if (livingEntity.isAlive() && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH)) {
                     for(int i = 0; i < 20; ++i) {
                         double d0 = serverLevel.getRandom().nextGaussian() * 0.02D;
                         double d1 = serverLevel.getRandom().nextGaussian() * 0.02D;
@@ -614,13 +598,13 @@ public class CHEvents {
     }
 
     @SubscribeEvent
-    public static void SleepEvents(PlayerSleepInBedEvent event){
+    public static void SleepEvents(CanPlayerSleepEvent event){
         if (event.getEntity() != null) {
             if (!event.getEntity().level().isClientSide) {
                 if (event.getEntity().level() instanceof ICHWorldData data) {
                     if (data.getCHWorldData().isMeteorShower()) {
                         event.getEntity().displayClientMessage(Component.translatable("info.clanginghowl.bed.meteor_shower"), true);
-                        event.setResult(Player.BedSleepingProblem.OTHER_PROBLEM);
+                        event.setProblem(Player.BedSleepingProblem.OTHER_PROBLEM);
                     }
                 }
             }

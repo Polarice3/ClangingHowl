@@ -93,7 +93,7 @@ public class ExReaper extends TFleshMonster {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, livingEntity -> MobUtil.isReaperConvert(livingEntity) && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH.get())));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, livingEntity -> MobUtil.isReaperConvert(livingEntity) && !livingEntity.hasEffect(CHEffects.BEYOND_FLESH)));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     }
 
@@ -107,9 +107,9 @@ public class ExReaper extends TFleshMonster {
                 .add(Attributes.ARMOR, 7.0D);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANIM_STATE, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ANIM_STATE, 0);
     }
 
     public static boolean checkExReaperSpawnRules(EntityType<? extends Monster> entityType, ServerLevelAccessor levelAccessor, MobSpawnType spawnType, BlockPos blockPos, RandomSource randomSource) {
@@ -121,7 +121,7 @@ public class ExReaper extends TFleshMonster {
 
     @Override
     public boolean canAttack(LivingEntity p_21171_) {
-        return super.canAttack(p_21171_) && !p_21171_.hasEffect(CHEffects.BEYOND_FLESH.get());
+        return super.canAttack(p_21171_) && !p_21171_.hasEffect(CHEffects.BEYOND_FLESH);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -222,8 +222,8 @@ public class ExReaper extends TFleshMonster {
         return animationStates;
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.hasPose(Pose.EMERGING) ? 1 : 0);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, serverEntity, this.hasPose(Pose.EMERGING) ? 1 : 0);
     }
 
     public void recreateFromPacket(ClientboundAddEntityPacket p_219420_) {
@@ -236,9 +236,9 @@ public class ExReaper extends TFleshMonster {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
         this.setPose(Pose.EMERGING);
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
     public void tick() {
@@ -293,7 +293,7 @@ public class ExReaper extends TFleshMonster {
                 } else if (livingEntity instanceof Animal) {
                     time *= 2;
                 }
-                livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), time, 0, false, false));
+                livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH, time, 0, false, false));
                 this.setTarget(null);
                 if (livingEntity instanceof Mob mob) {
                     mob.setTarget(null);
@@ -301,10 +301,10 @@ public class ExReaper extends TFleshMonster {
                 }
             } else if (entityIn instanceof Player player && flag) {
                 boolean flag2;
-                if (!player.hasEffect(CHEffects.SAWING_UP_HEALTH.get())) {
-                    flag2 = player.addEffect(new MobEffectInstance(CHEffects.SAWING_UP_HEALTH.get(), 500));
+                if (!player.hasEffect(CHEffects.SAWING_UP_HEALTH)) {
+                    flag2 = player.addEffect(new MobEffectInstance(CHEffects.SAWING_UP_HEALTH, 500));
                 } else {
-                    flag2 = EffectsUtil.amplifyEffect(player, CHEffects.SAWING_UP_HEALTH.get(), 500, 9, false, true);
+                    flag2 = EffectsUtil.amplifyEffect(player, CHEffects.SAWING_UP_HEALTH, 500, 9, false, true);
                 }
                 if (flag2) {
                     if (this.level() instanceof ServerLevel serverLevel) {

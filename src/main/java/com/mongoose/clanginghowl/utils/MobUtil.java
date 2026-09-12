@@ -44,8 +44,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.entity.PartEntity;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.neoforged.neoforge.entity.PartEntity;
+import net.neoforged.neoforge.event.EventHooks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -186,9 +186,7 @@ public class MobUtil {
                 double d3 = shooter.getZ() - victim.getZ();
                 Vec3 vec3 = new Vec3(d1, d2, d3);
                 projectile1.setDeltaMovement(vec3);
-                projectile1.xPower = vec3.x * 0.1D;
-                projectile1.yPower = vec3.y * 0.1D;
-                projectile1.zPower = vec3.z * 0.1D;
+                projectile1.accelerationPower = vec3.length() * 0.1D;
             } else {
                 float speed = Mth.sqrt((float) (deltaMovement.x * deltaMovement.x + deltaMovement.y * deltaMovement.y + deltaMovement.z * deltaMovement.z));
                 speed = speed < 1.0E-4F ? 0.0F : speed;
@@ -306,7 +304,7 @@ public class MobUtil {
             }
             if (convert != null) {
                 convert.removeAllEffects();
-                ForgeEventFactory.onFinalizeSpawn(convert, serverLevel, serverLevel.getCurrentDifficultyAt(convert.blockPosition()), MobSpawnType.CONVERSION, null, null);
+                EventHooks.finalizeMobSpawn(convert, serverLevel, serverLevel.getCurrentDifficultyAt(convert.blockPosition()), MobSpawnType.CONVERSION, null);
                 serverLevel.sendParticles(new BloodSplashParticleOption(((float)convert.getBoundingBox().getSize() * 2.0F), 0), convert.getX(), convert.getY() + 1.0D, convert.getZ(), 1, 0.0D, 0.0D, 0.0D, 0.0D);
                 for (int i = 0; i < serverLevel.getRandom().nextIntBetweenInclusive(4, 6); ++i) {
                     float randomY = serverLevel.getRandom().nextIntBetweenInclusive(1, 4) / 100.0F;
@@ -424,22 +422,22 @@ public class MobUtil {
 
         ItemStack mainHandStack = living.getMainHandItem();
         if (!mainHandStack.isEmpty()) {
-            Multimap<Attribute, AttributeModifier> modifiers = mainHandStack.getAttributeModifiers(EquipmentSlot.MAINHAND);
+            Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> modifiers = ItemHelper.mainHandAttributes(mainHandStack);
 
             if (modifiers.containsKey(Attributes.ATTACK_DAMAGE)) {
                 for (AttributeModifier modifier : modifiers.get(Attributes.ATTACK_DAMAGE)) {
-                    if (modifier.getOperation() == AttributeModifier.Operation.ADDITION) {
-                        totalDamage -= modifier.getAmount();
+                    if (modifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
+                        totalDamage -= modifier.amount();
                     }
                 }
             }
         }
 
-        Multimap<Attribute, AttributeModifier> shredderModifiers = itemStack.getAttributeModifiers(EquipmentSlot.MAINHAND);
+        Multimap<net.minecraft.core.Holder<Attribute>, AttributeModifier> shredderModifiers = ItemHelper.mainHandAttributes(itemStack);
         if (shredderModifiers.containsKey(Attributes.ATTACK_DAMAGE)) {
             for (AttributeModifier modifier : shredderModifiers.get(Attributes.ATTACK_DAMAGE)) {
-                if (modifier.getOperation() == AttributeModifier.Operation.ADDITION) {
-                    totalDamage += modifier.getAmount();
+                if (modifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
+                    totalDamage += modifier.amount();
                 }
             }
         }

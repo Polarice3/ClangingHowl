@@ -245,7 +245,7 @@ public class RedstoneCableBlock extends RotatedPillarBlock implements SimpleWate
     }
 
     @Override
-    public boolean isPathfindable(BlockState blockState, BlockGetter level, BlockPos blockPos, PathComputationType type) {
+    public boolean isPathfindable(BlockState blockState, PathComputationType type) {
         return false;
     }
 }

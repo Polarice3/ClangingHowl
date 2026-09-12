@@ -1,13 +1,13 @@
 package com.mongoose.clanginghowl.data;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import com.mongoose.clanginghowl.ClangingHowl;
 import com.mongoose.clanginghowl.common.items.CHItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class CHItemModelProvider extends ItemModelProvider {
     public static final String GENERATED = "item/generated";
@@ -55,13 +55,13 @@ public class CHItemModelProvider extends ItemModelProvider {
 
         this.itemGeneratedModel(CHItems.REANIMATION.get());
 
-        /*for (Item item : ForgeRegistries.ITEMS) {
-            if (ForgeRegistries.ITEMS.getKey(item) != null) {
-                ResourceLocation resourceLocation = ForgeRegistries.ITEMS.getKey(item);
+        /*for (Item item : BuiltInRegistries.ITEM) {
+            if (BuiltInRegistries.ITEM.getKey(item) != null) {
+                ResourceLocation resourceLocation = BuiltInRegistries.ITEM.getKey(item);
                 if (resourceLocation != null) {
                     if (item instanceof SpawnEggItem && resourceLocation.getNamespace().equals(ClangingHowl.MOD_ID)) {
                         getBuilder(resourceLocation.getPath())
-                                .parent(getExistingFile(new ResourceLocation("item/template_spawn_egg")));
+                                .parent(getExistingFile(ResourceLocation.parse("item/template_spawn_egg")));
                     }
                 }
             }
@@ -90,6 +90,6 @@ public class CHItemModelProvider extends ItemModelProvider {
     }
 
     private String itemName(Item item) {
-        return ForgeRegistries.ITEMS.getKey(item).getPath();
+        return BuiltInRegistries.ITEM.getKey(item).getPath();
     }
 }

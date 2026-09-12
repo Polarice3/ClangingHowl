@@ -22,15 +22,24 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class ExActivityRadarBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock, EntityBlock {
+    public static final com.mojang.serialization.MapCodec<ExActivityRadarBlock> CODEC = simpleCodec(ExActivityRadarBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<ExActivityRadarBlock> codec() { return CODEC; }
+
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape SHAPE = Block.box(3.0D, 0.0D, 3.0D, 13.0D, 14.0D, 13.0D);
 
     public ExActivityRadarBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .strength(4.0F, 9.0F)
                 .sound(SoundType.COPPER)
                 .noOcclusion());
+    }
+
+    public ExActivityRadarBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, Boolean.FALSE));
     }
 

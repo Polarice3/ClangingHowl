@@ -31,10 +31,15 @@ import net.minecraft.world.level.material.PushReaction;
 import javax.annotation.Nullable;
 
 public class NerveEndingsBlock extends BushBlock implements EntityBlock {
+    public static final com.mojang.serialization.MapCodec<NerveEndingsBlock> CODEC = simpleCodec(NerveEndingsBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<NerveEndingsBlock> codec() { return CODEC; }
+
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
 
     public NerveEndingsBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .mapColor(MapColor.COLOR_RED)
                 .strength(0.5F)
                 .forceSolidOn()
@@ -42,6 +47,10 @@ public class NerveEndingsBlock extends BushBlock implements EntityBlock {
                 .ignitedByLava()
                 .sound(SoundType.HONEY_BLOCK)
                 .pushReaction(PushReaction.DESTROY));
+    }
+
+    public NerveEndingsBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(TRIGGERED, Boolean.FALSE));
     }
 

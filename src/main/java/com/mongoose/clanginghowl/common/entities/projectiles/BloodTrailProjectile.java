@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 
 public class BloodTrailProjectile extends ThrowableProjectile {
     private static final EntityDataAccessor<Boolean> CLOT = SynchedEntityData.defineId(BloodTrailProjectile.class, EntityDataSerializers.BOOLEAN);
@@ -41,9 +40,9 @@ public class BloodTrailProjectile extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(CLOT, false);
-        this.entityData.define(INFECT, false);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        builder.define(CLOT, false);
+        builder.define(INFECT, false);
     }
 
     public boolean isClotted() {
@@ -86,7 +85,7 @@ public class BloodTrailProjectile extends ThrowableProjectile {
                         if (entity instanceof Player || !MobUtil.canInfect(entity)) {
                             entity.hurt(damageSource, 5.0F);
                         } else if (entity instanceof LivingEntity livingEntity) {
-                            livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), 300, 0, false, false));
+                            livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH, 300, 0, false, false));
                         }
                     }
                 }
@@ -114,7 +113,7 @@ public class BloodTrailProjectile extends ThrowableProjectile {
         return CHParticleTypes.BLOODY_PROJECTILE.get();
     }
 
-    protected float getGravity() {
+    protected double getDefaultGravity() {
         return 0.07F;
     }
 
@@ -138,7 +137,7 @@ public class BloodTrailProjectile extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return super.getAddEntityPacket(serverEntity);
     }
 }

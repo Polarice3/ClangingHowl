@@ -8,7 +8,7 @@ public interface ICHCap {
     void setMiningProgress(int tick);
     @Nullable
     BlockPos getMiningPos();
-    void setMiningPos(BlockPos blockPos);
+    void setMiningPos(@Nullable BlockPos blockPos);
     int getShakeTime();
     void setShakeTime(int ticks);
     boolean isMoving();

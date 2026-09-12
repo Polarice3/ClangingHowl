@@ -2,16 +2,16 @@ package com.mongoose.clanginghowl.init;
 
 import com.mongoose.clanginghowl.client.particles.*;
 import net.minecraft.client.particle.ExplodeParticle;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.bus.api.IEventBus;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientSideInit extends SidedInit {
 
-    public void init() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupParticles);
+    public void init(IEventBus modEventBus) {
+        modEventBus.addListener(this::setupParticles);
     }
 
     public void setupParticles(RegisterParticleProvidersEvent event) {

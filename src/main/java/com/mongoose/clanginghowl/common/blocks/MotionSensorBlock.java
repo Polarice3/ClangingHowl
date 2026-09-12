@@ -25,6 +25,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 
 public class MotionSensorBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+    public static final com.mojang.serialization.MapCodec<MotionSensorBlock> CODEC = simpleCodec(MotionSensorBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<MotionSensorBlock> codec() { return CODEC; }
+
     public static final IntegerProperty POWER = BlockStateProperties.POWER;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -37,10 +42,14 @@ public class MotionSensorBlock extends BaseEntityBlock implements SimpleWaterlog
     protected static final VoxelShape EAST_SHAPE = Block.box(0.0D, 5.0D, 5.0D, 1.0D, 11.0D, 11.0D);
 
     public MotionSensorBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .strength(1.0F, 1.0F)
                 .sound(SoundType.COPPER)
                 .noOcclusion());
+    }
+
+    public MotionSensorBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP).setValue(POWER, 0).setValue(POWERED, false).setValue(WATERLOGGED, false));
     }
 

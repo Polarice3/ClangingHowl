@@ -16,13 +16,22 @@ import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.Nullable;
 
 public class FleshNestBlock extends BaseEntityBlock {
+    public static final com.mojang.serialization.MapCodec<FleshNestBlock> CODEC = simpleCodec(FleshNestBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<FleshNestBlock> codec() { return CODEC; }
+
 
     public FleshNestBlock() {
-        super(Properties.of()
+        this(Properties.of()
                 .mapColor(MapColor.COLOR_RED)
                 .strength(10.0F)
                 .ignitedByLava()
                 .sound(SoundType.HONEY_BLOCK));
+    }
+
+    public FleshNestBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -31,8 +40,8 @@ public class FleshNestBlock extends BaseEntityBlock {
     }
 
     @Override
-    public int getExpDrop(BlockState state, LevelReader level, RandomSource randomSource, BlockPos pos, int fortuneLevel, int silkTouchLevel) {
-        return silkTouchLevel == 0 ? 10 : 0;
+    public int getExpDrop(BlockState state, net.minecraft.world.level.LevelAccessor world, BlockPos pos, BlockEntity blockEntity, net.minecraft.world.entity.Entity breaker, net.minecraft.world.item.ItemStack tool) {
+        return com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(tool, net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH) == 0 ? 10 : 0;
     }
 
     @Nullable

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "I": {
+      "item": "clanginghowl:extraterrestrial_steel_ingot"
+    },
+    "P": {
+      "item": "clanginghowl:extraterrestrial_steel_plate"
+    },
+    "R": {
+      "item": "clanginghowl:redstone_wire"
+    },
+    "S": {
+      "item": "clanginghowl:steel_rod"
+    }
+  },
+  "pattern": [
+    " PS",
+    "RPP",
+    "II "
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:extraterrestrial_activity_radar"
+  },
+  "show_notification": false
+}

@@ -77,9 +77,9 @@ public class FleshMaiden extends TFleshMonster {
                 .add(Attributes.ATTACK_DAMAGE, 9.0D);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANIM_STATE, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ANIM_STATE, 0);
     }
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
@@ -96,7 +96,7 @@ public class FleshMaiden extends TFleshMonster {
 
     @Override
     public boolean canAttack(LivingEntity p_21171_) {
-        return super.canAttack(p_21171_) && !p_21171_.hasEffect(CHEffects.BEYOND_FLESH.get());
+        return super.canAttack(p_21171_) && !p_21171_.hasEffect(CHEffects.BEYOND_FLESH);
     }
 
     protected SoundEvent getAmbientSound() {
@@ -204,8 +204,8 @@ public class FleshMaiden extends TFleshMonster {
         return animationStates;
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.hasPose(Pose.EMERGING) ? 1 : 0);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, serverEntity, this.hasPose(Pose.EMERGING) ? 1 : 0);
     }
 
     public void recreateFromPacket(ClientboundAddEntityPacket p_219420_) {
@@ -218,9 +218,9 @@ public class FleshMaiden extends TFleshMonster {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
         this.setPose(Pose.EMERGING);
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
     public void tick() {
@@ -266,11 +266,16 @@ public class FleshMaiden extends TFleshMonster {
         }
     }
 
+    @Override
+    public boolean isWithinMeleeAttackRange(LivingEntity target) {
+        return this.distanceToSqr(target) <= getMeleeAttackRangeSqr(target);
+    }
+
     public double getMeleeAttackRangeSqr(LivingEntity target) {
         if (this.isCurrentAnimation(LONG_ATTACK)) {
-            return super.getMeleeAttackRangeSqr(target) * 4.0F;
+            return (this.getBbWidth() * 2.0F * this.getBbWidth() * 2.0F + target.getBbWidth()) * 4.0F;
         }
-        return super.getMeleeAttackRangeSqr(target);
+        return (this.getBbWidth() * 2.0F * this.getBbWidth() * 2.0F + target.getBbWidth());
     }
 
     @Override

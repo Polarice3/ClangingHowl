@@ -1,0 +1,61 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="All Rights Reserved"
+
+[[mods]]
+modId="clanginghowl"
+version="${mod_version}"
+displayName="Clanging Howl"
+enumExtensions="META-INF/enumextensions.json"
+logoFile="logo.png"
+credits="Made for ModJam 2025"
+authors="Mongoose_artist, Polarice3"
+description="Adds a lot of hostile mobs, with their own characteristics that can complicate your survival"
+
+[[mixins]]
+config="clanginghowl.mixins.json"
+
+[features.clanginghowl]
+javaVersion="[21,)"
+
+[[dependencies.clanginghowl]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.clanginghowl]]
+modId="neoforge"
+type="required"
+versionRange="${neo_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.clanginghowl]]
+modId="geckolib"
+type="required"
+versionRange="${geckolib_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.clanginghowl]]
+modId="curios"
+type="required"
+versionRange="${curios_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.clanginghowl]]
+modId="jei"
+type="optional"
+versionRange="${jei_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.clanginghowl]]
+modId="jade"
+type="optional"
+versionRange="${jade_version_range}"
+ordering="NONE"
+side="BOTH"

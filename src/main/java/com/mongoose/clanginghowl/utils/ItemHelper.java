@@ -16,29 +16,40 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 public class ItemHelper {
+    public static net.minecraft.world.item.component.ItemAttributeModifiers mainHandAttributes(
+            com.google.common.collect.Multimap<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier> modifiers) {
+        var builder = net.minecraft.world.item.component.ItemAttributeModifiers.builder();
+        modifiers.forEach((attribute, modifier) -> builder.add(attribute, modifier, net.minecraft.world.entity.EquipmentSlotGroup.MAINHAND));
+        return builder.build();
+    }
+
+    public static com.google.common.collect.Multimap<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier> mainHandAttributes(ItemStack stack) {
+        com.google.common.collect.Multimap<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier> result = com.google.common.collect.HashMultimap.create();
+        stack.getAttributeModifiers().forEach(EquipmentSlot.MAINHAND, result::put);
+        return result;
+    }
+
 
     public static <T extends LivingEntity> void hurtAndRemove(ItemStack stack, int pAmount, T pEntity) {
         if (!pEntity.level().isClientSide && (!(pEntity instanceof Player) || !((Player)pEntity).getAbilities().instabuild)) {
             if (stack.isDamageableItem()) {
-                if (stack.hurt(pAmount, pEntity.getRandom(), pEntity instanceof ServerPlayer ? (ServerPlayer)pEntity : null)) {
-                    stack.shrink(1);
-                    stack.setDamageValue(0);
-                }
+                // This helper intentionally does not emit a hand/armor break animation.
+                stack.hurtAndBreak(pAmount, (net.minecraft.server.level.ServerLevel) pEntity.level(), pEntity, brokenItem -> {});
             }
         }
     }
 
     public static <T extends LivingEntity> void hurtAndBreak(ItemStack itemStack, int pAmount, T pEntity) {
-        itemStack.hurtAndBreak(pAmount, pEntity, (p_220045_0_) -> p_220045_0_.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+        itemStack.hurtAndBreak(pAmount, pEntity, EquipmentSlot.MAINHAND);
     }
 
     public static boolean armorSet(LivingEntity living, ArmorMaterial material){
         int i = 0;
-        if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ArmorItem helmet && helmet.getMaterial() == material) {
+        if (living.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof ArmorItem helmet && helmet.getMaterial().value() == material) {
             for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
-                if (equipmentSlot.getType() == EquipmentSlot.Type.ARMOR) {
+                if (equipmentSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
                     if (living.getItemBySlot(equipmentSlot).getItem() instanceof ArmorItem armorItem) {
-                        if (armorItem.getMaterial() == material) {
+                        if (armorItem.getMaterial().value() == material) {
                             ++i;
                         }
                     }

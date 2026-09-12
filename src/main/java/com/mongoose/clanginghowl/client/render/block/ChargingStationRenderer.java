@@ -16,7 +16,8 @@ public class ChargingStationRenderer implements BlockEntityRenderer<ChargingStat
     }
 
     public void render(ChargingStationBlockEntity pBlockEntity, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pCombinedLight, int pCombinedOverlay) {
-        pBlockEntity.itemStackHandler.ifPresent(handler -> {
+        {
+            var handler = pBlockEntity.itemStackHandler;
             ItemStack stack = handler.getStackInSlot(0);
             Minecraft minecraft = Minecraft.getInstance();
             if (!stack.isEmpty()) {
@@ -33,6 +34,6 @@ public class ChargingStationRenderer implements BlockEntityRenderer<ChargingStat
                 minecraft.getItemRenderer().renderStatic(stack, ItemDisplayContext.FIRST_PERSON_RIGHT_HAND, pCombinedLight, pCombinedOverlay, pMatrixStack, pBuffer, pBlockEntity.getLevel(), 0);
                 pMatrixStack.popPose();
             }
-        });
+        }
     }
 }

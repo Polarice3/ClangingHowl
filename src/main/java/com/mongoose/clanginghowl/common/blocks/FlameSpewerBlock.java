@@ -15,7 +15,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.enchantment.ProtectionEnchantment;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -37,16 +36,25 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class FlameSpewerBlock extends BaseEntityBlock {
+    public static final com.mojang.serialization.MapCodec<FlameSpewerBlock> CODEC = simpleCodec(FlameSpewerBlock::new);
+
+    @Override
+    public com.mojang.serialization.MapCodec<FlameSpewerBlock> codec() { return CODEC; }
+
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty ENABLED = BlockStateProperties.ENABLED;
     public static final BooleanProperty TRIGGERED = BlockStateProperties.TRIGGERED;
 
     public FlameSpewerBlock() {
-        super(BlockBehaviour.Properties.of()
+        this(BlockBehaviour.Properties.of()
                 .sound(SoundType.NETHERITE_BLOCK)
                 .mapColor(MapColor.COLOR_GRAY)
                 .requiresCorrectToolForDrops()
                 .strength(2.0F, 0.0F));
+    }
+
+    public FlameSpewerBlock(net.minecraft.world.level.block.state.BlockBehaviour.Properties properties) {
+        super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP).setValue(ENABLED, false).setValue(TRIGGERED, false));
     }
 
@@ -77,7 +85,7 @@ public class FlameSpewerBlock extends BaseEntityBlock {
 
     @Override
     public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
-        explode(level, pos, explosion.getExploder() instanceof LivingEntity livingEntity ? livingEntity : null);
+        explode(level, pos, explosion.getDirectSourceEntity() instanceof LivingEntity livingEntity ? livingEntity : null);
     }
 
     public static void explode(Level level, BlockPos blockPos, @Nullable LivingEntity exploder) {
@@ -95,12 +103,12 @@ public class FlameSpewerBlock extends BaseEntityBlock {
                 public void explodeHurt(Entity target, DamageSource damageSource, double x, double y, double z, double seen, float actualDamage) {
                     if (target.hurt(damageSource, actualDamage)){
                         if (target instanceof LivingEntity livingEntity) {
-                            livingEntity.setSecondsOnFire(15);
+                            livingEntity.igniteForSeconds(15);
                         }
                     }
                     double d11 = seen;
                     if (target instanceof LivingEntity) {
-                        d11 = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity) target, seen);
+                        d11 = (seen * (1.0D - ((LivingEntity) target).getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.EXPLOSION_KNOCKBACK_RESISTANCE)));
                     }
 
                     if (target instanceof LivingEntity) {

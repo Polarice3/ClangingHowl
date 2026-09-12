@@ -59,7 +59,7 @@ public class FlameSpewerBlockEntity extends BlockEntity {
                         if (CHBlockUtil.emptySpaceBetween(this.level, this.getBlockPos().relative(facing), Math.min(range, distance), facing)) {
                             if (!entity.fireImmune()) {
                                 entity.hurt(CHDamageSource.getDamageSource(this.level, CHDamageSource.FIRE_STREAM), 3.5F);
-                                entity.setSecondsOnFire(15);
+                                entity.igniteForSeconds(15);
                             }
                         }
                     }
@@ -108,25 +108,25 @@ public class FlameSpewerBlockEntity extends BlockEntity {
                 case WEST -> blockPos2 = blockPos2.offset(0, 1, 1);
                 case NORTH -> blockPos2 = blockPos2.offset(1, 1, 0);
             }
-            return new AABB(this.getBlockPos(), blockPos2);
+            return AABB.encapsulatingFullBlocks(this.getBlockPos(), blockPos2);
         } else {
             return new AABB(0.0D, 0.0D, 0.0D, 0.0D, 0.0D, 0.0D);
         }
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.writeNetwork(super.getUpdateTag());
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries) {
+        return this.writeNetwork(super.getUpdateTag(registries));
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, net.minecraft.core.HolderLookup.Provider registries) {
         this.readNetwork(pkt.getTag());
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        super.load(tag);
+    public void handleUpdateTag(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         this.readNetwork(tag);
     }
 
@@ -147,15 +147,15 @@ public class FlameSpewerBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag compound) {
+    public void loadAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
         this.readNetwork(compound);
-        super.load(compound);
+        super.loadAdditional(compound, registries);
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
+    public void saveAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
         this.writeNetwork(compound);
-        super.saveAdditional(compound);
+        super.saveAdditional(compound, registries);
     }
 
     @Override

@@ -40,7 +40,6 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.enchantment.ProtectionEnchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,7 +51,7 @@ import java.util.Objects;
 
 public class Hematoma extends TFleshMonster {
     private static final EntityDataAccessor<Integer> ANIM_STATE = SynchedEntityData.defineId(Hematoma.class, EntityDataSerializers.INT);
-    public static AttributeModifier SPREAD_SPEED_MODIFIER = new AttributeModifier(CHUUIDUtil.createUUID("entity.clanginghowl.hematoma.immobile"), "Spread speed penalty", -1.0D, AttributeModifier.Operation.ADDITION);
+    public static AttributeModifier SPREAD_SPEED_MODIFIER = new AttributeModifier(com.mongoose.clanginghowl.ClangingHowl.location("entity.clanginghowl.hematoma.immobile"), -1.0D, AttributeModifier.Operation.ADD_VALUE);
     public static String IDLE = "idle";
     public static String ATTACK = "attack";
     public static String SPREAD = "spread";
@@ -95,9 +94,9 @@ public class Hematoma extends TFleshMonster {
                 .add(Attributes.ATTACK_KNOCKBACK, 0.5D);
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANIM_STATE, 0);
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(ANIM_STATE, 0);
     }
 
     @Override
@@ -232,7 +231,7 @@ public class Hematoma extends TFleshMonster {
         if (this.getKillCredit() instanceof Player){
             this.lastHurtByPlayerTime = 100;
         } else {
-            this.lastHurtByMobTimestamp = 100;
+            ((com.mongoose.clanginghowl.mixin.LivingEntityAccessor) this).clanginghowl$setLastHurtByMobTimestamp(100);
         }
         if (this.customDeathTime >= 30) {
             if (this.level() instanceof ServerLevel serverLevel) {
@@ -260,12 +259,12 @@ public class Hematoma extends TFleshMonster {
                             if (target.hurt(damageSource, actualDamage)) {
                                 if (infectType) {
                                     LivingEntity livingEntity = (LivingEntity) target;
-                                    livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH.get(), 300, 0, false, false));
+                                    livingEntity.addEffect(new MobEffectInstance(CHEffects.BEYOND_FLESH, 300, 0, false, false));
                                 }
                             }
                             double d11 = seen;
                             if (target instanceof LivingEntity) {
-                                d11 = ProtectionEnchantment.getExplosionKnockbackAfterDampener((LivingEntity) target, seen);
+                                d11 = (seen * (1.0D - ((LivingEntity) target).getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.EXPLOSION_KNOCKBACK_RESISTANCE)));
                             }
 
                             if (target instanceof LivingEntity) {
@@ -299,8 +298,8 @@ public class Hematoma extends TFleshMonster {
         return super.hurt(pSource, pAmount);
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this, this.hasPose(Pose.EMERGING) ? 1 : 0);
+    public Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return new ClientboundAddEntityPacket(this, serverEntity, this.hasPose(Pose.EMERGING) ? 1 : 0);
     }
 
     public void recreateFromPacket(ClientboundAddEntityPacket p_219420_) {
@@ -312,9 +311,9 @@ public class Hematoma extends TFleshMonster {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
         this.setPose(Pose.EMERGING);
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
     }
 
     public boolean isMeleeAttacking() {
@@ -353,7 +352,7 @@ public class Hematoma extends TFleshMonster {
                 }
             } else {
                 if (modifiableattributeinstance != null) {
-                    if (modifiableattributeinstance.hasModifier(SPREAD_SPEED_MODIFIER)) {
+                    if (modifiableattributeinstance.hasModifier(SPREAD_SPEED_MODIFIER.id())) {
                         modifiableattributeinstance.removeModifier(SPREAD_SPEED_MODIFIER);
                     }
                 }
@@ -381,7 +380,7 @@ public class Hematoma extends TFleshMonster {
             if (this.hematoma.isAppearing()) {
                 return false;
             }
-            if (this.hematoma.hasEffect(CHEffects.ATTRACTION.get())) {
+            if (this.hematoma.hasEffect(CHEffects.ATTRACTION)) {
                 return false;
             }
             List<Mob> list = this.hematoma.level().getEntitiesOfClass(Mob.class, this.hematoma.getBoundingBox().inflate(16.0D), mob -> !mob.getType().is(CHTags.EntityTypes.TECHNO_FLESH) && EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(mob) && (mob instanceof Animal || mob instanceof Enemy));
@@ -431,7 +430,7 @@ public class Hematoma extends TFleshMonster {
                 if (this.hematoma.level() instanceof ServerLevel serverLevel) {
                     ParticleUtil.attractionCloud(serverLevel, this.hematoma);
                 }
-                this.hematoma.addEffect(new MobEffectInstance(CHEffects.ATTRACTION.get(), 500, 0, false, false));
+                this.hematoma.addEffect(new MobEffectInstance(CHEffects.ATTRACTION, 500, 0, false, false));
             }
         }
     }

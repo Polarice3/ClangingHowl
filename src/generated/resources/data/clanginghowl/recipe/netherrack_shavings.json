@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "clanginghowl:extraterrestrial_hammer"
+    },
+    {
+      "item": "minecraft:netherrack"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "clanginghowl:netherrack_shavings"
+  }
+}

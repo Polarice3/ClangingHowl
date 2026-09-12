@@ -14,19 +14,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
 public class ChargingStationBlockEntity extends BlockEntity {
     public long lastChangeTime;
-    public LazyOptional<ItemStackHandler> itemStackHandler = LazyOptional.of(
-            () -> new ItemStackHandler(1) {
+    public final ItemStackHandler itemStackHandler = new ItemStackHandler(1) {
                 @Override
                 public int getSlotLimit(int slot) {
                     return 1;
@@ -45,7 +41,7 @@ public class ChargingStationBlockEntity extends BlockEntity {
                         }
                     }
                 }
-            });
+            };
 
     public ChargingStationBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(CHBlockEntities.STATIONARY_CHARGING_STATION.get(), blockPos, blockState);
@@ -57,11 +53,13 @@ public class ChargingStationBlockEntity extends BlockEntity {
 
     public void tick() {
         if (this.level != null) {
-            IItemHandler handler = this.itemStackHandler.orElseThrow(RuntimeException::new);
+            IItemHandler handler = this.itemStackHandler;
             ItemStack tool = handler.getStackInSlot(0);
             if (!tool.isEmpty() && tool.getItem() instanceof IEnergyItem && !IEnergyItem.isFull(tool)) {
-                if (this.level.getGameTime() % 20 == 0) {
+                if (!this.level.isClientSide && this.level.getGameTime() % 20 == 0) {
                     IEnergyItem.powerItem(tool, 4);
+                    this.setChanged();
+                    this.markNetworkDirty();
                 }
                 if (this.level instanceof ServerLevel serverLevel) {
                     if (serverLevel.getGameTime() % 5 == 0) {
@@ -75,43 +73,32 @@ public class ChargingStationBlockEntity extends BlockEntity {
         }
     }
 
-    @Nonnull
+
+
     @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction direction) {
-        if (cap == ForgeCapabilities.ITEM_HANDLER) {
-            return this.itemStackHandler.cast();
-        }
-        return super.getCapability(cap, direction);
+    public void loadAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
+        this.readNetwork(compound, registries);
+        super.loadAdditional(compound, registries);
     }
 
     @Override
-    public void load( CompoundTag compound) {
-        this.readNetwork(compound);
-        super.load(compound);
+    public void saveAdditional(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
+        this.writeNetwork(compound, registries);
+        super.saveAdditional(compound, registries);
     }
 
-    @Override
-    public void saveAdditional(CompoundTag compound) {
-        this.writeNetwork(compound);
-        super.saveAdditional(compound);
-    }
-
-    public void readNetwork(CompoundTag compound) {
-        this.itemStackHandler.ifPresent((handler) -> handler.deserializeNBT(compound.getCompound("inventory")));
+    public void readNetwork(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
+        this.itemStackHandler.deserializeNBT(registries, compound.getCompound("inventory"));
         this.lastChangeTime = compound.getLong("lastChangeTime");
     }
 
-    public CompoundTag writeNetwork(CompoundTag compound) {
-        this.itemStackHandler.ifPresent(handler -> compound.put("inventory", handler.serializeNBT()));
+    public CompoundTag writeNetwork(CompoundTag compound, net.minecraft.core.HolderLookup.Provider registries) {
+        compound.put("inventory", this.itemStackHandler.serializeNBT(registries));
         compound.putLong("lastChangeTime", this.lastChangeTime);
         return compound;
     }
 
-    @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        this.itemStackHandler.invalidate();
-    }
+
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -119,22 +106,23 @@ public class ChargingStationBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.writeNetwork(super.getUpdateTag());
+    public CompoundTag getUpdateTag(net.minecraft.core.HolderLookup.Provider registries) {
+        return this.writeNetwork(super.getUpdateTag(registries), registries);
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.readNetwork(pkt.getTag());
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, net.minecraft.core.HolderLookup.Provider registries) {
+        this.readNetwork(pkt.getTag(), registries);
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        super.load(tag);
-        this.readNetwork(tag);
+    public void handleUpdateTag(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        this.readNetwork(tag, registries);
     }
 
     public void markNetworkDirty() {
+        this.setChanged();
         if (this.level != null) {
             this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 2);
         }

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "clanginghowl:advanced_electronics"
+    },
+    "B": {
+      "item": "clanginghowl:battery_panel"
+    },
+    "E": {
+      "item": "clanginghowl:energy_fiber"
+    },
+    "S": {
+      "item": "clanginghowl:small_energy_battery"
+    }
+  },
+  "pattern": [
+    "SBS",
+    "EAE",
+    " E "
+  ],
+  "result": {
+    "count": 1,
+    "id": "clanginghowl:energy_barrier_generator"
+  },
+  "show_notification": false
+}

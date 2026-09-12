@@ -1,31 +1,39 @@
 package com.mongoose.clanginghowl.common.capabilities;
 
 import com.mongoose.clanginghowl.ClangingHowl;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import com.mongoose.clanginghowl.client.network.CHClientPayloadHandlers;
+import java.util.Objects;
+import io.netty.handler.codec.DecoderException;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
+public class CHCapUpdatePacket implements CustomPacketPayload {
+    public static final Type<CHCapUpdatePacket> TYPE = new Type<>(
+            ResourceLocation.fromNamespaceAndPath(ClangingHowl.MOD_ID, "cap_update"));
+    public static final StreamCodec<FriendlyByteBuf, CHCapUpdatePacket> STREAM_CODEC = StreamCodec.of(
+            (buffer, packet) -> encode(packet, buffer), CHCapUpdatePacket::decode);
 
-public class CHCapUpdatePacket {
+    @Override
+    public Type<CHCapUpdatePacket> type() {
+        return TYPE;
+    }
+
     private final int entityID;
-    private CompoundTag tag;
+    private final CompoundTag tag;
 
     public CHCapUpdatePacket(int id, CompoundTag tag) {
         this.entityID = id;
-        this.tag = tag;
+        this.tag = Objects.requireNonNull(tag, "tag").copy();
     }
 
+    /** Capture the entity's actual attached state, never a detached fallback instance. */
     public CHCapUpdatePacket(LivingEntity living) {
-        this.entityID = living.getId();
-        living.getCapability(CHCapProvider.CAPABILITY, null).ifPresent((soulEnergy) -> {
-            this.tag = CHCapHelper.save(new CompoundTag(), soulEnergy);
-        });
+        this(living.getId(), CHCapSerialization.save(new CompoundTag(), CHCapHelper.getCapability(living)));
     }
 
     public static void encode(CHCapUpdatePacket packet, FriendlyByteBuf buffer) {
@@ -34,23 +42,23 @@ public class CHCapUpdatePacket {
     }
 
     public static CHCapUpdatePacket decode(FriendlyByteBuf buffer) {
-        return new CHCapUpdatePacket(buffer.readInt(), buffer.readNbt());
+        int entityID = buffer.readInt();
+        CompoundTag tag = buffer.readNbt();
+        if (tag == null) {
+            throw new DecoderException("Missing Clanging Howl capability state");
+        }
+        return new CHCapUpdatePacket(entityID, tag);
     }
 
-    public static void consume(CHCapUpdatePacket packet, Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
-            if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-                Level level = ClangingHowl.PROXY.getLevel();
-                if (level instanceof ClientLevel clientLevel) {
-                    Entity entity = clientLevel.getEntity(packet.entityID);
-                    if (entity != null) {
-                        entity.getCapability(CHCapProvider.CAPABILITY).ifPresent((misc) -> {
-                            CHCapHelper.load(packet.tag, misc);
-                        });
-                    }
-                }
-            }
-        });
-        ctx.get().setPacketHandled(true);
+    public int entityID() {
+        return entityID;
+    }
+
+    public CompoundTag tag() {
+        return tag.copy();
+    }
+
+    public static void consume(CHCapUpdatePacket packet, IPayloadContext context) {
+        CHClientPayloadHandlers.handle(packet);
     }
 }

@@ -1,0 +1,25 @@
+{
+  "description": {
+    "translate": "enchantment.clanginghowl.tunnel_driller"
+  },
+  "supported_items": "#clanginghowl:enchantable/drill",
+  "weight": 1,
+  "max_level": 1,
+  "min_cost": {
+    "base": 25,
+    "per_level_above_first": 25
+  },
+  "max_cost": {
+    "base": 75,
+    "per_level_above_first": 25
+  },
+  "anvil_cost": 8,
+  "slots": [
+    "mainhand"
+  ],
+  "effects": {},
+  "exclusive_set": [
+    "minecraft:fortune",
+    "minecraft:silk_touch"
+  ]
+}

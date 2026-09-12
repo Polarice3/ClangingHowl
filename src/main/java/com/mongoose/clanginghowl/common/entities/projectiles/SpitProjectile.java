@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 public class SpitProjectile extends ThrowableProjectile {
@@ -67,7 +66,7 @@ public class SpitProjectile extends ThrowableProjectile {
                 flag = target.hurt(target.damageSources().mobProjectile(this, livingentity), baseDamage);
                 if (flag) {
                     if (target.isAlive()) {
-                        this.doEnchantDamageEffects(livingentity, target);
+                        net.minecraft.world.item.enchantment.EnchantmentHelper.doPostAttackEffects((net.minecraft.server.level.ServerLevel) this.level(), target, this.damageSources().mobProjectile(this, livingentity));
                     }
                 }
             } else {
@@ -75,7 +74,7 @@ public class SpitProjectile extends ThrowableProjectile {
             }
             if (flag) {
                 if (target instanceof LivingEntity livingEntity) {
-                    livingEntity.addEffect(new MobEffectInstance(CHEffects.NEUROTOXIN.get(), 160));
+                    livingEntity.addEffect(new MobEffectInstance(CHEffects.NEUROTOXIN, 160));
                 }
             }
 
@@ -106,7 +105,7 @@ public class SpitProjectile extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData() {
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
     }
 
     @Override
@@ -117,12 +116,12 @@ public class SpitProjectile extends ThrowableProjectile {
 
     }
 
-    protected float getGravity() {
+    protected double getDefaultGravity() {
         return 0.01F;
     }
 
     @Override
-    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket(net.minecraft.server.level.ServerEntity serverEntity) {
+        return super.getAddEntityPacket(serverEntity);
     }
 }

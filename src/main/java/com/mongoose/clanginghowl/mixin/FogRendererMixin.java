@@ -32,13 +32,14 @@ public class FogRendererMixin {
         clangingHowl$meteorShowerFogRenderer.render(mode, renderDistance);
     }
 
-    @Inject(method = "setupColor", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/FogRenderer;biomeChangedTime:J", ordinal = 4, opcode = 179 /*PUTFIELD*/, shift = At.Shift.AFTER))
+    @Inject(method = "setupColor", at = @At("TAIL"))
     private static void clanginghowl_setupMeteorShowerColor(Camera camera, float f, ClientLevel clientLevel, int i2, float g, CallbackInfo ci) {        // Interpolate fog if needed
         if (clangingHowl$meteorShowerFogRenderer.getFogLevel() > 0) {
             Color color = Color.decode(String.valueOf(0x5d5551));
             fogRed = (float) Mth.lerp(clangingHowl$meteorShowerFogRenderer.getFogLevel(), fogRed, color.getRed() / 255.0F);
             fogGreen = (float) Mth.lerp(clangingHowl$meteorShowerFogRenderer.getFogLevel(), fogGreen, color.getGreen() / 255.0F);
             fogBlue = (float) Mth.lerp(clangingHowl$meteorShowerFogRenderer.getFogLevel(), fogBlue, color.getBlue() / 255.0F);
+            com.mojang.blaze3d.systems.RenderSystem.clearColor(fogRed, fogGreen, fogBlue, 0.0F);
         }
     }
 }

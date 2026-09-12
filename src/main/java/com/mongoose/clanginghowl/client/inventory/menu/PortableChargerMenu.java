@@ -7,13 +7,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class PortableChargerMenu extends AbstractContainerMenu {
     private final ItemStack stack;
 
     public static PortableChargerMenu createContainerClientSide(int id, Inventory inventory, FriendlyByteBuf buffer) {
-        return new PortableChargerMenu(id, inventory, new PortableChargerHandler(ItemStack.EMPTY), ItemStack.EMPTY);
+        ItemStack displayStack = new ItemStack(com.mongoose.clanginghowl.common.items.CHItems.PORTABLE_CHARGER.get());
+        return new PortableChargerMenu(id, inventory, new PortableChargerHandler(displayStack), displayStack);
     }
 
     public PortableChargerMenu(int id, Inventory playerInventory, PortableChargerHandler handler, ItemStack stack) {
@@ -54,7 +55,7 @@ public class PortableChargerMenu extends AbstractContainerMenu {
             if (itemstack1.isEmpty()) {
                 slot.set(ItemStack.EMPTY);
             } else {
-                slot.setChanged();
+                slot.set(itemstack1);
             }
         }
 
@@ -63,6 +64,6 @@ public class PortableChargerMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return !stack.isEmpty();
+        return !stack.isEmpty() && (player.getMainHandItem() == stack || player.getOffhandItem() == stack);
     }
 }

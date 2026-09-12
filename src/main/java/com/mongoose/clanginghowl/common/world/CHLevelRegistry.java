@@ -8,12 +8,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraftforge.common.world.ModifiableBiomeInfo;
+import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
 
 public class CHLevelRegistry {
 
     public static void addBiomeSpawns(Holder<Biome> biome, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
-        if (!biome.containsTag(CHTags.Biomes.COMMON_BLACKLIST) && !biome.is(biomeResourceKey -> biomeResourceKey.registry().getNamespace().contains("alexscaves"))){
+        if (!biome.is(CHTags.Biomes.COMMON_BLACKLIST) && !biome.is(biomeResourceKey -> biomeResourceKey.registry().getNamespace().contains("alexscaves"))){
             if (biome.is(CHTags.Biomes.HOD_SPAWN) && CHConfig.HoDSpawnWeight.get() > 0){
                 builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(CHEntityType.HEART_OF_DECAY.get(), CHConfig.HoDSpawnWeight.get(), CHConfig.HoDSpawnMinCount.get(), CHConfig.HoDSpawnMaxCount.get()));
             }

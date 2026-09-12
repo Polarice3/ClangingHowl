@@ -4,7 +4,7 @@ import com.mongoose.clanginghowl.common.items.ExHammerItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
@@ -15,15 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HammerRepairRecipe extends CustomRecipe {
-    public HammerRepairRecipe(ResourceLocation location, CraftingBookCategory category) {
-        super(location, category);
+    public HammerRepairRecipe(CraftingBookCategory category) {
+        super(category);
     }
 
     @Override
-    public boolean matches(CraftingContainer container, Level level) {
+    public boolean matches(CraftingInput container, Level level) {
         List<ItemStack> items = new ArrayList<>();
 
-        for (int i = 0; i < container.getContainerSize(); i++) {
+        for (int i = 0; i < container.size(); i++) {
             ItemStack stack = container.getItem(i);
             if (!stack.isEmpty()) {
                 items.add(stack);
@@ -36,10 +36,10 @@ public class HammerRepairRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
+    public ItemStack assemble(CraftingInput container, net.minecraft.core.HolderLookup.Provider access) {
         List<ItemStack> items = new ArrayList<>();
 
-        for (int i = 0; i < container.getContainerSize(); i++) {
+        for (int i = 0; i < container.size(); i++) {
             ItemStack stack = container.getItem(i);
             if (!stack.isEmpty()) {
                 items.add(stack);
@@ -68,7 +68,7 @@ public class HammerRepairRecipe extends CustomRecipe {
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
-        return NonNullList.withSize(container.getContainerSize(), ItemStack.EMPTY);
+    public NonNullList<ItemStack> getRemainingItems(CraftingInput container) {
+        return NonNullList.withSize(container.size(), ItemStack.EMPTY);
     }
 }

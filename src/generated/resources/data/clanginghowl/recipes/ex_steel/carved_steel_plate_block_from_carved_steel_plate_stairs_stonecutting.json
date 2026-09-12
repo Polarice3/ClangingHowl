@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "count": 1,
-  "ingredient": {
-    "item": "clanginghowl:carved_steel_plate_block"
-  },
-  "result": "clanginghowl:carved_steel_plate_stairs"
-}

@@ -12,18 +12,18 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class CHCraftingProvider extends RecipeProvider {
-    public CHCraftingProvider(PackOutput p_248933_) {
-        super(p_248933_);
+    public CHCraftingProvider(PackOutput p_248933_, java.util.concurrent.CompletableFuture<net.minecraft.core.HolderLookup.Provider> registries) {
+        super(p_248933_, registries);
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+    protected void buildRecipes(RecipeOutput consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, CHBlocks.CARVED_EXTRATERRESTRIAL_STONE_BRICKS.get())
                 .pattern("#")
                 .pattern("#")
@@ -372,7 +372,7 @@ public class CHCraftingProvider extends RecipeProvider {
                 .define('B', CHItems.ENERGY_BATTERY.get())
                 .define('P', CHItems.TECHNO_OPTICS.get())
                 .define('A', CHItems.ADVANCED_ELECTRONICS.get())
-                .define('T', Tags.Items.GLASS_TINTED)
+                .define('T', Tags.Items.GLASS_BLOCKS_TINTED)
                 .unlockedBy("has_item", has(CHItems.TECHNO_OPTICS.get()))
                 .showNotification(false)
                 .save(consumer, loc("ex_steel/tools/x_ray_goggles"));
@@ -674,10 +674,10 @@ public class CHCraftingProvider extends RecipeProvider {
         hammerTime(consumer, "ex_steel/extraterrestrial_steel_plate", CHItems.EXTRATERRESTRIAL_STEEL_INGOT.get(), CHItems.EXTRATERRESTRIAL_STEEL_PLATE.get(), 4);
         hammerTime(consumer, "netherrack_shavings", Items.NETHERRACK, CHItems.NETHERRACK_SHAVINGS.get(), 4);
 
-        SpecialRecipeBuilder.special(CHRecipeSerializers.HAMMER_REPAIR.get()).save(consumer, "hammer_repair");
+        SpecialRecipeBuilder.special(com.mongoose.clanginghowl.common.crafting.HammerRepairRecipe::new).save(consumer, "hammer_repair");
     }
 
-    protected final void hammerTime(Consumer<FinishedRecipe> consumer, String name, ItemLike input, ItemLike output, int amount) {
+    protected final void hammerTime(RecipeOutput consumer, String name, ItemLike input, ItemLike output, int amount) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, output, amount)
                 .requires(CHItems.EXTRATERRESTRIAL_HAMMER.get())
                 .requires(input)
@@ -685,18 +685,18 @@ public class CHCraftingProvider extends RecipeProvider {
                 .save(consumer, loc(name));
     }
 
-    protected final void oneToOne(Consumer<FinishedRecipe> consumer, String name, ItemLike input, ItemLike output, int amount) {
+    protected final void oneToOne(RecipeOutput consumer, String name, ItemLike input, ItemLike output, int amount) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, output, amount)
                 .requires(input)
                 .unlockedBy("has_item", has(input))
                 .save(consumer, loc(name));
     }
 
-    protected final void twoByTwo(Consumer<FinishedRecipe> consumer, String name, ItemLike input, ItemLike output) {
+    protected final void twoByTwo(RecipeOutput consumer, String name, ItemLike input, ItemLike output) {
         twoByTwo(consumer, name, input, output, 4);
     }
 
-    protected final void twoByTwo(Consumer<FinishedRecipe> consumer, String name, ItemLike input, ItemLike output, int amount) {
+    protected final void twoByTwo(RecipeOutput consumer, String name, ItemLike input, ItemLike output, int amount) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, output, amount)
                 .pattern("##")
                 .pattern("##")
@@ -706,7 +706,7 @@ public class CHCraftingProvider extends RecipeProvider {
                 .save(consumer, loc(name));
     }
 
-    protected final void stairsBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> input, Supplier<? extends Block> output) {
+    protected final void stairsBlock(RecipeOutput consumer, String name, Supplier<? extends Block> input, Supplier<? extends Block> output) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, output.get(), 4)
                 .pattern("#  ")
                 .pattern("## ")
@@ -717,7 +717,7 @@ public class CHCraftingProvider extends RecipeProvider {
                 .save(consumer, loc(name + "_stairs"));
     }
 
-    protected final void slabBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> input, Supplier<? extends Block> output) {
+    protected final void slabBlock(RecipeOutput consumer, String name, Supplier<? extends Block> input, Supplier<? extends Block> output) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, output.get(), 6)
                 .pattern("###")
                 .define('#', input.get())
@@ -726,7 +726,7 @@ public class CHCraftingProvider extends RecipeProvider {
                 .save(consumer, loc(name + "_slab"));
     }
 
-    protected final void wallBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> input, Supplier<? extends Block> output) {
+    protected final void wallBlock(RecipeOutput consumer, String name, Supplier<? extends Block> input, Supplier<? extends Block> output) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, output.get(), 6)
                 .pattern("###")
                 .pattern("###")
@@ -736,7 +736,7 @@ public class CHCraftingProvider extends RecipeProvider {
                 .save(consumer, loc(name + "_wall"));
     }
 
-    protected final void panelBlock(Consumer<FinishedRecipe> consumer, String name, Supplier<? extends Block> input, Supplier<? extends Block> output) {
+    protected final void panelBlock(RecipeOutput consumer, String name, Supplier<? extends Block> input, Supplier<? extends Block> output) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, output.get(), 16)
                 .pattern("###")
                 .pattern("###")
@@ -746,7 +746,7 @@ public class CHCraftingProvider extends RecipeProvider {
                 .save(consumer, loc(name + "_panel"));
     }
 
-    protected final void fullGrid(Consumer<FinishedRecipe> consumer, String name, ItemLike input, ItemLike output) {
+    protected final void fullGrid(RecipeOutput consumer, String name, ItemLike input, ItemLike output) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, output, 1)
                 .pattern("###")
                 .pattern("###")
@@ -761,33 +761,33 @@ public class CHCraftingProvider extends RecipeProvider {
         return ClangingHowl.location(name);
     }
 
-    public final void stoneCutting(Consumer<FinishedRecipe> consumer, String folder, Supplier<? extends Block> input, Supplier<? extends Block> output) {
+    public final void stoneCutting(RecipeOutput consumer, String folder, Supplier<? extends Block> input, Supplier<? extends Block> output) {
         stoneCutting(consumer, folder, input, output, 1);
     }
 
-    public final void stoneCutting(Consumer<FinishedRecipe> consumer, String folder, Supplier<? extends Block> input, Supplier<? extends Block> output, int amount) {
+    public final void stoneCutting(RecipeOutput consumer, String folder, Supplier<? extends Block> input, Supplier<? extends Block> output, int amount) {
         SingleItemRecipeBuilder
                 .stonecutting(Ingredient.of(input.get()), RecipeCategory.BUILDING_BLOCKS, output.get(), amount)
                 .unlockedBy("has_item", has(input.get()))
                 .save(consumer, loc(folder + "/" + getConversionRecipeName(input.get(), output.get()) + "_stonecutting"));
     }
 
-    public final void smelting(Consumer<FinishedRecipe> consumer, String name, ItemLike input, ItemLike output){
+    public final void smelting(RecipeOutput consumer, String name, ItemLike input, ItemLike output){
         SimpleCookingRecipeBuilder
                 .smelting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output, 0.35F, 200)
                 .unlockedBy("has_item", has(input))
                 .save(consumer, loc(name + "_smelting"));
     }
 
-    public final void blasting(Consumer<FinishedRecipe> consumer, String name, ItemLike input, ItemLike output){
+    public final void blasting(RecipeOutput consumer, String name, ItemLike input, ItemLike output){
         blasting(consumer, name, input, output, 200);
     }
 
-    public final void blasting(Consumer<FinishedRecipe> consumer, String name, ItemLike input, ItemLike output, int time){
+    public final void blasting(RecipeOutput consumer, String name, ItemLike input, ItemLike output, int time){
         blasting(consumer, name, input, output, 0.35F, time);
     }
 
-    public final void blasting(Consumer<FinishedRecipe> consumer, String name, ItemLike input, ItemLike output, float exp, int time){
+    public final void blasting(RecipeOutput consumer, String name, ItemLike input, ItemLike output, float exp, int time){
         SimpleCookingRecipeBuilder
                 .blasting(Ingredient.of(input), RecipeCategory.BUILDING_BLOCKS, output, exp, time)
                 .unlockedBy("has_item", has(input))

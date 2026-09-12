@@ -1,5 +1,6 @@
 package com.mongoose.clanginghowl.common.items.curios;
 
+import com.mongoose.clanginghowl.utils.CHItemData;
 import com.mongoose.clanginghowl.common.enchantments.CHEnchantments;
 import com.mongoose.clanginghowl.common.items.energy.BatteryItem;
 import com.mongoose.clanginghowl.common.items.energy.IEnergyItem;
@@ -46,9 +47,9 @@ public abstract class CuriosEnergyItem extends CHCurioItem implements IEnergyIte
     }
 
     public float amountColor(ItemStack stack){
-        if (stack.getTag() != null) {
-            int energy = stack.getTag().getInt(ENERGY_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_ENERGY_AMOUNT);
+        if (CHItemData.hasData(stack)) {
+            int energy = CHItemData.getInt(stack, ENERGY_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_ENERGY_AMOUNT);
             return 1.0F - ((float) energy / maxEnergy);
         } else {
             return 1.0F;
@@ -57,14 +58,14 @@ public abstract class CuriosEnergyItem extends CHCurioItem implements IEnergyIte
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return stack.getTag() != null && !IEnergyItem.isFull(stack);
+        return CHItemData.hasData(stack) && !IEnergyItem.isFull(stack);
     }
 
     @Override
     public int getBarWidth(ItemStack stack){
-        if (stack.getTag() != null) {
-            int energy = stack.getTag().getInt(ENERGY_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_ENERGY_AMOUNT);
+        if (CHItemData.hasData(stack)) {
+            int energy = CHItemData.getInt(stack, ENERGY_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_ENERGY_AMOUNT);
             return Math.round((energy * 13.0F / maxEnergy));
         } else {
             return 0;
@@ -82,7 +83,7 @@ public abstract class CuriosEnergyItem extends CHCurioItem implements IEnergyIte
     public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         this.setTagTick(stack);
         if (!worldIn.isClientSide) {
-            if (stack.getEnchantmentLevel(CHEnchantments.ECOLOGICAL_ENERGY.get()) > 0) {
+            if (com.mongoose.clanginghowl.common.enchantments.CHEnchantments.level(stack, CHEnchantments.ECOLOGICAL_ENERGY) > 0) {
                 if (MobUtil.isInSunlight(entityIn)) {
                     if (entityIn.tickCount % 20 == 0) {
                         IEnergyItem.powerItem(stack, 2);
@@ -98,11 +99,11 @@ public abstract class CuriosEnergyItem extends CHCurioItem implements IEnergyIte
         return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && slotChanged;
     }
 
-    public void addEnergyText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        if (stack.getTag() != null) {
+    public void addEnergyText(ItemStack stack, net.minecraft.world.item.Item.TooltipContext worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        if (CHItemData.hasData(stack)) {
             tooltip.add(Component.empty());
-            int energy = stack.getTag().getInt(ENERGY_AMOUNT);
-            int maxEnergy = stack.getTag().getInt(MAX_ENERGY_AMOUNT);
+            int energy = CHItemData.getInt(stack, ENERGY_AMOUNT);
+            int maxEnergy = CHItemData.getInt(stack, MAX_ENERGY_AMOUNT);
             if (stack.getItem() instanceof BatteryItem) {
                 tooltip.add(Component.translatable("info.clanginghowl.battery.amount").append(Component.literal(" ")).append(Component.translatable("info.clanginghowl.battery.number", energy, maxEnergy).withStyle(ChatFormatting.GRAY)));
             } else {
